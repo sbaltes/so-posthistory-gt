@@ -1,0 +1,25 @@
+PostId: 1109108
+Id: 99426826
+Version: 7
+Amount of text blocks: 2
+Amount of code blocks: 1
+
+
+You can force Android to hide the virtual keyboard using the [InputMethodManager][1], calling [`hideSoftInputFromWindow`][2], passing in the token of the window containing your focused view.
+
+
+    // Check if no view has focus:
+    View view = this.getCurrentFocus();
+    if (view != null) {  
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
+This will force the keyboard to be hidden in all situations. In some cases you will want to pass in `InputMethodManager.HIDE_IMPLICIT_ONLY` as the second parameter to ensure you only hide the keyboard when the user didn't explicitly force it to appear (by holding down menu).
+  [1]: http://developer.android.com/reference/android/view/inputmethod/InputMethodManager.html
+  [2]: http://developer.android.com/reference/android/view/inputmethod/InputMethodManager.html#hideSoftInputFromWindow%28android.os.IBinder,%20int%29
+
+
+
+

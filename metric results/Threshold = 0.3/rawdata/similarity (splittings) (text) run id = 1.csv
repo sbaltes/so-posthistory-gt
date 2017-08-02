@@ -1,0 +1,357 @@
+similarity (splittings) (text), p_140861, p_326440, p_1109108, p_2581754, p_3145655, p_3758880, p_5445161, p_5599842, p_9855338, p_26196831
+jaccardNormalized5Grams, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+winnowingNormalizedShingle3DiceVariant, 0, 1, 0, 0, 0, no result, 0, 0, 0, no result
+manhattanNormalized3Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized4GramJaccardMinMatchLength1, 0, 7, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstTokenOverlapMinMatchLength3, 0, 1, 0, 1, 0, 9, 0, 0, 0, 8
+rkrGst4GramJaccardMinMatchLength3, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+cosineNormalizedShingle2Bool, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+overlapNormalizedShingles3, 0, 1, 0, 0, 0, no result, 0, 0, 0, no result
+rkrGstNormalized3GramOverlapMinMatchLength1, 0, 29, 0, 0, 7, 0, 0, 0, 0, 0
+rkrGstNormalized5GramJaccardMinMatchLength1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+diceVariantNormalizedPadding4grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst4GramDiceMinMatchLength1, 0, 9, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingNormalized3GramDiceVariant, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1
+diceVariantNormalized5Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle3JaccardMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, no result
+rkrGstShingle2OverlapMinMatchLength1, 0, 1, 0, 0, 0, no result, 0, 0, 0, 1
+winnowingTokenOverlap, 0, 3, 0, 1, 0, 0, 0, 0, 0, 1
+optimalAlignmentShingle2Fingerprint, 0, 1, 0, 1, 0, no result, 0, 0, 0, 1
+rkrGstNormalizedTokenDiceMinMatchLength3, 0, 1, 0, 1, 0, 9, 0, 0, 0, 8
+diceNormalizedPadding5grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+optimalAlignment3GramFingerprintNormalized, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+jaccardNormalizedPadding2grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingNormalized3GramOverlap, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1
+diceVariantNormalizedTokens, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalized4GramDiceVariantMinMatchLength1, 0, 29, 5, 4, 7, 0, 0, 0, 0, 8
+levenshteinStandard, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst4GramJaccardMinMatchLength2, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstTokenDiceVariantMinMatchLength1, 0, 31, 6, 3, 5, 0, 6, 0, 10, 0
+winnowingNormalized2GramOverlap, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle3OverlapMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, no result
+winnowingNormalizedShingle3Dice, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGst3GramOverlapMinMatchLength3, 0, 9, 0, 0, 6, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle3DiceMinMatchLength1, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+winnowingNormalizedTokenDice, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1
+diceVariant3Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+optimalAlignmentShingle3Fingerprint, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGst5GramOverlapMinMatchLength1, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst2GramDiceVariantMinMatchLength3, 0, 31, 6, 4, 11, 0, 3, 0, 10, 8
+rkrGstShingle3DiceMinMatchLength3, 0, no result, 0, 9, 6, no result, 0, 0, 0, no result
+rkrGst2GramOverlapMinMatchLength1, 0, 31, 7, 0, 11, 0, 11, 0, 10, 0
+longestCommonSubsequenceShingle2FingerprintNormalized, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+longestCommonSubsequence4GramFingerprintNormalized, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+winnowingNormalizedShingle2Overlap, 0, 2, 0, 0, 0, no result, 0, 0, 0, 0
+winnowingNormalized4GramDice, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+cosineNormalized4GramsNormalizedTermFrequency, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle3DiceMinMatchLength2, 0, 1, 0, 9, 0, no result, 0, 0, 0, no result
+rkrGstShingle2JaccardMinMatchLength2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 8
+winnowingNormalizedShingle3Overlap, 0, 1, 0, 0, 0, no result, 0, 0, 0, no result
+rkrGst2GramOverlapMinMatchLength2, 0, 25, 8, 0, 10, 0, 7, 0, 10, 0
+winnowingNormalized3GramDice, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0
+diceNormalized2Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+diceVariantNormalized3Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalized4GramDiceMinMatchLength1, 0, 15, 0, 1, 0, 0, 0, 0, 0, 0
+cosineNormalized4GramsTermFrequency, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowing5GramOverlap, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstShingle3DiceMinMatchLength1, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGstNormalized3GramDiceMinMatchLength3, 0, 15, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized3GramDiceVariantMinMatchLength3, 0, 30, 5, 9, 7, 0, 0, 0, 0, 8
+diceShingles3, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGstShingle3JaccardMinMatchLength3, 0, no result, 0, 9, 6, no result, 0, 0, 0, no result
+rkrGst4GramOverlapMinMatchLength2, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+winnowing3GramDiceVariant, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedTokenDiceVariantMinMatchLength2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+winnowing4GramDiceVariant, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0
+winnowingShingle3Jaccard, 0, no result, 0, 1, 0, no result, 1, 0, 0, no result
+cosineNormalizedShingle2TermFrequency, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+overlapNormalized2Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstShingle2DiceVariantMinMatchLength1, 0, 1, 0, 0, 0, no result, 0, 0, 0, 1
+rkrGstShingle2JaccardMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, 8
+winnowing3GramDice, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstShingle3DiceVariantMinMatchLength3, 0, no result, 0, 9, 6, no result, 0, 0, 0, no result
+cosineNormalized5GramsBool, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst4GramDiceMinMatchLength3, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedTokenDiceMinMatchLength2, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1
+rkrGstNormalizedShingle3DiceVariantMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, no result
+winnowingShingle2Jaccard, 0, 3, 0, 1, 0, no result, 0, 0, 0, 1
+overlapNormalized3Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+winnowingShingle2DiceVariant, 0, 1, 0, 0, 0, no result, 0, 0, 0, 1
+rkrGst4GramDiceVariantMinMatchLength1, 0, 30, 6, 4, 10, 0, 0, 0, 1, 8
+winnowingNormalizedTokenJaccard, 0, 3, 0, 1, 0, 0, 0, 0, 0, 1
+rkrGst5GramJaccardMinMatchLength3, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+overlap2Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalized2GramDiceVariantMinMatchLength1, 0, 31, 6, 9, 11, 0, 10, 0, 10, 8
+optimalAlignment5GramFingerprintNormalized, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstNormalized4GramJaccardMinMatchLength2, 0, 7, 0, 1, 0, 1, 0, 0, 0, 0
+levenshteinNormalized, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized3GramJaccardMinMatchLength1, 0, 13, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstShingle2JaccardMinMatchLength1, 0, 1, 0, 1, 0, no result, 0, 0, 0, 1
+dice5Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+diceVariantShingles2, 0, 1, 0, 0, 0, no result, 0, 0, 0, 1
+rkrGstTokenOverlapMinMatchLength2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+diceVariantShingles3, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+diceVariantNormalizedPadding5grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle2JaccardMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, 8
+cosineNormalizedTokensNormalizedTermFrequency, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle3DiceMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, no result
+rkrGstNormalizedShingle2OverlapMinMatchLength2, 0, 1, 0, 0, 0, no result, 0, 0, 0, 8
+rkrGst3GramJaccardMinMatchLength2, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0
+jaccard3Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized4GramDiceMinMatchLength2, 0, 14, 0, 1, 0, 0, 0, 0, 0, 0
+cosineNormalizedShingle3Bool, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+winnowingShingle2Overlap, 0, 1, 0, 0, 0, no result, 0, 0, 0, 1
+optimalAlignmentShingle2FingerprintNormalized, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+damerauLevenshteinStandard, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst4GramDiceVariantMinMatchLength3, 0, 22, 5, 0, 6, 0, 0, 0, 0, 8
+overlapNormalized4Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst4GramDiceMinMatchLength2, 0, 9, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstShingle3DiceVariantMinMatchLength2, 0, no result, 0, 9, 0, no result, 0, 0, 0, no result
+rkrGstNormalizedTokenJaccardMinMatchLength2, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1
+rkrGst5GramDiceVariantMinMatchLength1, 0, 21, 5, 4, 6, 0, 0, 0, 0, 7
+jaccardShingles3, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGst5GramOverlapMinMatchLength2, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+cosineNormalized3GramsBool, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingNormalizedTokenOverlap, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1
+jaccardTokens, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+overlapNormalizedPadding2grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+cosineNormalizedShingle3NormalizedTermFrequency, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+winnowingNormalizedShingle2DiceVariant, 0, 2, 0, 0, 0, no result, 0, 0, 0, 0
+rkrGst2GramDiceMinMatchLength3, 0, 9, 0, 1, 0, 0, 0, 0, 0, 0
+cosineNormalized3GramsNormalizedTermFrequency, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+winnowingNormalized5GramJaccard, 0, 4, 0, 1, 0, 1, 0, 0, 0, 1
+rkrGstNormalized3GramJaccardMinMatchLength3, 0, 8, 0, 1, 0, 1, 0, 0, 0, 0
+winnowingNormalized2GramDice, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowing4GramJaccard, 0, 2, 0, 1, 0, 1, 0, 0, 0, 0
+jaccard2Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstShingle2DiceVariantMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, 8
+rkrGst5GramDiceVariantMinMatchLength3, 0, 20, 0, 0, 6, 0, 0, 0, 0, 7
+jaccardNormalizedShingles3, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+overlapNormalizedPadding4grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst3GramDiceMinMatchLength2, 0, 9, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst3GramOverlapMinMatchLength1, 0, 18, 7, 0, 6, 0, 0, 0, 0, 0
+longestCommonSubsequence2GramFingerprintNormalized, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstTokenOverlapMinMatchLength1, 0, 18, 0, 0, 1, 0, 1, 0, 0, 0
+rkrGstNormalized2GramJaccardMinMatchLength3, 0, 14, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingNormalized4GramJaccard, 0, 4, 0, 1, 0, 1, 0, 0, 0, 1
+rkrGstNormalizedShingle2OverlapMinMatchLength1, 0, 1, 0, 0, 0, no result, 0, 0, 0, 0
+rkrGstNormalizedTokenOverlapMinMatchLength2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+overlapNormalizedShingles2, 0, 1, 0, 0, 0, no result, 0, 0, 0, 0
+rkrGst2GramDiceMinMatchLength2, 0, 10, 0, 1, 1, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle2OverlapMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, 8
+jaccardNormalized3Grams, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGst5GramOverlapMinMatchLength3, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+damerauLevenshteinNormalized, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+overlapTokens, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalized2GramDiceMinMatchLength2, 0, 23, 0, 1, 0, 0, 0, 0, 0, 0
+winnowing3GramOverlap, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalized5GramDiceMinMatchLength3, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstTokenJaccardMinMatchLength2, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1
+optimalAlignmentShingle3FingerprintNormalized, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+diceNormalizedPadding2grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstShingle3DiceMinMatchLength2, 0, no result, 0, 9, 0, no result, 0, 0, 0, no result
+cosineNormalized4GramsBool, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized2GramDiceVariantMinMatchLength2, 0, 31, 6, 9, 11, 0, 10, 0, 10, 8
+cosineNormalized5GramsTermFrequency, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst2GramDiceVariantMinMatchLength2, 0, 31, 6, 4, 11, 0, 10, 0, 10, 8
+winnowing5GramDiceVariant, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0
+winnowingShingle3Overlap, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+winnowingNormalized5GramDiceVariant, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalized4GramDiceVariantMinMatchLength2, 0, 27, 5, 0, 7, 0, 0, 0, 0, 8
+rkrGstNormalized3GramDiceVariantMinMatchLength1, 0, 31, 6, 9, 11, 0, 10, 0, 10, 8
+rkrGstNormalizedShingle2DiceMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, 8
+dice2Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+diceNormalizedTokens, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowing3GramJaccard, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedTokenDiceVariantMinMatchLength1, 0, 31, 6, 3, 11, 0, 6, 0, 10, 0
+rkrGst5GramDiceMinMatchLength1, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst3GramDiceVariantMinMatchLength3, 0, 16, 6, 4, 10, 0, 3, 0, 1, 8
+overlapNormalizedTokens, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst4GramOverlapMinMatchLength1, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstShingle2OverlapMinMatchLength2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 8
+winnowing2GramDice, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+diceVariantNormalizedPadding2grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst4GramOverlapMinMatchLength3, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+winnowingNormalized5GramOverlap, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+winnowingShingle2Dice, 0, 1, 0, 1, 0, no result, 0, 0, 0, 1
+winnowingNormalized2GramJaccard, 0, 3, 0, 1, 0, 0, 0, 0, 0, 1
+rkrGst3GramJaccardMinMatchLength1, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0
+overlap5Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstShingle2DiceMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, 8
+rkrGst2GramDiceMinMatchLength1, 0, 18, 0, 1, 1, 0, 0, 0, 0, 0
+diceVariantNormalized2Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle3OverlapMinMatchLength1, 0, 1, 0, 0, 0, no result, 0, 0, 0, no result
+diceVariantTokens, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalized2GramJaccardMinMatchLength1, 0, 22, 5, 1, 5, 0, 0, 0, 0, 0
+cosineNormalized5GramsNormalizedTermFrequency, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedTokenOverlapMinMatchLength3, 0, 1, 0, 1, 0, 9, 0, 0, 0, 8
+optimalAlignment4GramFingerprintNormalized, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+diceNormalized5Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+jaccard4Grams, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstNormalized4GramOverlapMinMatchLength3, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst3GramOverlapMinMatchLength2, 0, 18, 1, 0, 6, 0, 0, 0, 0, 0
+winnowingShingle3Dice, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+winnowing2GramJaccard, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized3GramOverlapMinMatchLength3, 0, 15, 0, 0, 7, 0, 0, 0, 0, 0
+rkrGstNormalized4GramDiceMinMatchLength3, 0, 10, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstShingle3OverlapMinMatchLength1, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGstNormalizedShingle3DiceVariantMinMatchLength2, 0, 1, 0, 9, 0, no result, 0, 0, 0, no result
+longestCommonSubsequence3GramFingerprintNormalized, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+overlapNormalizedPadding5grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst5GramDiceVariantMinMatchLength2, 0, 21, 5, 0, 6, 0, 0, 0, 0, 7
+rkrGst3GramJaccardMinMatchLength3, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0
+cosineNormalizedShingle2NormalizedTermFrequency, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+overlapNormalized5Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalized3GramJaccardMinMatchLength2, 0, 13, 0, 1, 0, 1, 0, 0, 0, 0
+diceVariant4Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst5GramDiceMinMatchLength2, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst5GramJaccardMinMatchLength2, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstTokenDiceMinMatchLength3, 0, 1, 0, 1, 0, 9, 0, 0, 0, 8
+rkrGstNormalizedShingle2DiceVariantMinMatchLength1, 0, 1, 0, 0, 6, no result, 0, 0, 0, 0
+cosineNormalized3GramsTermFrequency, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingTokenDice, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1
+diceNormalized4Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized5GramDiceMinMatchLength1, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingNormalizedTokenDiceVariant, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1
+jaccardNormalized2Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst5GramDiceMinMatchLength3, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+cosineNormalized2GramsBool, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+jaccardNormalizedShingles2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+winnowing2GramDiceVariant, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalized5GramOverlapMinMatchLength3, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGst3GramDiceMinMatchLength3, 0, 9, 0, 1, 0, 0, 0, 0, 0, 0
+optimalAlignment2GramFingerprint, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstNormalized4GramOverlapMinMatchLength1, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstShingle2DiceVariantMinMatchLength2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 8
+longestCommonSubsequenceShingle3Fingerprint, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+overlap3Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+jaccardNormalizedPadding3grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst2GramJaccardMinMatchLength2, 0, 16, 0, 1, 5, 0, 0, 0, 0, 0
+rkrGstNormalized5GramDiceVariantMinMatchLength3, 0, 20, 5, 0, 0, 0, 0, 0, 0, 8
+longestCommonSubsequence5GramFingerprintNormalized, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstNormalizedTokenJaccardMinMatchLength1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+optimalAlignment2GramFingerprintNormalized, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+manhattanNormalizedTokens, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized5GramDiceMinMatchLength2, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized5GramOverlapMinMatchLength1, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle2DiceVariantMinMatchLength2, 0, 1, 0, 0, 0, no result, 0, 0, 0, 8
+rkrGstTokenDiceMinMatchLength1, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized3GramDiceMinMatchLength2, 0, 15, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized2GramJaccardMinMatchLength2, 0, 22, 0, 1, 1, 0, 0, 0, 0, 0
+rkrGst3GramDiceVariantMinMatchLength2, 0, 25, 6, 4, 11, 0, 3, 0, 10, 8
+diceVariantNormalizedShingles2, 0, 1, 0, 0, 0, no result, 0, 0, 0, 0
+winnowing4GramOverlap, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0
+diceVariantNormalized4Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+longestCommonSubsequenceStandard, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+manhattanNormalized5Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized4GramJaccardMinMatchLength3, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+jaccardNormalizedTokens, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstShingle2OverlapMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, 8
+winnowingTokenDiceVariant, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1
+cosineNormalized2GramsNormalizedTermFrequency, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedTokenOverlapMinMatchLength1, 0, 18, 1, 0, 6, 0, 5, 0, 0, 0
+cosineNormalizedTokensBool, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+manhattanNormalized4Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowing4GramDice, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingNormalizedShingle3Jaccard, 0, 4, 0, 2, 0, no result, 0, 0, 0, no result
+longestCommonSubsequence3GramFingerprint, 0, 4, 0, 1, 0, 1, 0, 0, 0, 0
+jaccardNormalizedPadding5grams, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstNormalized4GramDiceVariantMinMatchLength3, 0, 27, 5, 0, 7, 0, 0, 0, 0, 8
+winnowingNormalizedShingle2Dice, 0, 2, 0, 1, 0, no result, 0, 0, 0, 0
+cosineNormalizedTokensTermFrequency, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+diceShingles2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 1
+winnowingNormalized5GramDice, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstNormalized2GramDiceMinMatchLength3, 0, 15, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGst2GramJaccardMinMatchLength1, 0, 16, 5, 1, 5, 0, 0, 0, 0, 0
+winnowingNormalized4GramOverlap, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+overlapNormalizedPadding3grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle2DiceMinMatchLength2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 8
+jaccardShingles2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 1
+rkrGst2GramDiceVariantMinMatchLength1, 0, 31, 6, 4, 11, 0, 10, 0, 10, 8
+rkrGstNormalizedShingle3JaccardMinMatchLength1, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGstNormalized5GramDiceVariantMinMatchLength2, 0, 20, 5, 0, 6, 0, 0, 0, 0, 8
+rkrGstShingle2DiceMinMatchLength2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 8
+diceNormalizedShingles2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+rkrGstNormalized2GramOverlapMinMatchLength2, 0, 32, 7, 0, 7, 0, 11, 0, 0, 0
+rkrGstNormalized2GramOverlapMinMatchLength3, 0, 15, 3, 0, 6, 0, 0, 0, 0, 0
+rkrGst5GramJaccardMinMatchLength1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+diceNormalizedPadding3grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowing2GramOverlap, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0
+manhattanNormalizedShingles3, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGstNormalizedShingle3JaccardMinMatchLength2, 0, 1, 0, 9, 0, no result, 0, 0, 0, no result
+rkrGst4GramDiceVariantMinMatchLength2, 0, 22, 5, 4, 9, 0, 0, 0, 0, 8
+rkrGstNormalized3GramOverlapMinMatchLength2, 0, 15, 0, 0, 7, 0, 0, 0, 0, 0
+longestCommonSubsequenceNormalized, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingTokenJaccard, 0, 2, 0, 1, 0, 0, 0, 0, 0, 1
+winnowing5GramDice, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+manhattanNormalizedShingles2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+optimalAlignment4GramFingerprint, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGst4GramJaccardMinMatchLength1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstTokenJaccardMinMatchLength3, 0, 1, 0, 1, 0, 9, 0, 0, 0, 8
+rkrGstNormalized3GramDiceMinMatchLength1, 0, 15, 0, 1, 0, 0, 0, 0, 0, 0
+optimalAlignment3GramFingerprint, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+dice3Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle2JaccardMinMatchLength1, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+rkrGstNormalized5GramOverlapMinMatchLength2, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+overlap4Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+longestCommonSubsequence5GramFingerprint, 0, 1, 0, 4, 0, 1, 0, 0, 0, 0
+jaccardNormalized4Grams, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+optimalAlignmentNormalized, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized2GramOverlapMinMatchLength1, 0, 32, 7, 0, 11, 0, 11, 0, 10, 0
+diceVariantNormalizedPadding3grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+cosineNormalizedShingle3TermFrequency, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+longestCommonSubsequence2GramFingerprint, 0, 2, 0, 1, 0, 1, 0, 0, 0, 1
+rkrGstNormalizedTokenDiceMinMatchLength1, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstShingle3DiceVariantMinMatchLength1, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGstNormalized2GramDiceMinMatchLength1, 0, 23, 0, 1, 1, 0, 0, 0, 0, 0
+rkrGst2GramJaccardMinMatchLength3, 0, 15, 0, 1, 5, 0, 0, 0, 0, 0
+winnowing5GramJaccard, 0, 2, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstNormalized5GramJaccardMinMatchLength2, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+manhattanNormalized2Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+optimalAlignment5GramFingerprint, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstShingle3OverlapMinMatchLength3, 0, no result, 0, 9, 6, no result, 0, 0, 0, no result
+diceNormalizedPadding4grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedTokenJaccardMinMatchLength3, 0, 1, 0, 1, 0, 9, 0, 0, 0, 8
+rkrGstTokenDiceVariantMinMatchLength3, 0, 1, 0, 1, 0, 9, 0, 0, 0, 8
+rkrGstShingle3JaccardMinMatchLength1, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGstShingle3JaccardMinMatchLength2, 0, no result, 0, 9, 0, no result, 0, 0, 0, no result
+rkrGstShingle3OverlapMinMatchLength2, 0, no result, 0, 9, 0, no result, 0, 0, 0, no result
+jaccardNormalizedPadding4grams, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstNormalizedShingle2DiceVariantMinMatchLength3, 0, 1, 0, 9, 0, no result, 0, 0, 0, 8
+diceVariantNormalizedShingles3, 0, 1, 0, 0, 0, no result, 0, 0, 0, no result
+rkrGstNormalizedTokenDiceVariantMinMatchLength3, 0, 1, 0, 1, 0, 9, 0, 0, 0, 8
+optimalAlignmentStandard, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+longestCommonSubsequenceShingle3FingerprintNormalized, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGstNormalizedShingle3DiceVariantMinMatchLength1, 0, 1, 0, 0, 0, no result, 0, 0, 0, no result
+diceVariant5Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+diceVariant2Grams, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+longestCommonSubsequence4GramFingerprint, 0, 2, 0, 1, 0, 1, 0, 0, 0, 0
+cosineNormalized2GramsTermFrequency, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+overlapShingles3, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+overlapShingles2, 0, 1, 0, 0, 0, no result, 0, 0, 0, 1
+rkrGst3GramDiceMinMatchLength1, 0, 9, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized5GramDiceVariantMinMatchLength1, 0, 20, 5, 0, 6, 0, 0, 0, 0, 8
+winnowingShingle3DiceVariant, 0, no result, 0, 1, 0, no result, 0, 0, 0, no result
+diceNormalized3Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized2GramDiceVariantMinMatchLength3, 0, 30, 6, 9, 10, 0, 10, 0, 1, 8
+winnowingNormalized2GramDiceVariant, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle3OverlapMinMatchLength2, 0, 1, 0, 9, 0, no result, 0, 0, 0, no result
+winnowingNormalizedShingle2Jaccard, 0, 3, 0, 1, 0, no result, 1, 0, 0, 0
+rkrGstTokenDiceMinMatchLength2, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1
+longestCommonSubsequenceShingle2Fingerprint, 0, 1, 0, 1, 0, no result, 0, 0, 0, 1
+rkrGstNormalized5GramJaccardMinMatchLength3, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0
+rkrGstNormalizedShingle2DiceMinMatchLength1, 0, 1, 0, 1, 0, no result, 0, 0, 0, 0
+rkrGstNormalized4GramOverlapMinMatchLength2, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0
+rkrGstNormalizedShingle2JaccardMinMatchLength2, 0, 1, 0, 1, 0, no result, 0, 0, 0, 8
+diceNormalizedShingles3, 0, 1, 0, 1, 0, no result, 0, 0, 0, no result
+rkrGstTokenJaccardMinMatchLength1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingNormalized3GramJaccard, 0, 3, 0, 1, 0, 1, 0, 0, 0, 1
+rkrGst3GramDiceVariantMinMatchLength1, 0, 31, 6, 4, 11, 0, 10, 0, 10, 8
+rkrGstShingle2DiceMinMatchLength1, 0, 1, 0, 1, 0, no result, 0, 0, 0, 1
+diceTokens, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+winnowingNormalized4GramDiceVariant, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+dice4Grams, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0
+rkrGstNormalized3GramDiceVariantMinMatchLength2, 0, 30, 5, 9, 7, 0, 10, 0, 0, 8
+rkrGst2GramOverlapMinMatchLength3, 0, 23, 7, 0, 6, 0, 0, 0, 0, 0
+rkrGstTokenDiceVariantMinMatchLength2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+jaccard5Grams, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0

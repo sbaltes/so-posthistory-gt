@@ -1,0 +1,40 @@
+PostId: 326440
+Id: 40414907
+Version: 6
+Amount of text blocks: 4
+Amount of code blocks: 3
+
+
+Here's a compact, robust idiom for Java 7, wrapped up in method:
+
+
+    static String readFile(String path, Charset encoding) 
+      throws IOException 
+    {
+      byte[] encoded = Files.readAllBytes(Paths.get(path));
+      return encoding.decode(ByteBuffer.wrap(encoded)).toString();
+    }
+
+
+This method can temporarily require memory several times the size of the file, because for a short time the raw file contents (a byte array), the decoded characters (a character buffer), and a copy of the character data (in the new `String` instance) all reside in memory at once. It is safest to apply to files that you know to be small relative to the available memory.
+One thing that is missing from the sample in the original post is the character encoding. There are some special cases the platform default is what you want, but they are rare, and you should be able justify your choice.
+The [`StandardCharsets`][1] class define some constants for the encodings required of all Java runtimes:
+
+
+    String content = readFile("test.txt", StandardCharsets.UTF_8);
+
+
+The platform default is available from [the `Charset` class][2] itself:
+
+
+    String content = readFile("test.txt", Charset.defaultCharset());
+
+
+---
+Note: This answer largely replaces my Java 6 version. The utility of Java 7 safely simplifies the code, and the old answer, which used a mapped byte buffer, prevented the file that was read from being deleted until the mapped buffer was garbage collected. You can view the old version via the "edited" link on this answer.
+  [1]: http://docs.oracle.com/javase/7/docs/api/java/nio/charset/StandardCharsets.html
+  [2]: http://docs.oracle.com/javase/7/docs/api/java/nio/charset/Charset.html#defaultCharset%28%29
+
+
+
+

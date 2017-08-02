@@ -1,0 +1,27 @@
+PostId: 326440
+Id: 522160
+Version: 3
+Amount of text blocks: 1
+Amount of code blocks: 1
+
+
+In general, you should specify the character encoding to use when converting the bytes of a file to text. There are some special cases when you just want to use the platform default, but they are rare, and you should be able to explicitly justify why this is okay.
+Anyway, here's an efficient way to it:
+
+
+    private static String readFile(String path) throws IOException {
+      FileInputStream stream = new FileInputStream(new File(path));
+      try {
+        FileChannel fc = stream.getChannel();
+        MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+        /* Instead of using default, pass in a decoder. */
+        return CharSet.defaultCharset().decode(bb).toString();
+      }
+      finally {
+        stream.close();
+      }
+    }
+
+
+
+

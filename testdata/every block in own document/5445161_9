@@ -1,0 +1,28 @@
+PostId: 5445161
+Id: 44935719
+Version: 10
+Amount of text blocks: 2
+Amount of code blocks: 1
+
+
+Here's a way using only standard Java library (note that the stream is not closed, YMMV).
+
+
+    static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
+
+
+I learned this trick from ["Stupid Scanner tricks"][1] article. The reason it works is because [Scanner][2] iterates over tokens in the stream, and in this case we separate tokens using "beginning of the input boundary" (\A) thus giving us only one token for the entire contents of the stream.
+**Note, if you need to be specific about the input stream's encoding, you can provide the second argument to `Scanner` constructor that indicates what charset to use (e.g. "UTF-8").**
+Hat tip goes also to [Jacob,][3] who once pointed me to the said article.
+**EDITED:** Thanks to a suggestion from [Patrick][4], made the function more robust when handling an empty input stream. **One more edit:** nixed try/catch, Patrick's way is more laconic.
+  [1]: http://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
+  [2]: http://download.oracle.com/javase/6/docs/api/java/util/Scanner.html
+  [3]: http://stackoverflow.com/users/68127/jacob-gabrielson
+  [4]: http://stackoverflow.com/users/101272/patrick
+
+
+
+

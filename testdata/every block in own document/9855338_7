@@ -1,0 +1,29 @@
+PostId: 9855338
+Id: 70346654
+Version: 8
+Amount of text blocks: 2
+Amount of code blocks: 1
+
+
+From the discussion [here][1], and especially [this][2] answer, this is the function I currently use:
+
+
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for ( int j = 0; j < bytes.length; j++ ) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
+
+My own tiny benchmarks (a million bytes a thousand times, 256 bytes 10 million times) showed it to be much faster than any other alternative, about half the time on long arrays.  Compared to the answer I took it from, switching to bitwise ops --- as suggested in the discussion --- cut about 20% off of the time for long arrays. (Edit: When I say it's faster than the alternatives, I mean the alternative code offered in the discussions. Performance is equivalent to Commons Codec, which uses very similar code.)
+  [1]: http://stackoverflow.com/q/332079/1284661
+  [2]: http://stackoverflow.com/a/2197650/1284661
+
+
+
+

@@ -1,0 +1,30 @@
+PostId: 140861
+Id: 202617
+Version: 1
+Amount of text blocks: 2
+Amount of code blocks: 1
+
+
+Here's a solution that I think is better than any posted so far:
+
+
+    public static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                                 + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
+    }
+
+
+Reasons why it is an improvement:
+ - Safe with leading zeros (unlike BigInteger) and with negative byte values (unlike Byte.parseByte)
+ 
+ - Doesn't convert the String into a `char[]`, or create StringBuilder and String objects for every single byte.
+Feel free to add argument checking via `assert` or exceptions if the argument is not known to be safe.
+
+
+
+
