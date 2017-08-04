@@ -1,15 +1,16 @@
 package de.unitrier.st.soposthistorygt.GroundTruthApp;
 
-import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
-import de.unitrier.st.soposthistorygt.util.BlockLifeSpanSnapshot;
-import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlHandler;
-import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlPair;
+import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
 import de.unitrier.st.soposthistory.blocks.PostBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistory.diffs.LineDiff;
 import de.unitrier.st.soposthistory.diffs.diff_match_patch;
 import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
+import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
+import de.unitrier.st.soposthistorygt.util.BlockLifeSpanSnapshot;
+import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlHandler;
+import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlPair;
 import net.miginfocom.swing.MigLayout;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -108,6 +109,8 @@ class GroundTruthCreator implements Runnable{
         mainPanel.setBackground(Color.BLACK);
 
         removeTextBlocksThatWillBeEmptyAfterRenderingWithHTML();
+        removeEmptyTextAndCodeBlocks();
+        mergeConsecutiveBlocksOfSameType();
 
         setListenersToFrameAndPanel();
 
@@ -328,7 +331,47 @@ class GroundTruthCreator implements Runnable{
 
     }
 
+    private void removeEmptyTextAndCodeBlocks(){
+        if(postVersionList == null)
+            return;
 
+        for (PostVersion postVersion : postVersionList) {
+            for(TextBlockVersion block : postVersion.getTextBlocks()){
+                if (block.getContent().trim().isEmpty()) { // https://stackoverflow.com/a/3745432
+                    postVersion.getPostBlocks().remove(block);
+                }
+            }
+
+            for(CodeBlockVersion block : postVersion.getCodeBlocks()){
+                if (block.getContent().trim().isEmpty()) { // https://stackoverflow.com/a/3745432
+                    postVersion.getPostBlocks().remove(block);
+                }
+            }
+        }
+    }
+
+    private void mergeConsecutiveBlocksOfSameType(){
+        if(postVersionList == null)
+            return;
+
+        for (PostVersion postVersion : postVersionList) {
+            for (int j = 1; j < postVersion.getPostBlocks().size(); j++) {
+                if(postVersion.getPostBlocks().get(j-1) instanceof TextBlockVersion && postVersion.getPostBlocks().get(j) instanceof TextBlockVersion){
+                    postVersion.getPostBlocks().get(j-1).setContent(
+                            postVersion.getPostBlocks().get(j-1).getContent() + "\n" + postVersion.getPostBlocks().get(j).getContent()
+                    );
+                    postVersion.getPostBlocks().remove(j);
+                }
+                else
+                if(postVersion.getPostBlocks().get(j-1) instanceof CodeBlockVersion && postVersion.getPostBlocks().get(j) instanceof CodeBlockVersion){
+                    postVersion.getPostBlocks().get(j-1).setContent(
+                            postVersion.getPostBlocks().get(j-1).getContent() + "\n" + postVersion.getPostBlocks().get(j).getContent()
+                    );
+                    postVersion.getPostBlocks().remove(j);
+                }
+            }
+        }
+    }
 
     private void removeTextBlocksThatWillBeEmptyAfterRenderingWithHTML(){
         if(postVersionList == null)
@@ -343,9 +386,7 @@ class GroundTruthCreator implements Runnable{
                 markdownText = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForApp(markdownText, anchorTextAndUrlPairs);
 
                 if (markdownText.trim().isEmpty()) { // https://stackoverflow.com/a/3745432
-                    System.out.println(postVersion.getTextBlocks().size());
                     postVersion.getPostBlocks().remove(textBlock);
-                    System.out.println(postVersion.getTextBlocks().size());
                 }else
                     textBlock.setContent(markdownText);
             }
@@ -381,7 +422,8 @@ class GroundTruthCreator implements Runnable{
                         outputRight.append("\n");
                     String tmpToken = tokens.nextToken();
                     int j = 0;
-                    while (j < tmpToken.length() && tmpToken.charAt(j) == ' ') {
+                    tmpToken = tmpToken.replace("\t", "    ");
+                    while (j < tmpToken.length() && (tmpToken.charAt(j) == ' ' || tmpToken.charAt(j) == '\t')) {
                         outputRight.append(" ");
                         j++;
                     }
@@ -442,7 +484,7 @@ class GroundTruthCreator implements Runnable{
         navigatorAtBottomLabel.updateNavigatorText();
 
         paintAllEdgesBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
-        //frame.repaint(); // necessary because a version could only be repainted simple so that edges from older comparings could remain
+        frame.repaint(); // necessary because a version could only be repainted simple so that edges from older comparings could remain
     }
 
     private void paintBorderOfBlock(JLabel block, boolean blockIsOfInstanceText, boolean blockIsAlreadyMarkedWithBoarder){
