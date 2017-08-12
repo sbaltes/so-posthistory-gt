@@ -39,7 +39,7 @@ class GroundTruthCreator implements Runnable{
     JFrame frame = new JFrame("Ground Truth Creator");
 
     JPanel mainPanel = new JPanel(new BorderLayout());
-    private JScrollPane scrollPaneIncludingMainPanel = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    JScrollPane scrollPaneIncludingMainPanel = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
     private JPanel buttonsAtTopPanel = null;
 

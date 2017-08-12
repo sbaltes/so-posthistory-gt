@@ -192,8 +192,9 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        bot.mouseWheel(+1);
-        bot.mouseWheel(-1);
+        //bot.mouseWheel(+1);
+        //bot.mouseWheel(-1);
+        bot.mouseWheel(-100000);
     }
 
     void actionButtonBack(){
@@ -204,8 +205,9 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        bot.mouseWheel(+1);
-        bot.mouseWheel(-1);
+        // bot.mouseWheel(+1);
+        // bot.mouseWheel(-1);
+        bot.mouseWheel(-100000);
     }
 
     private void setListenersToButtons(){
