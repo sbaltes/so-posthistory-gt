@@ -58,6 +58,9 @@ class ButtonsAndInstructionsPanel extends JPanel {
         this.setToolTips();
         this.setListenersToButtons();
 
+        this.buttonNext.setFocusable(false);    // https://stackoverflow.com/a/8074326
+        this.buttonBack.setFocusable(false);    // https://stackoverflow.com/a/8074326
+
         try {
             bot = new Robot();
         } catch (AWTException e) {
