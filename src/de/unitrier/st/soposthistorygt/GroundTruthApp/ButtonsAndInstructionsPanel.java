@@ -541,7 +541,6 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 groundTruthCreator.versionLeftPanel.removeAll();
                 groundTruthCreator.versionRightPanel.removeAll();
                 groundTruthCreator.versionEdgesPanel.removeAll();
-                comments.removeAllElements();
 
                 groundTruthCreator.versionLeftPanel.repaint();
                 groundTruthCreator.versionRightPanel.repaint();
@@ -558,6 +557,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
                 groundTruthCreator.writeFileOfPostVersionList();
                 groundTruthCreator.postVersionList = null;
+                comments.removeAllElements();
                 groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
 
 
