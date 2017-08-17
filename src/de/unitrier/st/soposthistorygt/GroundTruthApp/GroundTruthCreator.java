@@ -108,9 +108,9 @@ class GroundTruthCreator implements Runnable{
 
         mainPanel.setBackground(Color.BLACK);
 
-        removeTextBlocksThatWillBeEmptyAfterRenderingWithHTML();
-        removeEmptyTextAndCodeBlocks();
-        mergeConsecutiveBlocksOfSameType();
+        // removeTextBlocksThatWillBeEmptyAfterRenderingWithHTML();
+        // removeEmptyTextAndCodeBlocks();
+        // mergeConsecutiveBlocksOfSameType();
 
         setListenersToFrameAndPanel();
 
