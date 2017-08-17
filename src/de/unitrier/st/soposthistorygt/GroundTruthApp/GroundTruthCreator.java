@@ -680,6 +680,7 @@ class GroundTruthCreator implements Runnable{
         Vector<String> comments = ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).comments;
 
         for (String commentLine : comments) {
+            System.err.println(commentLine);
             StringTokenizer tokens = new StringTokenizer(commentLine, "|");
 
             int tmpVersion = Integer.parseInt(tokens.nextToken().replaceAll("\\s", "").replace("vers:", ""));
@@ -689,7 +690,10 @@ class GroundTruthCreator implements Runnable{
             for (BlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
                 for (BlockLifeSpanSnapshot blockLifeSpanSnapshot : blockLifeSpan) {
                     if (blockLifeSpanSnapshot.getVersion() == tmpVersion && blockLifeSpanSnapshot.getLocalId() == tmpPosition) {
-                        blockLifeSpanSnapshot.setComment(tmpComment);
+                        if(blockLifeSpanSnapshot.getComment().isEmpty())
+                            blockLifeSpanSnapshot.setComment(tmpComment);
+                        else
+                            blockLifeSpanSnapshot.setComment(blockLifeSpanSnapshot.getComment() + ". " + tmpComment);
                     }
                 }
             }
