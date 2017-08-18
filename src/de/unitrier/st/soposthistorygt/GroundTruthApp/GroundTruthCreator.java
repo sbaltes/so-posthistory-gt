@@ -70,7 +70,10 @@ class GroundTruthCreator implements Runnable{
     AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
 
     Vector<Vector<BlockPair>> allCreatedBlockPairsByClicks = new Vector<>();
+    Vector<Vector<BlockPair>> allAutomaticSetBlockPairs = new Vector<>();
     Vector<BlockLifeSpan> blockLifeSpansExtractedFromClicks = new Vector<>();
+
+    Robot bot = null;
 
 
     /***** Constructor arguments *****/
@@ -89,10 +92,18 @@ class GroundTruthCreator implements Runnable{
         HEIGHT = initialHeight;
         LOCATION = initialLocation;
 
-        if(postVersionList != null)
+        try {
+            bot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
+        if(postVersionList != null){
             for(int i=0; i<postVersionList.size(); i++){
                 allCreatedBlockPairsByClicks.add(new Vector<>());
+                allAutomaticSetBlockPairs.add(new Vector<>());
             }
+        }
 
         frame.setSize(new Dimension(initialWidth, initialHeight));
 
@@ -112,6 +123,7 @@ class GroundTruthCreator implements Runnable{
         // removeEmptyTextAndCodeBlocks();
         // mergeConsecutiveBlocksOfSameType();
 
+
         setListenersToFrameAndPanel();
 
         ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).setEnablingOfNextAndBackButton();
@@ -127,6 +139,9 @@ class GroundTruthCreator implements Runnable{
         else
             frame.setLocation(initialLocation);
         frame.setVisible(true);
+
+
+        collectAllBlockPairsWithEqualContent();
     }
 
 
@@ -194,6 +209,28 @@ class GroundTruthCreator implements Runnable{
             JLabel currentBlockLabel = new JLabel(markupFromMarkdown);
             versionLeftOrRight.add(currentBlockLabel, "wrap");
 
+            // set links automatically when content is equal
+            for(int i=0; i<allAutomaticSetBlockPairs.get(currentLeftVersion).size(); i++){
+                if(currentLeftVersion == currentInternVersion){
+                    if(allAutomaticSetBlockPairs.get(currentLeftVersion).get(i).leftBlockPosition == currentBlockPosition){
+                        allAutomaticSetBlockPairs.get(currentLeftVersion).get(i).labelLeftBlock = currentBlockLabel;
+                        blockIsAlreadyInAPair = true;
+                    }
+                }else{
+                    if(allAutomaticSetBlockPairs.get(currentLeftVersion).get(i).rightBlockPosition == currentBlockPosition){
+                        allAutomaticSetBlockPairs.get(currentLeftVersion).get(i).labelRightBlock = currentBlockLabel;
+                        blockIsAlreadyInAPair = true;
+                    }
+                }
+
+                if(allAutomaticSetBlockPairs.get(currentLeftVersion).get(i).labelLeftBlock != null
+                        && allAutomaticSetBlockPairs.get(currentLeftVersion).get(i).labelRightBlock != null){
+                    allCreatedBlockPairsByClicks.get(currentLeftVersion).add(allAutomaticSetBlockPairs.get(currentLeftVersion).get(i));
+                    allAutomaticSetBlockPairs.get(currentLeftVersion).remove(i+0);
+                    break;
+                }
+            }
+
             if(currentLeftVersion+1 == currentInternVersion && Toolkit.blockIsAlreadyInPairWithEdge_atPositionRight(allCreatedBlockPairsByClicks, currentLeftVersion, finalCurrentBlockPosition)){
                 currentBlockLabel.setText(
                         getDiffsOfClickedBlocks(
@@ -205,6 +242,7 @@ class GroundTruthCreator implements Runnable{
                         )
                 );
             }
+
 
             paintBorderOfBlock(currentBlockLabel, clickedBlockIsInstanceOfTextBlockVersion, blockIsAlreadyInAPair);
 
@@ -328,7 +366,6 @@ class GroundTruthCreator implements Runnable{
                 }
             });
         }
-
     }
 
     private void removeEmptyTextAndCodeBlocks(){
@@ -733,19 +770,54 @@ class GroundTruthCreator implements Runnable{
         return renderer.render(document);
     }
 
+    private void collectAllBlockPairsWithEqualContent(){
+        if(postVersionList != null) {
+
+            for(int i=0; i<postVersionList.size()-1; i++){
+                for(int j=0; j<postVersionList.get(i).getPostBlocks().size(); j++){
+
+                    String contentLeft = postVersionList.get(i).getPostBlocks().get(j).getContent();
+                    int positionOfRightBlockWithEqualContent = -1;
+                    int numberOfBlocksWithEqualContent = 0;
+                    for(int k=0; k<postVersionList.get(i+1).getPostBlocks().size(); k++){
+                        String contentRight = postVersionList.get(i+1).getPostBlocks().get(k).getContent();
+                        if(postVersionList.get(i).getPostBlocks().get(j) instanceof TextBlockVersion
+                                == postVersionList.get(i+1).getPostBlocks().get(k) instanceof TextBlockVersion
+                                && contentRight.equals(contentLeft)){
+                            numberOfBlocksWithEqualContent++;
+                            positionOfRightBlockWithEqualContent = k;
+                            if(numberOfBlocksWithEqualContent>1){
+                                positionOfRightBlockWithEqualContent = -1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(numberOfBlocksWithEqualContent == 1 && positionOfRightBlockWithEqualContent != -1){
+                        allAutomaticSetBlockPairs.get(i).add(new BlockPair(
+                                null,
+                                null,
+                                postVersionList.get(i).getPostBlocks().get(j) instanceof TextBlockVersion,
+                                j,
+                                positionOfRightBlockWithEqualContent));
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void run(){
         while(true){
-            Robot bot = null;
             try {
                 Thread.sleep(200);
-                bot = new Robot();
-            } catch (AWTException | InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             assert bot != null;
             bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x+1, MouseInfo.getPointerInfo().getLocation().y+1);
             bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x-1, MouseInfo.getPointerInfo().getLocation().y-1);
+
         }
     }
 }

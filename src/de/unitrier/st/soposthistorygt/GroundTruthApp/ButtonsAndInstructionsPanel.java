@@ -1,10 +1,10 @@
 package de.unitrier.st.soposthistorygt.GroundTruthApp;
 
+import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
+import de.unitrier.st.soposthistory.version.PostVersionList;
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpanSnapshot;
 import de.unitrier.st.soposthistorygt.util.GTLogger;
-import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
-import de.unitrier.st.soposthistory.version.PostVersionList;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -272,11 +272,14 @@ class ButtonsAndInstructionsPanel extends JPanel {
                             GroundTruthCreator.LOCATION);
 
                     setEnablingOfNextAndBackButton();
+
+                    groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
                 }catch (Exception exception){
                     GTLogger.logger.log(Level.INFO, "couldn't request your input");
                 }
             }
         });
+
 
         buttonRequestRandomPost.addMouseListener(new MouseInputAdapter() {
             @Override
@@ -333,8 +336,11 @@ class ButtonsAndInstructionsPanel extends JPanel {
                         GroundTruthCreator.LOCATION);
 
                 setEnablingOfNextAndBackButton();
+
+                groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
             }
         });
+
 
         buttonAddComment.addMouseListener(new MouseInputAdapter() { // https://stackoverflow.com/a/6555051 http://home.wlu.edu/~lambertk/BreezySwing/radiobuttons.html
             @Override
