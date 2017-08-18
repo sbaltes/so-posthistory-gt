@@ -217,6 +217,23 @@ class ButtonsAndInstructionsPanel extends JPanel {
         bot.mouseWheel(-100000);
     }
 
+    private void loadPost(int postId){
+        groundTruthCreator.frame.dispose();
+
+        groundTruthCreator.postVersionList = new PostVersionList();
+        groundTruthCreator.postVersionList.readFromCSV(GroundTruthCreator.path + "/", postId, 2);
+
+        groundTruthCreator = new GroundTruthCreator(
+                groundTruthCreator.postVersionList,
+                GroundTruthCreator.WIDTH,
+                GroundTruthCreator.HEIGHT,
+                GroundTruthCreator.LOCATION);
+
+        setEnablingOfNextAndBackButton();
+
+        groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
+    }
+
     private void setListenersToButtons(){
 
         buttonNext.addMouseListener(new MouseInputAdapter() {
@@ -238,22 +255,12 @@ class ButtonsAndInstructionsPanel extends JPanel {
         buttonResetAll.addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+
                 if(!buttonResetAll.isEnabled())
                     return;
 
-                super.mouseReleased(e);
-                groundTruthCreator.currentLeftVersion = 0;
-                for(int i=0; i<groundTruthCreator.allCreatedBlockPairsByClicks.size(); i++) {
-                    groundTruthCreator.allCreatedBlockPairsByClicks.get(i).removeAllElements();
-                }
-                groundTruthCreator.unmarkLastClickedBlock();
-                groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
-
-                comments.removeAllElements();
-                labelSavedComments.setText("");
-                savedCommentsScrollPane.repaint();
-
-                setEnablingOfNextAndBackButton();
+                loadPost(groundTruthCreator.postVersionList.get(0).getPostId());
             }
         });
 
@@ -262,22 +269,10 @@ class ButtonsAndInstructionsPanel extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
                 try{
+
                     int requestedPostId = Integer.parseInt(textFieldRequestSpecialPost.getText());
+                    loadPost(requestedPostId);
 
-                    groundTruthCreator.frame.dispose();
-
-                    groundTruthCreator.postVersionList = new PostVersionList();
-                    groundTruthCreator.postVersionList.readFromCSV(GroundTruthCreator.path + "/", requestedPostId, 2);
-
-                    groundTruthCreator = new GroundTruthCreator(
-                            groundTruthCreator.postVersionList,
-                            GroundTruthCreator.WIDTH,
-                            GroundTruthCreator.HEIGHT,
-                            GroundTruthCreator.LOCATION);
-
-                    setEnablingOfNextAndBackButton();
-
-                    groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
                 }catch (Exception exception){
                     GTLogger.logger.log(Level.INFO, "couldn't request your input");
                 }
@@ -305,17 +300,17 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 });
 
                 Vector<Integer> postVersionListCandidatesThatNeedToBeDone = new Vector<>();
-                for(int i=0; i<allPostVersionListsInFolder.length; i++){
-                    int tmpPostId_postVersionLists = Integer.parseInt(allPostVersionListsInFolder[i].toString().substring(17, allPostVersionListsInFolder[i].toString().length()-4));
+                for (File tmpCsvFile : allPostVersionListsInFolder) {
+                    int tmpPostId_postVersionLists = Integer.parseInt(tmpCsvFile.toString().substring(17, tmpCsvFile.toString().length() - 4));
                     boolean fileIsAlreadyCompleted = false;
-                    for(int j=0; j<allCompletedPostVersionListsInFolder.length; j++){
-                        int tmpPostId_completed = Integer.parseInt(allCompletedPostVersionListsInFolder[j].toString().substring(16+11, allCompletedPostVersionListsInFolder[j].toString().length()-4));
-                        if(tmpPostId_postVersionLists == tmpPostId_completed){
+                    for (File tmpCompletedCsvFile : allCompletedPostVersionListsInFolder) {
+                        int tmpPostId_completed = Integer.parseInt(tmpCompletedCsvFile.toString().substring(16 + 11, tmpCompletedCsvFile.toString().length() - 4));
+                        if (tmpPostId_postVersionLists == tmpPostId_completed) {
                             fileIsAlreadyCompleted = true;
                             break;
                         }
                     }
-                    if(!fileIsAlreadyCompleted)
+                    if (!fileIsAlreadyCompleted)
                         postVersionListCandidatesThatNeedToBeDone.add(tmpPostId_postVersionLists);
                 }
 
@@ -327,21 +322,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
                 Collections.shuffle(postVersionListCandidatesThatNeedToBeDone);
 
-
-                groundTruthCreator.frame.dispose();
-
-                groundTruthCreator.postVersionList = new PostVersionList();
-                groundTruthCreator.postVersionList.readFromCSV(GroundTruthCreator.path + "/", postVersionListCandidatesThatNeedToBeDone.firstElement(), 2);
-
-                groundTruthCreator = new GroundTruthCreator(
-                        groundTruthCreator.postVersionList,
-                        GroundTruthCreator.WIDTH,
-                        GroundTruthCreator.HEIGHT,
-                        GroundTruthCreator.LOCATION);
-
-                setEnablingOfNextAndBackButton();
-
-                groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
+                loadPost(postVersionListCandidatesThatNeedToBeDone.firstElement());
             }
         });
 
