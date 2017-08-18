@@ -37,6 +37,8 @@ class ButtonsAndInstructionsPanel extends JPanel {
     private JButton buttonNext = new JButton("next");
     private JButton buttonBack = new JButton("back");
 
+    private JButton buttonSwitchConnectionDisplayMode = new JButton("switch link GUI");
+
     private JButton buttonAddComment = new JButton("add comment");
     private JButton buttonRemoveComment = new JButton("remove comment");
     private JScrollPane savedCommentsScrollPane;
@@ -79,6 +81,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
         buttonsIntern.add(textFieldRequestSpecialPost, "wrap");
         buttonsIntern.add(buttonRequestRandomPost);
         buttonsIntern.add(buttonLoadPost, "wrap");
+        buttonsIntern.add(buttonSwitchConnectionDisplayMode, "wrap");
         buttonsIntern.add(buttonResetAll);
         buttonsIntern.add(buttonSaveAllAndCloseThisVersion, "wrap");
         buttonsIntern.add(buttonBack);
@@ -131,6 +134,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
         buttonRequestRandomPost.setToolTipText("A random post from stack overflow will be displayed.");
         buttonLoadPost.setToolTipText("Loads a post with its set links");
+        buttonSwitchConnectionDisplayMode.setToolTipText("Switch the gui for block links from egdes to films");
         buttonAddComment.setToolTipText("Add a comment to block e.g. because of multiple choices.");
         buttonRemoveComment.setToolTipText("Remove a comment by choosing its id.");
         buttonRequestSpecialPost.setToolTipText("Requests the post with the id on the right.");
@@ -445,6 +449,20 @@ class ButtonsAndInstructionsPanel extends JPanel {
         });
 
         //buttonLoadPost.addMouseListener(); // TODO
+
+        buttonSwitchConnectionDisplayMode.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                if(groundTruthCreator.linkConnectionDisplayMode == GroundTruthCreator.LinkConnectionDisplayModes.edges)
+                    groundTruthCreator.linkConnectionDisplayMode = GroundTruthCreator.LinkConnectionDisplayModes.films;
+                else if(groundTruthCreator.linkConnectionDisplayMode == GroundTruthCreator.LinkConnectionDisplayModes.films)
+                    groundTruthCreator.linkConnectionDisplayMode = GroundTruthCreator.LinkConnectionDisplayModes.edges;
+
+                groundTruthCreator.versionEdgesPanel.removeAll();
+                groundTruthCreator.versionEdgesPanel.repaint();
+            }
+        });
 
         buttonSaveAllAndCloseThisVersion.addMouseListener(new MouseInputAdapter() {
             @Override
