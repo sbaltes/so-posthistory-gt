@@ -67,6 +67,9 @@ class GroundTruthCreator implements Runnable{
     private JLabel lastClickedBlock = null;
     private boolean lastClickedBlockIsInstanceOfTextBlockVersion;
 
+    enum LinkConnectionDisplayModes {edges, films}
+    static LinkConnectionDisplayModes linkConnectionDisplayMode = LinkConnectionDisplayModes.edges;
+
     AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
 
     Vector<Vector<BlockPair>> allCreatedBlockPairsByClicks = new Vector<>();
@@ -249,7 +252,7 @@ class GroundTruthCreator implements Runnable{
             currentBlockLabel.addMouseMotionListener(new MouseMotionAdapter() { // workaround to repaint
                 @Override
                 public void mouseMoved(MouseEvent e) {
-                    paintAllEdgesBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
+                    paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
                 }
             });
 
@@ -520,7 +523,7 @@ class GroundTruthCreator implements Runnable{
 
         navigatorAtBottomLabel.updateNavigatorText();
 
-        paintAllEdgesBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
+        paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
         frame.repaint(); // necessary because a version could only be repainted simple so that edges from older comparings could remain
     }
 
@@ -539,6 +542,7 @@ class GroundTruthCreator implements Runnable{
 
         block.setBorder(BorderFactory.createLineBorder(blockBoarderColor, 5, true)); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
     }
+
 
     private void paintOneEdgeBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, boolean clickedBlockIsInstanceOfTextBlockVersion){
         Graphics tmpGraphics = mainPanel.getGraphics();
@@ -563,11 +567,38 @@ class GroundTruthCreator implements Runnable{
                 rightBlock.getY() + buttonsAtTopPanel.getHeight() + rightBlock.getHeight() / 2 + 5);
     }
 
-    private void paintAllEdgesBetweenClickedBlocksOfCurrentTwoVersions(int versionNumber){
-        if(postVersionList != null)
-            for (BlockPair tmpBlockPair : allCreatedBlockPairsByClicks.get(versionNumber)){
-                paintOneEdgeBetweenTwoBlocks(tmpBlockPair.labelLeftBlock, tmpBlockPair.labelRightBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion);
+    private void paintOneFilmBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, boolean clickedBlockIsInstanceOfTextBlockVersion){
+        Graphics tmpGraphics = mainPanel.getGraphics();
+        tmpGraphics.setColor(clickedBlockIsInstanceOfTextBlockVersion ? colorTextBlockMarked : colorCodeBlockMarked);
+
+
+        Polygon film = new Polygon();
+        film.addPoint(versionEdgesPanel.getX(),                                buttonsAtTopPanel.getHeight() + leftBlock.getY());
+        film.addPoint(versionEdgesPanel.getX(),                                buttonsAtTopPanel.getHeight() + leftBlock.getY() + leftBlock.getHeight());
+        film.addPoint(versionEdgesPanel.getX() + versionEdgesPanel.getWidth(), buttonsAtTopPanel.getHeight() + rightBlock.getY() + rightBlock.getHeight());
+        film.addPoint(versionEdgesPanel.getX() + versionEdgesPanel.getWidth(), buttonsAtTopPanel.getHeight() + rightBlock.getY());
+
+        tmpGraphics.fillPolygon(film);
+    }
+
+    private void paintOneConnectionBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, boolean clickedBlockIsInstanceOfTextBlockVersion){
+        switch (linkConnectionDisplayMode){
+            case edges:
+                paintOneEdgeBetweenTwoBlocks(leftBlock, rightBlock, clickedBlockIsInstanceOfTextBlockVersion);
+                break;
+
+            case films:
+                paintOneFilmBetweenTwoBlocks(leftBlock, rightBlock, clickedBlockIsInstanceOfTextBlockVersion);
+                break;
+        }
+    }
+
+    private void paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(int versionNumber){
+        if(postVersionList != null) {
+            for (BlockPair tmpBlockPair : allCreatedBlockPairsByClicks.get(versionNumber)) {
+                paintOneConnectionBetweenTwoBlocks(tmpBlockPair.labelLeftBlock, tmpBlockPair.labelRightBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion);
             }
+        }
     }
 
 
@@ -584,7 +615,7 @@ class GroundTruthCreator implements Runnable{
             @Override
             public void componentResized(ComponentEvent e) { // TODO: This works but not so well. Is there a foolproof solution for this?
                 super.componentResized(e);
-                paintAllEdgesBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
+                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
                 GroundTruthCreator.WIDTH = e.getComponent().getWidth();
                 GroundTruthCreator.HEIGHT = e.getComponent().getHeight();
             }
@@ -627,7 +658,7 @@ class GroundTruthCreator implements Runnable{
             @Override
             public void mouseMoved(MouseEvent e) {
                 super.mouseMoved(e);
-                paintAllEdgesBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
+                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
             }
         });
 
@@ -635,7 +666,7 @@ class GroundTruthCreator implements Runnable{
             @Override
             public void mouseMoved(MouseEvent e) {
                 super.mouseMoved(e);
-                paintAllEdgesBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
+                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
             }
         });
 
@@ -643,14 +674,14 @@ class GroundTruthCreator implements Runnable{
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
-                paintAllEdgesBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
+                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
             }
         });
 
         scrollPaneIncludingMainPanel.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                paintAllEdgesBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
+                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
             }
         });
     }
