@@ -218,20 +218,24 @@ class ButtonsAndInstructionsPanel extends JPanel {
     }
 
     private void loadPost(int postId){
-        groundTruthCreator.frame.dispose();
+        try {
+            groundTruthCreator.frame.dispose();
 
-        groundTruthCreator.postVersionList = new PostVersionList();
-        groundTruthCreator.postVersionList.readFromCSV(GroundTruthCreator.path + "/", postId, 2);
+            groundTruthCreator.postVersionList = new PostVersionList();
+            groundTruthCreator.postVersionList.readFromCSV(GroundTruthCreator.path + "/", postId, 2);
 
-        groundTruthCreator = new GroundTruthCreator(
-                groundTruthCreator.postVersionList,
-                GroundTruthCreator.WIDTH,
-                GroundTruthCreator.HEIGHT,
-                GroundTruthCreator.LOCATION);
+            groundTruthCreator = new GroundTruthCreator(
+                    groundTruthCreator.postVersionList,
+                    GroundTruthCreator.WIDTH,
+                    GroundTruthCreator.HEIGHT,
+                    GroundTruthCreator.LOCATION);
 
-        setEnablingOfNextAndBackButton();
+            setEnablingOfNextAndBackButton();
 
-        groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
+            groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Failed to load post with post-id " + groundTruthCreator.postVersionList.getFirst().getPostId());
+        }
     }
 
     private void setListenersToButtons(){
@@ -268,14 +272,8 @@ class ButtonsAndInstructionsPanel extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                try{
-
-                    int requestedPostId = Integer.parseInt(textFieldRequestSpecialPost.getText());
-                    loadPost(requestedPostId);
-
-                }catch (Exception exception){
-                    GTLogger.logger.log(Level.INFO, "couldn't request your input");
-                }
+                int requestedPostId = Integer.parseInt(textFieldRequestSpecialPost.getText());
+                loadPost(requestedPostId);
             }
         });
 
