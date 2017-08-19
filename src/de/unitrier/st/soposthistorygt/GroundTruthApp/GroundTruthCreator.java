@@ -122,7 +122,7 @@ class GroundTruthCreator implements Runnable{
 
         mainPanel.setBackground(Color.BLACK);
 
-        removeTextBlocksThatWillBeEmptyAfterRenderingWithHTML();
+        normalizeURLsInTextBlocksOfAllVersions();
         // removeEmptyTextAndCodeBlocks();
         // mergeConsecutiveBlocksOfSameType();
 
@@ -413,7 +413,7 @@ class GroundTruthCreator implements Runnable{
         }
     }
 
-    private void removeTextBlocksThatWillBeEmptyAfterRenderingWithHTML(){
+    private void normalizeURLsInTextBlocksOfAllVersions(){
         if(postVersionList == null)
             return;
 
