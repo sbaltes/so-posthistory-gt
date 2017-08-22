@@ -68,15 +68,15 @@ class GroundTruthCreator implements Runnable{
     private boolean lastClickedBlockIsInstanceOfTextBlockVersion;
 
     enum LinkConnectionDisplayModes {edges, films}
-    static LinkConnectionDisplayModes linkConnectionDisplayMode = LinkConnectionDisplayModes.edges;
+    static LinkConnectionDisplayModes linkConnectionDisplayMode = LinkConnectionDisplayModes.films;
 
-    AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
+    private AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
 
     Vector<Vector<BlockPair>> allCreatedBlockPairsByClicks = new Vector<>();
-    Vector<Vector<BlockPair>> allAutomaticSetBlockPairs = new Vector<>();
+    private Vector<Vector<BlockPair>> allAutomaticSetBlockPairs = new Vector<>();
     Vector<BlockLifeSpan> blockLifeSpansExtractedFromClicks = new Vector<>();
 
-    Robot bot = null;
+    private Robot bot = null;
 
 
     /***** Constructor arguments *****/
@@ -112,6 +112,7 @@ class GroundTruthCreator implements Runnable{
 
 
         buttonsAtTopPanel = new ButtonsAndInstructionsPanel(this);
+        buttonsAtTopPanel.setFocusable(true);
         mainPanel.add(buttonsAtTopPanel, BorderLayout.NORTH);
 
         compareVersionsPanel = displayPlainTwoVersionsWithoutBlocks();
@@ -123,7 +124,7 @@ class GroundTruthCreator implements Runnable{
         mainPanel.setBackground(Color.BLACK);
 
         normalizeURLsInTextBlocksOfAllVersions();
-        // removeEmptyTextAndCodeBlocks();
+        removeEmptyTextAndCodeBlocks();
         // mergeConsecutiveBlocksOfSameType();
 
 
@@ -134,6 +135,7 @@ class GroundTruthCreator implements Runnable{
         displayCurrentTwoVersionsAndNavigator();
 
         scrollPaneIncludingMainPanel.getVerticalScrollBar().setUnitIncrement(16);   // https://stackoverflow.com/a/5583571
+        scrollPaneIncludingMainPanel.setFocusable(false);
 
         frame.add(scrollPaneIncludingMainPanel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -183,12 +185,6 @@ class GroundTruthCreator implements Runnable{
         if(postVersionList == null)return;
 
         List<PostBlockVersion> blocks = postVersionList.get(currentInternVersion).getPostBlocks();
-        StringBuilder textBlocksConcatenated = new StringBuilder();
-
-        for (PostBlockVersion block : blocks) {
-            if (block instanceof TextBlockVersion)
-                textBlocksConcatenated.append(block.getContent());
-        }
 
         for(int currentBlockPosition=0; currentBlockPosition<blocks.size(); currentBlockPosition++){
 
@@ -425,7 +421,7 @@ class GroundTruthCreator implements Runnable{
                 String markdownText = textBlock.getContent();
                 markdownText = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForApp(markdownText, anchorTextAndUrlPairs);
 
-                if (markdownText.trim().isEmpty()) { // https://stackoverflow.com/a/3745432
+                if (markdownText.trim().isEmpty()){ // https://stackoverflow.com/a/3745432
                     postVersion.getPostBlocks().remove(textBlock);
                 }else
                     textBlock.setContent(markdownText);
@@ -523,8 +519,11 @@ class GroundTruthCreator implements Runnable{
 
         navigatorAtBottomLabel.updateNavigatorText();
 
+        versionEdgesPanel.validate();
+        versionEdgesPanel.repaint();
         paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
-        frame.repaint(); // necessary because a version could only be repainted simple so that edges from older comparings could remain
+        frame.getContentPane().validate();
+        frame.getContentPane().repaint(); // necessary because a version could only be repainted simple so that edges from older comparings could remain
     }
 
     private void paintBorderOfBlock(JLabel block, boolean blockIsOfInstanceText, boolean blockIsAlreadyMarkedWithBoarder){
@@ -593,7 +592,7 @@ class GroundTruthCreator implements Runnable{
         }
     }
 
-    private void paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(int versionNumber){
+    void paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(int versionNumber){
         if(postVersionList != null) {
             for (BlockPair tmpBlockPair : allCreatedBlockPairsByClicks.get(versionNumber)) {
                 paintOneConnectionBetweenTwoBlocks(tmpBlockPair.labelLeftBlock, tmpBlockPair.labelRightBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion);
@@ -628,6 +627,7 @@ class GroundTruthCreator implements Runnable{
         });
 
         frame.setFocusable(true);
+
         frame.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -678,12 +678,7 @@ class GroundTruthCreator implements Runnable{
             }
         });
 
-        scrollPaneIncludingMainPanel.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
-            }
-        });
+        scrollPaneIncludingMainPanel.addMouseWheelListener(e -> paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion));
     }
 
     // TODO: write a script which reads all saved files and compares them with metrics
@@ -748,7 +743,6 @@ class GroundTruthCreator implements Runnable{
         Vector<String> comments = ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).comments;
 
         for (String commentLine : comments) {
-            System.err.println(commentLine);
             StringTokenizer tokens = new StringTokenizer(commentLine, "|");
 
             int tmpVersion = Integer.parseInt(tokens.nextToken().replaceAll("\\s", "").replace("vers:", ""));
@@ -841,14 +835,15 @@ class GroundTruthCreator implements Runnable{
     public void run(){
         while(true){
             try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            assert bot != null;
-            bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x+1, MouseInfo.getPointerInfo().getLocation().y+1);
-            bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x-1, MouseInfo.getPointerInfo().getLocation().y-1);
+                Thread.sleep(500);
+                assert bot != null;
+                bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x+1, MouseInfo.getPointerInfo().getLocation().y+1);
+                bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x-1, MouseInfo.getPointerInfo().getLocation().y-1);
 
+                ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x+1, MouseInfo.getPointerInfo().getLocation().y+1);
+                ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x-1, MouseInfo.getPointerInfo().getLocation().y-1);
+
+            } catch (InterruptedException ignored) {}
         }
     }
 }

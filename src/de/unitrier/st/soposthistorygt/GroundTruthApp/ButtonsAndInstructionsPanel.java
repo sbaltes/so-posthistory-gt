@@ -37,6 +37,8 @@ class ButtonsAndInstructionsPanel extends JPanel {
     private JButton buttonNext = new JButton("next");
     private JButton buttonBack = new JButton("back");
 
+    private JPanel buttonsIntern = new JPanel(new MigLayout());
+
     private JButton buttonSwitchConnectionDisplayMode = new JButton("switch link GUI");
 
     private JButton buttonAddComment = new JButton("add comment");
@@ -49,7 +51,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
 
     /***** Internal variables *****/
-    private Robot bot = null;
+    Robot bot = null;
 
 
     /***** Constructor *****/
@@ -73,8 +75,6 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
         /***** Methods *****/
     private void getButtonsAndInstructionsOnPanel(){
-        JPanel buttonsIntern = new JPanel(new MigLayout());
-
         textFieldRequestSpecialPost.setColumns(10); // https://stackoverflow.com/questions/14805124/how-to-set-the-height-and-the-width-of-a-textfield-in-java
 
         buttonsIntern.add(buttonRequestSpecialPost);
@@ -88,7 +88,6 @@ class ButtonsAndInstructionsPanel extends JPanel {
         buttonsIntern.add(buttonNext);
         buttonsIntern.setLocation(groundTruthCreator.mainPanel.getWidth()/2, groundTruthCreator.mainPanel.getHeight()/2);
         this.add(buttonsIntern);
-
 
         JLabel instructionsLabel = new JLabel(
                 "<html>" +
@@ -199,27 +198,39 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        //bot.mouseWheel(+1);
-        //bot.mouseWheel(-1);
-        bot.mouseWheel(-100000);
+        moveMouseToRepaint();
     }
 
     void actionButtonBack(){
-        if (buttonBack.isEnabled() && groundTruthCreator.currentLeftVersion > 0) {
+        if(!buttonBack.isEnabled())
+            return;
+
+        if (groundTruthCreator.currentLeftVersion > 0) {
             groundTruthCreator.currentLeftVersion--;
             groundTruthCreator.unmarkLastClickedBlock();
             setEnablingOfNextAndBackButton();
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        // bot.mouseWheel(+1);
-        // bot.mouseWheel(-1);
+        moveMouseToRepaint();
+    }
+
+    private void moveMouseToRepaint(){
+        bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x+1, MouseInfo.getPointerInfo().getLocation().y+1);
+        bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x-1, MouseInfo.getPointerInfo().getLocation().y-1);
+        bot.mouseWheel(+1);
+        bot.mouseWheel(-1);
+
         bot.mouseWheel(-100000);
+
+        groundTruthCreator.frame.validate();
+        groundTruthCreator.frame.repaint();
     }
 
     private void loadPost(int postId){
         try {
             groundTruthCreator.frame.dispose();
+            System.gc();
 
             groundTruthCreator.postVersionList = new PostVersionList();
             groundTruthCreator.postVersionList.readFromCSV(GroundTruthCreator.path + "/", postId, 2);
@@ -233,6 +244,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             setEnablingOfNextAndBackButton();
 
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
+
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Failed to load post with post-id " + groundTruthCreator.postVersionList.getFirst().getPostId());
         }
@@ -393,6 +405,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                     }
                     text.append("</body></html>");
                     labelSavedComments.setText(text.toString());
+                    savedCommentsScrollPane.validate();
                     savedCommentsScrollPane.repaint();
                 }
             }
@@ -439,6 +452,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                     groundTruthCreator.linkConnectionDisplayMode = GroundTruthCreator.LinkConnectionDisplayModes.edges;
 
                 groundTruthCreator.versionEdgesPanel.removeAll();
+                groundTruthCreator.versionEdgesPanel.validate();
                 groundTruthCreator.versionEdgesPanel.repaint();
             }
         });
@@ -545,12 +559,21 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 groundTruthCreator.versionRightPanel.removeAll();
                 groundTruthCreator.versionEdgesPanel.removeAll();
 
+                groundTruthCreator.versionLeftPanel.validate();
                 groundTruthCreator.versionLeftPanel.repaint();
+
+                groundTruthCreator.versionRightPanel.validate();
                 groundTruthCreator.versionRightPanel.repaint();
+
+                groundTruthCreator.versionEdgesPanel.validate();
                 groundTruthCreator.versionEdgesPanel.repaint();
+
+                groundTruthCreator.navigatorAtBottomLabel.validate();
                 groundTruthCreator.navigatorAtBottomLabel.repaint();
 
                 labelSavedComments.setText("");
+
+                savedCommentsScrollPane.validate();
                 savedCommentsScrollPane.repaint();
 
                 // TODO: How to combine those three comparings in one row?

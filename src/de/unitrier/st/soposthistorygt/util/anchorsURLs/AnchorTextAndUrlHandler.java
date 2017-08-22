@@ -21,7 +21,6 @@ public class AnchorTextAndUrlHandler {
             }
         }
 
-        System.out.println(anchorTextAndUrlPairs); // TODO: remove this
         return anchorTextAndUrlPairs;
     }
 
