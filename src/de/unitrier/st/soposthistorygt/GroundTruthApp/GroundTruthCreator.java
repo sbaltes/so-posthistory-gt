@@ -32,16 +32,13 @@ import java.util.logging.Level;
 import static de.unitrier.st.soposthistory.history.PostHistoryIterator.logger;
 
 
-class GroundTruthCreator implements Runnable{
-
+class GroundTruthCreator extends JFrame{
 
     /***** Swing components *****/
-    JFrame frame = new JFrame("Ground Truth Creator");
-
     JPanel mainPanel = new JPanel(new BorderLayout());
     JScrollPane scrollPaneIncludingMainPanel = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-    private JPanel buttonsAtTopPanel = null;
+    private ButtonsAndInstructionsPanel buttonsAtTopPanel = null;
 
     private JPanel compareVersionsPanel = null;
     JPanel versionLeftPanel = new JPanel(new MigLayout());
@@ -76,7 +73,9 @@ class GroundTruthCreator implements Runnable{
     private Vector<Vector<BlockPair>> allAutomaticSetBlockPairs = new Vector<>();
     Vector<BlockLifeSpan> blockLifeSpansExtractedFromClicks = new Vector<>();
 
-    private Robot bot = null;
+    Robot bot = null;
+
+    Polygon film = new Polygon();
 
 
     /***** Constructor arguments *****/
@@ -89,7 +88,7 @@ class GroundTruthCreator implements Runnable{
 
     /***** Constructor *****/
     GroundTruthCreator(PostVersionList postVersionList, int initialWidth, int initialHeight, Point initialLocation){
-
+        this.setTitle("Ground Truth Creator");
         this.postVersionList = postVersionList;
         WIDTH = initialWidth;
         HEIGHT = initialHeight;
@@ -108,7 +107,7 @@ class GroundTruthCreator implements Runnable{
             }
         }
 
-        frame.setSize(new Dimension(initialWidth, initialHeight));
+        this.setSize(new Dimension(initialWidth, initialHeight));
 
 
         buttonsAtTopPanel = new ButtonsAndInstructionsPanel(this);
@@ -130,23 +129,27 @@ class GroundTruthCreator implements Runnable{
 
         setListenersToFrameAndPanel();
 
-        ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).setEnablingOfNextAndBackButton();
+        (buttonsAtTopPanel).setEnablingOfNextAndBackButton();
 
         displayCurrentTwoVersionsAndNavigator();
 
         scrollPaneIncludingMainPanel.getVerticalScrollBar().setUnitIncrement(16);   // https://stackoverflow.com/a/5583571
         scrollPaneIncludingMainPanel.setFocusable(false);
 
-        frame.add(scrollPaneIncludingMainPanel);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.add(scrollPaneIncludingMainPanel);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         if(initialLocation == null)
-            frame.setLocationRelativeTo(null);
+            this.setLocationRelativeTo(null);
         else
-            frame.setLocation(initialLocation);
-        frame.setVisible(true);
+            this.setLocation(initialLocation);
+
+        this.setFocusable(true);
+        this.setVisible(true);
 
 
         collectAllBlockPairsWithEqualContent();
+
+        moveMouseToRepaint();
     }
 
 
@@ -173,7 +176,7 @@ class GroundTruthCreator implements Runnable{
         versionLeftPanel.setPreferredSize(new Dimension(compareVersionsPanel.getWidth()*42/100, compareVersionsPanel.getHeight()));
         versionRightPanel.setPreferredSize(new Dimension(compareVersionsPanel.getWidth()*42/100, compareVersionsPanel.getHeight()));
 
-        versionEdgesPanel.setMinimumSize(new Dimension(frame.getWidth()*10/100, compareVersionsPanel.getHeight()));
+        versionEdgesPanel.setMinimumSize(new Dimension(this.getWidth()*10/100, compareVersionsPanel.getHeight()));
 
         return compareVersionsPanel;
     }
@@ -242,15 +245,7 @@ class GroundTruthCreator implements Runnable{
                 );
             }
 
-
             paintBorderOfBlock(currentBlockLabel, clickedBlockIsInstanceOfTextBlockVersion, blockIsAlreadyInAPair);
-
-            currentBlockLabel.addMouseMotionListener(new MouseMotionAdapter() { // workaround to repaint
-                @Override
-                public void mouseMoved(MouseEvent e) {
-                    paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
-                }
-            });
 
             currentBlockLabel.addMouseListener(new MouseInputAdapter() {
                 @Override
@@ -276,10 +271,23 @@ class GroundTruthCreator implements Runnable{
 
                                 allCreatedBlockPairsByClicks.get(currentLeftVersion).remove(tmpBlockPair);
 
-                                displayCurrentTwoVersionsAndNavigator();
+                                tmpBlockPair.labelRightBlock.setText(
+                                        "<html><head></head><body>" +
+                                        commonmarkMarkUp(
+                                            postVersionList.get(currentInternVersion).getPostBlocks().get(tmpBlockPair.rightBlockPosition).getContent()
+                                        )
+                                        + "</body></html>"
+                                );
+
+                                // displayCurrentTwoVersionsAndNavigator();
+                                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
+                                mainPanel.validate();
+                                mainPanel.repaint();
                                 break;
                             }
                         }
+
+                        moveMouseToRepaint();
 
                     }else{
                         if(lastClickedInternVersion == -1){ // click on a unmarked block
@@ -308,7 +316,7 @@ class GroundTruthCreator implements Runnable{
                                                 clickedBlockIsInstanceOfTextBlockVersion));
 
                                 newBlockPair = new BlockPair(lastClickedBlock, currentBlockLabel, clickedBlockIsInstanceOfTextBlockVersion, lastClickedPositionOfABlock, finalCurrentBlockPosition);
-                                // paintOneEdgeBetweenTwoBlocks(lastClickedBlock, currentBlockLabel, clickedBlockIsInstanceOfTextBlockVersion);
+                                // paintOneConnectionBetweenTwoBlocks(lastClickedBlock, currentBlockLabel, clickedBlockIsInstanceOfTextBlockVersion);
                             } else {
                                 lastClickedBlock.setText(
                                         getDiffsOfClickedBlocks(
@@ -317,23 +325,20 @@ class GroundTruthCreator implements Runnable{
                                                 clickedBlockIsInstanceOfTextBlockVersion));
 
                                 newBlockPair = new BlockPair(currentBlockLabel, lastClickedBlock, clickedBlockIsInstanceOfTextBlockVersion, finalCurrentBlockPosition, lastClickedPositionOfABlock);
-                                // paintOneEdgeBetweenTwoBlocks(currentBlockLabel, lastClickedBlock, clickedBlockIsInstanceOfTextBlockVersion);
+                                // paintOneConnectionBetweenTwoBlocks(currentBlockLabel, lastClickedBlock, clickedBlockIsInstanceOfTextBlockVersion);
                             }
 
-/*
-                            for(BlockPair tmpBlockPair : allCreatedBlockPairsByClicks.get(currentLeftVersion)){ // TODO: this could be superflous now. Check this.
-                                if(tmpBlockPair.equals(newBlockPair))
-                                    return;
-                            }
-*/
 
                             allCreatedBlockPairsByClicks.get(currentLeftVersion).add(newBlockPair);
+                            paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
 
                             paintBorderOfBlock(newBlockPair.labelLeftBlock, clickedBlockIsInstanceOfTextBlockVersion, true);
                             paintBorderOfBlock(newBlockPair.labelRightBlock, clickedBlockIsInstanceOfTextBlockVersion, true);
                             borderCurrentBlock[0] = currentBlockLabel.getBorder();
 
                             unmarkLastClickedBlock();
+
+                            moveMouseToRepaint();
                         }else if(lastClickedBlockIsInstanceOfTextBlockVersion != clickedBlockIsInstanceOfTextBlockVersion){
                             String blockType_currentBlock = String.valueOf((clickedBlockIsInstanceOfTextBlockVersion) ? BlockLifeSpan.Type.textblock : BlockLifeSpan.Type.codeblock);
                             String blockType_lastClickedBlock = String.valueOf((lastClickedBlockIsInstanceOfTextBlockVersion) ? BlockLifeSpan.Type.textblock : BlockLifeSpan.Type.codeblock);
@@ -362,6 +367,14 @@ class GroundTruthCreator implements Runnable{
                 public void mouseExited(MouseEvent e) {
                     super.mouseExited(e);
                     currentBlockLabel.setBorder(borderCurrentBlock[0]);
+                }
+            });
+
+            currentBlockLabel.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    super.componentResized(e);
+                    paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
                 }
             });
         }
@@ -519,11 +532,11 @@ class GroundTruthCreator implements Runnable{
 
         navigatorAtBottomLabel.updateNavigatorText();
 
-        versionEdgesPanel.validate();
-        versionEdgesPanel.repaint();
+        // versionEdgesPanel.validate();
+        // versionEdgesPanel.repaint();
         paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
-        frame.getContentPane().validate();
-        frame.getContentPane().repaint(); // necessary because a version could only be repainted simple so that edges from older comparings could remain
+        // this.getContentPane().validate();
+        // this.getContentPane().repaint(); // necessary because a version could only be repainted simple so that edges from older comparings could remain // TODO: if connections from former versions don't disappear then uncomment this.
     }
 
     private void paintBorderOfBlock(JLabel block, boolean blockIsOfInstanceText, boolean blockIsAlreadyMarkedWithBoarder){
@@ -543,9 +556,9 @@ class GroundTruthCreator implements Runnable{
     }
 
 
-    private void paintOneEdgeBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, boolean clickedBlockIsInstanceOfTextBlockVersion){
+    private void paintOneEdgeBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, Boolean clickedBlockIsInstanceOfTextBlockVersion){
         Graphics tmpGraphics = mainPanel.getGraphics();
-        tmpGraphics.setColor(clickedBlockIsInstanceOfTextBlockVersion ? colorTextBlockMarked : colorCodeBlockMarked);
+        tmpGraphics.setColor(clickedBlockIsInstanceOfTextBlockVersion == null ? Color.LIGHT_GRAY : clickedBlockIsInstanceOfTextBlockVersion ? colorTextBlockMarked : colorCodeBlockMarked);
 
         tmpGraphics.fillOval(
                 versionEdgesPanel.getX() + 0,
@@ -566,12 +579,11 @@ class GroundTruthCreator implements Runnable{
                 rightBlock.getY() + buttonsAtTopPanel.getHeight() + rightBlock.getHeight() / 2 + 5);
     }
 
-    private void paintOneFilmBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, boolean clickedBlockIsInstanceOfTextBlockVersion){
+    private void paintOneFilmBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, Boolean clickedBlockIsInstanceOfTextBlockVersion){
         Graphics tmpGraphics = mainPanel.getGraphics();
-        tmpGraphics.setColor(clickedBlockIsInstanceOfTextBlockVersion ? colorTextBlockMarked : colorCodeBlockMarked);
+        tmpGraphics.setColor(clickedBlockIsInstanceOfTextBlockVersion == null ? Color.LIGHT_GRAY : clickedBlockIsInstanceOfTextBlockVersion ? colorTextBlockMarked : colorCodeBlockMarked);
 
-
-        Polygon film = new Polygon();
+        film.reset();
         film.addPoint(versionEdgesPanel.getX(),                                buttonsAtTopPanel.getHeight() + leftBlock.getY());
         film.addPoint(versionEdgesPanel.getX(),                                buttonsAtTopPanel.getHeight() + leftBlock.getY() + leftBlock.getHeight());
         film.addPoint(versionEdgesPanel.getX() + versionEdgesPanel.getWidth(), buttonsAtTopPanel.getHeight() + rightBlock.getY() + rightBlock.getHeight());
@@ -580,7 +592,7 @@ class GroundTruthCreator implements Runnable{
         tmpGraphics.fillPolygon(film);
     }
 
-    private void paintOneConnectionBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, boolean clickedBlockIsInstanceOfTextBlockVersion){
+    private void paintOneConnectionBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, Boolean clickedBlockIsInstanceOfTextBlockVersion){
         switch (linkConnectionDisplayMode){
             case edges:
                 paintOneEdgeBetweenTwoBlocks(leftBlock, rightBlock, clickedBlockIsInstanceOfTextBlockVersion);
@@ -595,11 +607,11 @@ class GroundTruthCreator implements Runnable{
     void paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(int versionNumber){
         if(postVersionList != null) {
             for (BlockPair tmpBlockPair : allCreatedBlockPairsByClicks.get(versionNumber)) {
+                paintOneConnectionBetweenTwoBlocks(tmpBlockPair.labelLeftBlock, tmpBlockPair.labelRightBlock, null);
                 paintOneConnectionBetweenTwoBlocks(tmpBlockPair.labelLeftBlock, tmpBlockPair.labelRightBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion);
             }
         }
     }
-
 
     /***** functional stuff *****/
     void unmarkLastClickedBlock(){
@@ -610,7 +622,7 @@ class GroundTruthCreator implements Runnable{
 
     private void setListenersToFrameAndPanel(){
 
-        frame.addComponentListener(new ComponentAdapter() { // https://stackoverflow.com/questions/2303305/window-resize-event
+        this.addComponentListener(new ComponentAdapter() { // https://stackoverflow.com/questions/2303305/window-resize-event
             @Override
             public void componentResized(ComponentEvent e) { // TODO: This works but not so well. Is there a foolproof solution for this?
                 super.componentResized(e);
@@ -626,24 +638,22 @@ class GroundTruthCreator implements Runnable{
             }
         });
 
-        frame.setFocusable(true);
-
-        frame.addKeyListener(new KeyListener() {
+        this.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-                    ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).actionButtonNext();
+                    (buttonsAtTopPanel).actionButtonNext();
                 }else if(e.getKeyCode() == KeyEvent.VK_LEFT){
-                    ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).actionButtonBack();
+                    (buttonsAtTopPanel).actionButtonBack();
                 }
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-                    ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).actionButtonNext();
+                    (buttonsAtTopPanel).actionButtonNext();
                 }else if(e.getKeyCode() == KeyEvent.VK_LEFT){
-                    ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).actionButtonBack();
+                    (buttonsAtTopPanel).actionButtonBack();
                 }
             }
 
@@ -654,23 +664,15 @@ class GroundTruthCreator implements Runnable{
         });
 
 
-        frame.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                super.mouseMoved(e);
-                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
-            }
-        });
-
-        buttonsAtTopPanel.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                super.mouseMoved(e);
-                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
-            }
-        });
-
         scrollPaneIncludingMainPanel.getVerticalScrollBar().addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+                paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
+            }
+        });
+
+        scrollPaneIncludingMainPanel.getHorizontalScrollBar().addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
@@ -831,19 +833,11 @@ class GroundTruthCreator implements Runnable{
         }
     }
 
-    @Override
-    public void run(){
-        while(true){
-            try {
-                Thread.sleep(500);
-                assert bot != null;
-                bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x+1, MouseInfo.getPointerInfo().getLocation().y+1);
-                bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x-1, MouseInfo.getPointerInfo().getLocation().y-1);
-
-                ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x+1, MouseInfo.getPointerInfo().getLocation().y+1);
-                ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x-1, MouseInfo.getPointerInfo().getLocation().y-1);
-
-            } catch (InterruptedException ignored) {}
-        }
+    void moveMouseToRepaint(){
+        this.repaint();
+        scrollPaneIncludingMainPanel.getVerticalScrollBar().setUnitIncrement(0);
+        bot.mouseWheel(+1);
+        bot.mouseWheel(-1);
+        scrollPaneIncludingMainPanel.getVerticalScrollBar().setUnitIncrement(16);
     }
 }
