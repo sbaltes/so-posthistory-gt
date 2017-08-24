@@ -94,7 +94,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                         "<head/>" +
                         "<body>" +
                             "<ul>" +
-                                "<li>If you click at a (orange) block of one version you mark a block</li>" +
+                                "<li>If you click at a block b (text blocks are blue, code blocks are orange) of one version you mark b</li>" +
                                 "<li>If you click this (now pink) block again you umark it.</li>" +
                                 "<li>If a block is marked and you click another block of the opposite version<br>" +
                                     "you create a link between blocks of two versions.</li>" +
@@ -198,7 +198,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        moveMouseToRepaint();
+        groundTruthCreator.moveMouseToRepaint();
     }
 
     void actionButtonBack(){
@@ -212,24 +212,12 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        moveMouseToRepaint();
-    }
-
-    private void moveMouseToRepaint(){
-        bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x+1, MouseInfo.getPointerInfo().getLocation().y+1);
-        bot.mouseMove(MouseInfo.getPointerInfo().getLocation().x-1, MouseInfo.getPointerInfo().getLocation().y-1);
-        bot.mouseWheel(+1);
-        bot.mouseWheel(-1);
-
-        bot.mouseWheel(-100000);
-
-        groundTruthCreator.frame.validate();
-        groundTruthCreator.frame.repaint();
+        groundTruthCreator.moveMouseToRepaint();
     }
 
     private void loadPost(int postId){
         try {
-            groundTruthCreator.frame.dispose();
+            groundTruthCreator.dispose();
             System.gc();
 
             groundTruthCreator.postVersionList = new PostVersionList();
@@ -244,6 +232,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             setEnablingOfNextAndBackButton();
 
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
+
 
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Failed to load post with post-id " + groundTruthCreator.postVersionList.getFirst().getPostId());

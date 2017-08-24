@@ -27,6 +27,6 @@ public class MainGroundTruthCreator{
                 1400,
                 800,
                 null
-        ).run();
+        );
     }
 }
