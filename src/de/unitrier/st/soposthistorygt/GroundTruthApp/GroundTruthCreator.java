@@ -263,8 +263,11 @@ class GroundTruthCreator extends JFrame{
                             BlockPair tmpBlockPair = allCreatedBlockPairsByClicks.get(currentLeftVersion).get(j);
                             if (currentLeftVersion == currentInternVersion && tmpBlockPair.leftBlockPosition == finalCurrentBlockPosition
                                     || currentLeftVersion != currentInternVersion && tmpBlockPair.rightBlockPosition == finalCurrentBlockPosition) {
-                                paintBorderOfBlock(tmpBlockPair.labelLeftBlock, clickedBlockIsInstanceOfTextBlockVersion, false);
-                                paintBorderOfBlock(tmpBlockPair.labelRightBlock, clickedBlockIsInstanceOfTextBlockVersion, false);
+                                paintBorderOfBlock(tmpBlockPair.labelLeftBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion, false);
+                                paintBorderOfBlock(tmpBlockPair.labelRightBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion, false);
+
+                                if(lastClickedBlock != null)
+                                    paintBorderOfBlock(lastClickedBlock, lastClickedBlockIsInstanceOfTextBlockVersion, false);
 
                                 borderCurrentBlock[0] = tmpBlockPair.labelRightBlock.getBorder();
                                 unmarkLastClickedBlock();
@@ -539,20 +542,20 @@ class GroundTruthCreator extends JFrame{
         // this.getContentPane().repaint(); // necessary because a version could only be repainted simple so that edges from older comparings could remain // TODO: if connections from former versions don't disappear then uncomment this.
     }
 
-    private void paintBorderOfBlock(JLabel block, boolean blockIsOfInstanceText, boolean blockIsAlreadyMarkedWithBoarder){
-        Color blockBoarderColor = null;
+    private void paintBorderOfBlock(JLabel block, boolean blockIsOfInstanceText, boolean blockIsAlreadyMarkedWithBorder){
+        Color blockBorderColor = null;
 
-        if(blockIsOfInstanceText && blockIsAlreadyMarkedWithBoarder){
-            blockBoarderColor = colorTextBlockMarked;  // markierter Textblock
-        }else if (blockIsOfInstanceText && !blockIsAlreadyMarkedWithBoarder){
-            blockBoarderColor = colorTextBlockUnMarked;  // nichtmarkierter TextBlock
-        }else if (!blockIsOfInstanceText && blockIsAlreadyMarkedWithBoarder){
-            blockBoarderColor = colorCodeBlockMarked;  // markierter CodeBlock
-        }else if (!blockIsOfInstanceText && !blockIsAlreadyMarkedWithBoarder){
-            blockBoarderColor = colorCodeBlockUnMarked;  // nicht markierter CodeBlock
+        if(blockIsOfInstanceText && blockIsAlreadyMarkedWithBorder){
+            blockBorderColor = colorTextBlockMarked;  // markierter Textblock
+        }else if (blockIsOfInstanceText && !blockIsAlreadyMarkedWithBorder){
+            blockBorderColor = colorTextBlockUnMarked;  // nichtmarkierter TextBlock
+        }else if (!blockIsOfInstanceText && blockIsAlreadyMarkedWithBorder){
+            blockBorderColor = colorCodeBlockMarked;  // markierter CodeBlock
+        }else if (!blockIsOfInstanceText && !blockIsAlreadyMarkedWithBorder){
+            blockBorderColor = colorCodeBlockUnMarked;  // nicht markierter CodeBlock
         }
 
-        block.setBorder(BorderFactory.createLineBorder(blockBoarderColor, 5, true)); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
+        block.setBorder(BorderFactory.createLineBorder(blockBorderColor, 5, true)); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
     }
 
 
@@ -604,7 +607,7 @@ class GroundTruthCreator extends JFrame{
         }
     }
 
-    private void clearPanelFromLinks(){
+    private void clearPanelFromAllConnectionsBetweenBlocks(){
         Graphics tmpGraphics = versionEdgesPanel.getGraphics();
 
         if(tmpGraphics == null)
@@ -616,7 +619,7 @@ class GroundTruthCreator extends JFrame{
 
     void paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(int versionNumber){
         if(postVersionList != null) {
-            clearPanelFromLinks();
+            clearPanelFromAllConnectionsBetweenBlocks();
             for (BlockPair tmpBlockPair : allCreatedBlockPairsByClicks.get(versionNumber)) {
                 paintOneConnectionBetweenTwoBlocks(tmpBlockPair.labelLeftBlock, tmpBlockPair.labelRightBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion);
             }
