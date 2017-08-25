@@ -236,6 +236,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Failed to load post with post-id " + groundTruthCreator.postVersionList.getFirst().getPostId());
+            System.exit(0);
         }
     }
 

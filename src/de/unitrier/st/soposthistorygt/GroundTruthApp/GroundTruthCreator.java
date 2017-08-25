@@ -604,10 +604,20 @@ class GroundTruthCreator extends JFrame{
         }
     }
 
+    private void clearPanelFromLinks(){
+        Graphics tmpGraphics = versionEdgesPanel.getGraphics();
+
+        if(tmpGraphics == null)
+            return;
+
+        tmpGraphics.setColor(Color.LIGHT_GRAY);
+        tmpGraphics.fillRect(0, 0, versionEdgesPanel.getWidth(), versionEdgesPanel.getHeight());
+    }
+
     void paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(int versionNumber){
         if(postVersionList != null) {
+            clearPanelFromLinks();
             for (BlockPair tmpBlockPair : allCreatedBlockPairsByClicks.get(versionNumber)) {
-                paintOneConnectionBetweenTwoBlocks(tmpBlockPair.labelLeftBlock, tmpBlockPair.labelRightBlock, null);
                 paintOneConnectionBetweenTwoBlocks(tmpBlockPair.labelLeftBlock, tmpBlockPair.labelRightBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion);
             }
         }
