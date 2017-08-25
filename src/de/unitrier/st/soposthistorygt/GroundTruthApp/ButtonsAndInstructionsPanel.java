@@ -198,7 +198,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        groundTruthCreator.moveMouseToRepaint();
+        groundTruthCreator.bot.mouseWheel(-100000);
     }
 
     void actionButtonBack(){
@@ -212,7 +212,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        groundTruthCreator.moveMouseToRepaint();
+        groundTruthCreator.bot.mouseWheel(-100000);
     }
 
     private void loadPost(int postId){
