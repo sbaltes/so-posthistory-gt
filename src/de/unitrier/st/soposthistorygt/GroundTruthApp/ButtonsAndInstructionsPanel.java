@@ -198,7 +198,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        groundTruthCreator.bot.mouseWheel(-100000);
+        scrollUpToTop();
     }
 
     void actionButtonBack(){
@@ -212,7 +212,16 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
         }
 
-        groundTruthCreator.bot.mouseWheel(-100000);
+        scrollUpToTop();
+    }
+
+    private void scrollUpToTop(){
+        int oldPosition, newPosition;
+        do{
+            oldPosition = groundTruthCreator.scrollPaneIncludingMainPanel.getVerticalScrollBar().getValue();
+            groundTruthCreator.bot.mouseWheel(-1);
+            newPosition = groundTruthCreator.scrollPaneIncludingMainPanel.getVerticalScrollBar().getValue();
+        }while(oldPosition != newPosition);
     }
 
     private void loadPost(int postId){

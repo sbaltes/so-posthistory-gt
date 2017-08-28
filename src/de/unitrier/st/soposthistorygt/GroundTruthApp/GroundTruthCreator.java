@@ -89,6 +89,7 @@ class GroundTruthCreator extends JFrame{
     /***** Constructor *****/
     GroundTruthCreator(PostVersionList postVersionList, int initialWidth, int initialHeight, Point initialLocation){
         this.setTitle("Ground Truth Creator");
+
         this.postVersionList = postVersionList;
         WIDTH = initialWidth;
         HEIGHT = initialHeight;
@@ -149,9 +150,9 @@ class GroundTruthCreator extends JFrame{
 
         collectAllBlockPairsWithEqualContent();
 
-        moveMouseToRepaint();
-    }
 
+        SwingUtilities.invokeLater(this::repaint);
+    }
 
 
     /***** graphical stuff *****/
@@ -290,8 +291,6 @@ class GroundTruthCreator extends JFrame{
                             }
                         }
 
-                        moveMouseToRepaint();
-
                     }else{
                         if(lastClickedInternVersion == -1){ // click on a unmarked block
                             lastClickedInternVersion = currentInternVersion;
@@ -341,7 +340,6 @@ class GroundTruthCreator extends JFrame{
 
                             unmarkLastClickedBlock();
 
-                            moveMouseToRepaint();
                         }else if(lastClickedBlockIsInstanceOfTextBlockVersion != clickedBlockIsInstanceOfTextBlockVersion){
                             String blockType_currentBlock = String.valueOf((clickedBlockIsInstanceOfTextBlockVersion) ? BlockLifeSpan.Type.textblock : BlockLifeSpan.Type.codeblock);
                             String blockType_lastClickedBlock = String.valueOf((lastClickedBlockIsInstanceOfTextBlockVersion) ? BlockLifeSpan.Type.textblock : BlockLifeSpan.Type.codeblock);
@@ -382,6 +380,7 @@ class GroundTruthCreator extends JFrame{
             });
         }
     }
+
 
     private void removeEmptyTextAndCodeBlocks(){
         if(postVersionList == null)
@@ -535,12 +534,9 @@ class GroundTruthCreator extends JFrame{
 
         navigatorAtBottomLabel.updateNavigatorText();
 
-        // versionEdgesPanel.validate();
-        // versionEdgesPanel.repaint();
         paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
-        // this.getContentPane().validate();
-        // this.getContentPane().repaint(); // necessary because a version could only be repainted simple so that edges from older comparings could remain // TODO: if connections from former versions don't disappear then uncomment this.
     }
+
 
     private void paintBorderOfBlock(JLabel block, boolean blockIsOfInstanceText, boolean blockIsAlreadyMarkedWithBorder){
         Color blockBorderColor = null;
@@ -846,11 +842,4 @@ class GroundTruthCreator extends JFrame{
         }
     }
 
-    void moveMouseToRepaint(){
-        this.repaint();
-        scrollPaneIncludingMainPanel.getVerticalScrollBar().setUnitIncrement(0);
-        bot.mouseWheel(+1);
-        bot.mouseWheel(-1);
-        scrollPaneIncludingMainPanel.getVerticalScrollBar().setUnitIncrement(16);
-    }
 }
