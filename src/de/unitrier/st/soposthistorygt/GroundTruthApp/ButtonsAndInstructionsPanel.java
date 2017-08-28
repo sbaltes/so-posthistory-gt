@@ -216,12 +216,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
     }
 
     private void scrollUpToTop(){
-        int oldPosition, newPosition;
-        do{
-            oldPosition = groundTruthCreator.scrollPaneIncludingMainPanel.getVerticalScrollBar().getValue();
-            groundTruthCreator.bot.mouseWheel(-1);
-            newPosition = groundTruthCreator.scrollPaneIncludingMainPanel.getVerticalScrollBar().getValue();
-        }while(oldPosition != newPosition);
+        groundTruthCreator.scrollPaneIncludingMainPanel.getVerticalScrollBar().setValue(0);
     }
 
     private void loadPost(int postId){
