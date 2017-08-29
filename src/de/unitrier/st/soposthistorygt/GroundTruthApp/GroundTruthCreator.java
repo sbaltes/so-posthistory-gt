@@ -44,7 +44,6 @@ class GroundTruthCreator extends JFrame{
     JPanel versionLeftPanel = new JPanel(new MigLayout());
     JPanel versionRightPanel = new JPanel(new MigLayout());
     JPanel versionEdgesPanel = new JPanel();
-
     NavigatorLabel navigatorAtBottomLabel = null;
 
     /***** colors *****/
@@ -52,6 +51,8 @@ class GroundTruthCreator extends JFrame{
     private Color colorTextBlockUnMarked = new Color(30f/255,120f/255,1, 1f);
     private Color colorCodeBlockMarked = new Color(1,127f/255,0f/255, 0.25f);
     private Color colorCodeBlockUnMarked = new Color(1,127f/255,0f/255, 1f);
+
+    private int borderThickness = 5;
 
 
     /***** Intern variables *****/
@@ -144,6 +145,7 @@ class GroundTruthCreator extends JFrame{
         else
             this.setLocation(initialLocation);
 
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); // https://stackoverflow.com/a/11570414
         this.setFocusable(true);
         this.setVisible(true);
 
@@ -298,7 +300,7 @@ class GroundTruthCreator extends JFrame{
                             lastClickedBlock = currentBlockLabel;
                             lastClickedBlockIsInstanceOfTextBlockVersion = clickedBlockIsInstanceOfTextBlockVersion;
 
-                            currentBlockLabel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA, 5, true));    // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
+                            currentBlockLabel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA, borderThickness, true));    // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
                             borderCurrentBlock[0] = currentBlockLabel.getBorder();
 
                         }else if(lastClickedBlock.equals(currentBlockLabel)){ // second click on same block. Removes temporary saved data. Now another block can be marked.
@@ -361,7 +363,7 @@ class GroundTruthCreator extends JFrame{
                 public void mouseEntered(MouseEvent e) {
                     super.mouseEntered(e);
                     borderCurrentBlock[0] = currentBlockLabel.getBorder();
-                    currentBlockLabel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5, true));    // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
+                    currentBlockLabel.setBorder(BorderFactory.createLineBorder(Color.GREEN, borderThickness, true));    // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
                 }
 
                 @Override
@@ -551,7 +553,7 @@ class GroundTruthCreator extends JFrame{
             blockBorderColor = colorCodeBlockUnMarked;  // nicht markierter CodeBlock
         }
 
-        block.setBorder(BorderFactory.createLineBorder(blockBorderColor, 5, true)); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
+        block.setBorder(BorderFactory.createLineBorder(blockBorderColor, borderThickness, true)); // https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
     }
 
 
@@ -573,9 +575,9 @@ class GroundTruthCreator extends JFrame{
 
         tmpGraphics.drawLine(
                 versionEdgesPanel.getX() + 0,
-                leftBlock.getY() + buttonsAtTopPanel.getHeight() + leftBlock.getHeight() / 2 + 5,
+                leftBlock.getY() + buttonsAtTopPanel.getHeight() + leftBlock.getHeight() / 2 + borderThickness,
                 versionEdgesPanel.getX() + versionEdgesPanel.getWidth(),
-                rightBlock.getY() + buttonsAtTopPanel.getHeight() + rightBlock.getHeight() / 2 + 5);
+                rightBlock.getY() + buttonsAtTopPanel.getHeight() + rightBlock.getHeight() / 2 + borderThickness);
     }
 
     private void paintOneFilmBetweenTwoBlocks(JLabel leftBlock, JLabel rightBlock, Boolean clickedBlockIsInstanceOfTextBlockVersion){
@@ -583,10 +585,10 @@ class GroundTruthCreator extends JFrame{
         tmpGraphics.setColor(clickedBlockIsInstanceOfTextBlockVersion == null ? Color.LIGHT_GRAY : clickedBlockIsInstanceOfTextBlockVersion ? colorTextBlockMarked : colorCodeBlockMarked);
 
         film.reset();
-        film.addPoint(versionEdgesPanel.getX(),                                buttonsAtTopPanel.getHeight() + leftBlock.getY());
-        film.addPoint(versionEdgesPanel.getX(),                                buttonsAtTopPanel.getHeight() + leftBlock.getY() + leftBlock.getHeight());
-        film.addPoint(versionEdgesPanel.getX() + versionEdgesPanel.getWidth(), buttonsAtTopPanel.getHeight() + rightBlock.getY() + rightBlock.getHeight());
-        film.addPoint(versionEdgesPanel.getX() + versionEdgesPanel.getWidth(), buttonsAtTopPanel.getHeight() + rightBlock.getY());
+        film.addPoint(versionEdgesPanel.getX(),                                versionLeftPanel.getComponent(0).getY() + buttonsAtTopPanel.getHeight() + leftBlock.getY());
+        film.addPoint(versionEdgesPanel.getX(),                                versionLeftPanel.getComponent(0).getY() + buttonsAtTopPanel.getHeight() + leftBlock.getY() + leftBlock.getHeight());
+        film.addPoint(versionEdgesPanel.getX() + versionEdgesPanel.getWidth(), versionRightPanel.getComponent(0).getY() + buttonsAtTopPanel.getHeight() + rightBlock.getY() + rightBlock.getHeight());
+        film.addPoint(versionEdgesPanel.getX() + versionEdgesPanel.getWidth(), versionRightPanel.getComponent(0).getY() + buttonsAtTopPanel.getHeight() + rightBlock.getY());
 
         tmpGraphics.fillPolygon(film);
     }
