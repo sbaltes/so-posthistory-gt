@@ -216,11 +216,12 @@ class ButtonsAndInstructionsPanel extends JPanel {
     }
 
     private void scrollUpToTop(){
-        groundTruthCreator.scrollPaneIncludingMainPanel.getVerticalScrollBar().setValue(0);
+        groundTruthCreator.scrollPaneIncludingMainPanel.getVerticalScrollBar().setValue(0); // https://stackoverflow.com/a/291753
     }
 
     private void loadPost(int postId){
         try {
+
             groundTruthCreator.dispose();
             System.gc();
 
@@ -237,12 +238,12 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
 
-
-        }catch (Exception e){
+        }catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Failed to load post with post-id " + groundTruthCreator.postVersionList.getFirst().getPostId());
             System.exit(0);
         }
     }
+
 
     private void setListenersToButtons(){
 
