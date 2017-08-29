@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.Vector;
 import java.util.logging.Level;
 
@@ -342,7 +343,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                     return;
                 }
 
-                JPanel dialog = new JPanel();
+                JPanel dialog = new JPanel(new MigLayout());
                 JComboBox<String> leftOrRightVersion = new JComboBox<>();
                 JComboBox<Integer> positionOfBlock = new JComboBox<>();
                 positionOfBlock.addItem(1);
@@ -352,13 +353,14 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 leftOrRightVersion.addItem("left");
                 leftOrRightVersion.addItem("right");
 
+
                 dialog.addMouseMotionListener(new MouseMotionAdapter() {
                     @Override
                     public void mouseMoved(MouseEvent e) {
                         super.mouseMoved(e);
 
                         lastSelectedItem[0] = (Integer)positionOfBlock.getSelectedItem();
-                        version[0] = (leftOrRightVersion.getSelectedItem().equals("left")) ? groundTruthCreator.currentLeftVersion : groundTruthCreator.currentLeftVersion + 1;
+                        version[0] = (Objects.equals(leftOrRightVersion.getSelectedItem(), "left")) ? groundTruthCreator.currentLeftVersion : groundTruthCreator.currentLeftVersion + 1;
                         positionOfBlock.removeAllItems();
                         for(int i = 0; i<groundTruthCreator.postVersionList.get(version[0]).getPostBlocks().size(); i++){
                             positionOfBlock.addItem(i+1);
@@ -378,6 +380,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 dialog.add(Box.createHorizontalStrut(5)); // a spacer
                 dialog.add(new JLabel("comment:"));
                 dialog.add(comment);
+
 
                 int procedure = JOptionPane.showConfirmDialog(null, dialog,
                         "Please side and position of block", JOptionPane.OK_CANCEL_OPTION);
