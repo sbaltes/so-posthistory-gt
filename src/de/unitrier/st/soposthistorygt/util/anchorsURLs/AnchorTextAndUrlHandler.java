@@ -20,7 +20,7 @@ public class AnchorTextAndUrlHandler {
                 integrateMatchToAnchorTextAndUrlPairs(matcher, tmpType, anchorTextAndUrlPairs);
             }
         }
-
+        
         return anchorTextAndUrlPairs;
     }
 
@@ -173,10 +173,14 @@ public class AnchorTextAndUrlHandler {
 
                 case type_markdownLinkReference:
 
-                    markdownText = markdownText.replace(
-                            anchorTextAndUrlPair.fullMatch,
-                            "[" + anchorTextAndUrlPair.anchor + "](" + anchorTextAndUrlPair.url + ((anchorTextAndUrlPair.title != null) ? " " + anchorTextAndUrlPair.title : "") + ")"
-                    );
+
+                    if(anchorTextAndUrlPair.fullMatch != null) {
+                        markdownText = markdownText.replace(
+                                anchorTextAndUrlPair.fullMatch,
+                                "[" + anchorTextAndUrlPair.anchor + "](" + anchorTextAndUrlPair.url + ((anchorTextAndUrlPair.title != null) ? " " + anchorTextAndUrlPair.title : "") + ")"
+                        );
+                    }
+
 
                     markdownText = markdownText.replace(
                             anchorTextAndUrlPair.fullMatch2,
