@@ -20,7 +20,8 @@ public class AnchorTextAndUrlHandler {
                 integrateMatchToAnchorTextAndUrlPairs(matcher, tmpType, anchorTextAndUrlPairs);
             }
         }
-        
+
+        System.out.println(anchorTextAndUrlPairs); // TODO : LOESCHEN
         return anchorTextAndUrlPairs;
     }
 
@@ -174,11 +175,18 @@ public class AnchorTextAndUrlHandler {
                 case type_markdownLinkReference:
 
 
-                    if(anchorTextAndUrlPair.fullMatch != null) {
-                        markdownText = markdownText.replace(
-                                anchorTextAndUrlPair.fullMatch,
-                                "[" + anchorTextAndUrlPair.anchor + "](" + anchorTextAndUrlPair.url + ((anchorTextAndUrlPair.title != null) ? " " + anchorTextAndUrlPair.title : "") + ")"
-                        );
+                    if(anchorTextAndUrlPair.fullMatch != null) {   // handles e.g. posts 1336419, 12606836
+                        if(anchorTextAndUrlPair.anchor.isEmpty()){ // handles e.g. post 42695138
+                            markdownText = markdownText.replace(
+                                    anchorTextAndUrlPair.fullMatch,
+                                    ""
+                            );
+                        }else {
+                            markdownText = markdownText.replace(
+                                    anchorTextAndUrlPair.fullMatch,
+                                    "[" + anchorTextAndUrlPair.anchor + "](" + anchorTextAndUrlPair.url + ((anchorTextAndUrlPair.title != null) ? " " + anchorTextAndUrlPair.title : "") + ")"
+                            );
+                        }
                     }
 
 
