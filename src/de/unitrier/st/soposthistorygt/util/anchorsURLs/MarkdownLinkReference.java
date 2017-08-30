@@ -21,5 +21,6 @@ public class MarkdownLinkReference {
 
 
     //public static final Pattern regex = Pattern.compile("\\[[^]]+]:\\s*((?:http|ftp|https)://(?:[\\w_-]+(?:(?:\\.[\\w_-]+)+))(?:[\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-]))?");
-    public static final Pattern regex = Pattern.compile("\\s(\\[([^]]+)]:\\s*((?:http|ftp|https)://(?:[\\w_-]+(?:(?:\\.[\\w_-]+)+))(?:[\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-]))?)(\\s+(\".*\"))?|(\\[([^]]*)]\\[(\\s*.*?\\s*)])");
+    public static final Pattern regex_top = Pattern.compile("\\[([^]]*)]\\[(\\s*.*?\\s*)]");
+    public static final Pattern regex_bottom = Pattern.compile("\\s(\\[([^]]+)]:\\s*((?:http|ftp|https)://(?:[\\w_-]+(?:(?:\\.[\\w_-]+)+))(?:[\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-]))?)(\\s+(\".*\"))?");
 }

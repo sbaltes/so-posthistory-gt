@@ -1,5 +1,6 @@
 package de.unitrier.st.soposthistorygt.util.anchorsURLs;
 
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -21,8 +22,48 @@ public class AnchorTextAndUrlHandler {
             }
         }
 
+        mergeMarkdownLinkReferences(anchorTextAndUrlPairs);
+
         System.out.println(anchorTextAndUrlPairs); // TODO : LOESCHEN
         return anchorTextAndUrlPairs;
+    }
+
+    private void mergeMarkdownLinkReferences(Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs) {
+
+        // merge if possible
+        for (AnchorTextAndUrlPair pairA : anchorTextAndUrlPairs) {
+            if(pairA.type == AnchorTextAndUrlPair.AnchorRefUrlType.type_markdownLinkReference_top){
+                for(AnchorTextAndUrlPair pairB : anchorTextAndUrlPairs){
+                    if(pairB.type == AnchorTextAndUrlPair.AnchorRefUrlType.type_markdownLinkReference_bottom
+                            && Objects.equals(pairA.reference, pairB.reference)){
+                        pairA.url = pairB.url;
+                        pairA.fullMatch2 = pairB.fullMatch2;
+                    }
+                }
+            }
+        }
+
+        // delete references with urls if merged, otherwise keep them only to delete invalid markdown link references
+        Iterator<AnchorTextAndUrlPair> iterator = anchorTextAndUrlPairs.iterator();
+        for (int i=0; i<anchorTextAndUrlPairs.size(); i++) {
+            AnchorTextAndUrlPair pairA = anchorTextAndUrlPairs.get(i);
+            boolean canBeDeleted = false;
+            if(pairA.type == AnchorTextAndUrlPair.AnchorRefUrlType.type_markdownLinkReference_bottom){
+                for(AnchorTextAndUrlPair pairB : anchorTextAndUrlPairs){
+                    if(pairB.type == AnchorTextAndUrlPair.AnchorRefUrlType.type_markdownLinkReference_top
+                            && Objects.equals(pairA.reference, pairB.reference)){
+                        canBeDeleted = true;
+                        break;
+                    }
+                }
+
+                // transport it to the end of the list so it cannot delete a reference before merged pair does
+                anchorTextAndUrlPairs.remove(pairA);
+                if(!canBeDeleted){
+                    anchorTextAndUrlPairs.add(pairA);
+                }
+            }
+        }
     }
 
     private void integrateMatchToAnchorTextAndUrlPairs(Matcher matcher, AnchorTextAndUrlPair.AnchorRefUrlType type, Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs){
@@ -69,18 +110,37 @@ public class AnchorTextAndUrlHandler {
                 break;
 
 
-            case type_markdownLinkReference:
+            case type_markdownLinkReference_top:
+
+                String fullMatch = null;
                 String anchor = null;
                 String referenceTop = null;
 
+                try {
+                    fullMatch = matcher.group();
+                    anchor = matcher.group(1);
+                    referenceTop = matcher.group(2);
+                }catch (Exception ignored){}
+
+                anchorTextAndUrlPairs.add(new AnchorTextAndUrlPair(
+                                fullMatch,
+                                anchor,
+                                referenceTop,
+                                null,
+                                null,
+                                type
+                        )
+                );
+                anchorTextAndUrlPairs.lastElement().fullMatch = fullMatch;
+
+                break;
+
+
+
+            case type_markdownLinkReference_bottom:
                 String referenceBottom = null;
                 String url = null;
                 String title = null;
-
-                try {
-                    anchor = matcher.group(7);
-                    referenceTop = matcher.group(8);
-                }catch (Exception ignored){}
 
                 try{
                     referenceBottom = matcher.group(2);
@@ -88,55 +148,16 @@ public class AnchorTextAndUrlHandler {
                     title = matcher.group(5);
                 }catch (Exception ignored){}
 
-                if(referenceTop == null){
-                    boolean anchorTextAndURLPairAlreadyExisted = false;
-                    for (AnchorTextAndUrlPair anchorTextAndUrlPair : anchorTextAndUrlPairs) {
-                        if (anchorTextAndUrlPair.type == type && Objects.equals(referenceBottom, anchorTextAndUrlPair.reference)) {
-                            anchorTextAndUrlPair.url = url;
-                            anchorTextAndUrlPair.title = title;
-                            anchorTextAndUrlPair.fullMatch2 = matcher.group();
-                            anchorTextAndURLPairAlreadyExisted = true;
-                            break;
-                        }
-                    }
-
-                    if(!anchorTextAndURLPairAlreadyExisted) {
-                        anchorTextAndUrlPairs.add(new AnchorTextAndUrlPair(
-                                        null,
-                                        null,
-                                        referenceBottom,
-                                        url,
-                                        title,
-                                        type
-                                )
-                        );
-                        anchorTextAndUrlPairs.lastElement().fullMatch2 = matcher.group();
-                    }
-
-                }else{
-                    boolean anchorTextAndURLPairAlreadyExisted = false;
-                    for (AnchorTextAndUrlPair anchorTextAndUrlPair : anchorTextAndUrlPairs) {
-                        if (anchorTextAndUrlPair.type == type && Objects.equals(referenceTop, anchorTextAndUrlPair.reference)) {
-                            anchorTextAndUrlPair.anchor = anchor;
-                            anchorTextAndUrlPair.fullMatch2 = matcher.group();
-                            anchorTextAndURLPairAlreadyExisted = true;
-                            break;
-                        }
-                    }
-
-                    if(!anchorTextAndURLPairAlreadyExisted) {
-                        anchorTextAndUrlPairs.add(new AnchorTextAndUrlPair(
-                                        matcher.group(),
-                                        anchor,
-                                        referenceTop,
-                                        null,
-                                        null,
-                                        type
-                                )
-                        );
-                        anchorTextAndUrlPairs.lastElement().fullMatch = matcher.group();
-                    }
-                }
+                anchorTextAndUrlPairs.add(new AnchorTextAndUrlPair(
+                                null,
+                                null,
+                                referenceBottom,
+                                url,
+                                title,
+                                type
+                        )
+                );
+                anchorTextAndUrlPairs.lastElement().fullMatch2 = matcher.group();
 
                 break;
 
@@ -172,10 +193,8 @@ public class AnchorTextAndUrlHandler {
                     // do nothing, this is the normalized form
                     break;
 
-                case type_markdownLinkReference:
-
-
-                    if(anchorTextAndUrlPair.fullMatch != null) {   // handles e.g. posts 1336419, 12606836
+                case type_markdownLinkReference_top:
+                    //if(anchorTextAndUrlPair.fullMatch != null) {   // handles e.g. posts 1336419, 12606836
                         if(anchorTextAndUrlPair.anchor.isEmpty()){ // handles e.g. post 42695138
                             markdownText = markdownText.replace(
                                     anchorTextAndUrlPair.fullMatch,
@@ -187,8 +206,16 @@ public class AnchorTextAndUrlHandler {
                                     "[" + anchorTextAndUrlPair.anchor + "](" + anchorTextAndUrlPair.url + ((anchorTextAndUrlPair.title != null) ? " " + anchorTextAndUrlPair.title : "") + ")"
                             );
                         }
-                    }
 
+                    markdownText = markdownText.replace(
+                            anchorTextAndUrlPair.fullMatch2,
+                            ""
+                    );
+                    //}
+
+                    break;
+
+                case type_markdownLinkReference_bottom:
 
                     markdownText = markdownText.replace(
                             anchorTextAndUrlPair.fullMatch2,
@@ -196,6 +223,7 @@ public class AnchorTextAndUrlHandler {
                     );
 
                     break;
+
 
                 case type_anchorLink:
                     // do nothing, this would be the result after markup
