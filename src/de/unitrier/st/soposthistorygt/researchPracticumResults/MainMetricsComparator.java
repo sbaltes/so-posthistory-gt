@@ -8,7 +8,7 @@ public class MainMetricsComparator {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        for(int i=0; i<5; i++) {
+        for(int i=0; i<1; i++) {
             StopWatch stopWatch = new StopWatch();
             stopWatch.reset();
             stopWatch.start();

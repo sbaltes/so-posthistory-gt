@@ -74,4 +74,8 @@ public class BlockLifeSpanSnapshot{
     public String toString(){
         return "(" + version + "," + localId + ")";
     }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 }
