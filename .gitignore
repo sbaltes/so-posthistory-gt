@@ -1,5 +1,6 @@
 # git config --global core.excludesfile ~/.gitignore
 
+######################
 # OS generated files #
 ######################
 *~
@@ -12,24 +13,35 @@
 ehthumbs.db
 Thumbs.db
 
+##############
 # Java/Scala #
 ##############
 *.class
 
+##########################
 # Webstorm/IntelliJ IDEA #
 ##########################
 .idea/
 *.iml
 
+#########
 # Excel #
 #########
 ~$*
 
+###########
 # RStudio #
 ###########
 .Rhistory
 .RData
 
+#########
 # Maven #
-###########
+#########
 target/
+
+########
+# Misc #
+########
+PostId_VersionCount_SO_17-06.csv
+PostId_VersionCount_SO_Java_17-06.csv
