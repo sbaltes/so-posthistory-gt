@@ -1,23 +1,7 @@
 package de.unitrier.st.soposthistorygt.tests;
 
-import de.unitrier.st.soposthistorygt.researchPracticumResults.GroundTruth;
-import de.unitrier.st.soposthistorygt.researchPracticumResults.MetricResult;
-import de.unitrier.st.soposthistorygt.researchPracticumResults.MetricsComparator;
-import de.unitrier.st.soposthistorygt.researchPracticumResults.StaticPostVersionsLists;
-import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
-import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
-import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
-import de.unitrier.st.soposthistory.version.PostVersionList;
-import org.junit.jupiter.api.Test;
-
-import java.util.Vector;
-
-import static de.unitrier.st.soposthistorygt.util.BlockLifeSpan.Type.codeblock;
-import static de.unitrier.st.soposthistorygt.util.BlockLifeSpan.Type.textblock;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class MetricsComparatorTest {
-
+/*
     // TODO: PostHistory.processVersionHistory() -> add option to only process text or code blocks
 
     final static double MAX_DELTA = 0.00001;
@@ -349,4 +333,5 @@ public class MetricsComparatorTest {
         assert(groundTruthLifeSpans_code.equals(metricToBeComparedLifeSpans_code));
 
     }
+    */
 }

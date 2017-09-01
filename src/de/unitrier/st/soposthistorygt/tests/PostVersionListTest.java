@@ -1,10 +1,8 @@
 package de.unitrier.st.soposthistorygt.tests;
 
-import de.unitrier.st.soposthistorygt.researchPracticumResults.StaticPostVersionsLists;
-import org.junit.jupiter.api.Test;
 
 public class PostVersionListTest {
-
+/*
     @Test
     public void testGetStatisticsOfPostVersionList(){
 
@@ -13,4 +11,5 @@ public class PostVersionListTest {
 
         System.out.println(staticPostVersionsLists.getStatisticsOfPostVersionList());
     }
+    */
 }
