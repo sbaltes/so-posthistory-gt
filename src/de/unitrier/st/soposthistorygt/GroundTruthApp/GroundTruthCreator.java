@@ -32,7 +32,7 @@ import java.util.logging.Level;
 import static de.unitrier.st.soposthistory.history.PostHistoryIterator.logger;
 
 
-class GroundTruthCreator extends JFrame{
+public class GroundTruthCreator extends JFrame{
 
     /***** Swing components *****/
     JPanel mainPanel = new JPanel(new BorderLayout());
@@ -124,8 +124,8 @@ class GroundTruthCreator extends JFrame{
 
         mainPanel.setBackground(Color.BLACK);
 
-        normalizeURLsInTextBlocksOfAllVersions();
-        removeEmptyTextAndCodeBlocks();
+        normalizeURLsInTextBlocksOfAllVersions(postVersionList, anchorTextAndUrlHandler);
+        removeEmptyTextAndCodeBlocks(postVersionList);
         // mergeConsecutiveBlocksOfSameType();
 
 
@@ -384,7 +384,7 @@ class GroundTruthCreator extends JFrame{
     }
 
 
-    private void removeEmptyTextAndCodeBlocks(){
+    public static void removeEmptyTextAndCodeBlocks(PostVersionList postVersionList){
         if(postVersionList == null)
             return;
 
@@ -426,7 +426,7 @@ class GroundTruthCreator extends JFrame{
         }
     }
 
-    private void normalizeURLsInTextBlocksOfAllVersions(){
+    public static void normalizeURLsInTextBlocksOfAllVersions(PostVersionList postVersionList, AnchorTextAndUrlHandler anchorTextAndUrlHandler){
         if(postVersionList == null)
             return;
 

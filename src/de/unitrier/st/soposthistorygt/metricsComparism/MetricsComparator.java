@@ -1,26 +1,36 @@
-package de.unitrier.st.soposthistorygt.researchPracticumResults;
+package de.unitrier.st.soposthistorygt.metricsComparism;
 
-import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
 import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
+import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
 import de.unitrier.st.stringsimilarity.profile.Base;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 import java.util.function.BiFunction;
 
+import static de.unitrier.st.soposthistorygt.metricsComparism.GroundTruthExtractionOfCSVs.extractListOfListsOfBlockLifeSpansOfAllExportedCSVs;
+import static de.unitrier.st.soposthistorygt.metricsComparism.GroundTruthExtractionOfCSVs.filterListOfListOfBlockLifeSpansByType;
 import static de.unitrier.st.stringsimilarity.edit.Base.*;
 import static de.unitrier.st.stringsimilarity.edit.Variants.*;
 import static de.unitrier.st.stringsimilarity.fingerprint.Variants.*;
 import static de.unitrier.st.stringsimilarity.profile.Variants.*;
 import static de.unitrier.st.stringsimilarity.set.Variants.*;
 
-public class MetricsComparator extends StaticPostVersionsLists {
-    private static StaticPostVersionsLists staticPostVersionsLists = new StaticPostVersionsLists();
-    public static Vector<Vector<BlockLifeSpan>> groundTruthBlocks_text = setPerfectLinksAndCreateAllGroundTruthBlockLifeSpans_FromAllPostVersionLists_text();
-    public static Vector<Vector<BlockLifeSpan>> groundTruthBlocks_code = setPerfectLinksAndCreateAllGroundTruthBlockLifeSpans_FromAllPostVersionLists_code();
+public class MetricsComparator{
+
+    String pathToDirectoryOfAllPostHistories;
+    String pathToDirectoryOfAllCompletedCSVs;
+
+    public static PostVersionsListManagement postVersionsListManagement;
+    public static List<List<BlockLifeSpan>> groundTruth;
+    public static List<List<BlockLifeSpan>> groundTruthBlocks_text;
+    public static List<List<BlockLifeSpan>> groundTruthBlocks_code;
+
 
     // to make automated process ease
     public enum MetricEnum{
@@ -148,7 +158,7 @@ public class MetricsComparator extends StaticPostVersionsLists {
         winnowingNormalizedShingle2Overlap,
         winnowingNormalizedShingle3Overlap,
 
-
+/*
         rkrGstTokenJaccardMinMatchLength1,
 
         rkrGst2GramJaccardMinMatchLength1,
@@ -387,7 +397,7 @@ public class MetricsComparator extends StaticPostVersionsLists {
 
         rkrGstNormalizedShingle2OverlapMinMatchLength3,
         rkrGstNormalizedShingle3OverlapMinMatchLength3,
-
+*/
         cosineNormalizedTokensBool,
         cosineNormalizedTokensTermFrequency,
         cosineNormalizedTokensNormalizedTermFrequency,
@@ -1043,10 +1053,102 @@ public class MetricsComparator extends StaticPostVersionsLists {
         }
     }
 
-    public MetricsComparator(){
-        staticPostVersionsLists.init();
+    public MetricsComparator(String pathToDirectoryOfPostHistories, String pathToDirectoryOfCompletedCSVs) throws IOException {
+
+        this.pathToDirectoryOfAllPostHistories = pathToDirectoryOfPostHistories;
+        this.pathToDirectoryOfAllCompletedCSVs = pathToDirectoryOfCompletedCSVs;
+
+        postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfPostHistories);
+
+        groundTruth = extractListOfListsOfBlockLifeSpansOfAllExportedCSVs(pathToDirectoryOfCompletedCSVs);
+        groundTruthBlocks_text = filterListOfListOfBlockLifeSpansByType(groundTruth, BlockLifeSpan.Type.textblock);
+        groundTruthBlocks_code = filterListOfListOfBlockLifeSpansByType(groundTruth, BlockLifeSpan.Type.codeblock);
+
+        checkWhetherSetOfCompletedPostsIsSameAsSetOfPostHistories();
+
+        checkWhetherNumberOfBlocksIsSame();
     }
 
+
+    private void checkWhetherSetOfCompletedPostsIsSameAsSetOfPostHistories() {
+        Vector<Integer> postIdsOfGroundTruth = new Vector<>();
+        Vector<Integer> postIdsOfPostHistories = new Vector<>();
+        for(int i=0; i<groundTruth.size(); i++){
+            postIdsOfGroundTruth.add(groundTruth.get(i).get(0).firstElement().getPostId());
+        }
+
+        for(int i=0; i<postVersionsListManagement.postVersionLists.size(); i++){
+            postIdsOfPostHistories.add(postVersionsListManagement.postVersionLists.get(i).getFirst().getPostId());
+        }
+
+        Collections.sort(postIdsOfGroundTruth);
+        Collections.sort(postIdsOfPostHistories);
+
+        if(!postIdsOfGroundTruth.equals(postIdsOfPostHistories)){
+            Vector<Integer> invalidPosts = new Vector<>();
+            for(int i=0; i<postIdsOfGroundTruth.size(); i++){
+                if(!postIdsOfPostHistories.contains(postIdsOfGroundTruth.get(i))){
+                    invalidPosts.add(postIdsOfGroundTruth.get(i));
+                }
+            }
+            for(int i=0; i<postIdsOfPostHistories.size(); i++){
+                if(!postIdsOfGroundTruth.contains(postIdsOfPostHistories.get(i))){
+                    invalidPosts.add(postIdsOfPostHistories.get(i));
+                }
+            }
+
+            System.err.println("Every post version list must have a corresponding completed csv, but doesn't.");
+            System.err.println("Check the following post(s): " + invalidPosts);
+            System.exit(0);
+        }
+    }
+
+    private void checkWhetherNumberOfBlocksIsSame() {
+
+        for(int i=0; i<groundTruthBlocks_text.size(); i++){
+
+            int numberOfTextBlocksOverallInGroundTruth = 0;
+            for(int j=0; j<groundTruthBlocks_text.get(i).size(); j++){
+                numberOfTextBlocksOverallInGroundTruth += groundTruthBlocks_text.get(i).get(j).size();
+            }
+
+            int numberOfTextBlocksOverallInComputedMetric = 0;
+            List<BlockLifeSpan> blockLifeSpansComputedText = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionsListManagement.postVersionLists.get(i), BlockLifeSpan.Type.textblock);
+            for(int j=0; j<blockLifeSpansComputedText.size(); j++){
+                numberOfTextBlocksOverallInComputedMetric += blockLifeSpansComputedText.get(j).size();
+            }
+
+            if(numberOfTextBlocksOverallInGroundTruth != numberOfTextBlocksOverallInComputedMetric){
+                System.err.println(
+                        "Number of text blocks that will be compared must be the same but are different in post with id "
+                                + postVersionsListManagement.postVersionLists.get(i).getFirst().getPostId()
+                + " (" + numberOfTextBlocksOverallInGroundTruth + " and " + numberOfTextBlocksOverallInComputedMetric + ")");
+                System.exit(0);
+            }
+        }
+
+        for(int i=0; i<groundTruthBlocks_code.size(); i++){
+
+            int numberOfCodeBlocksOverallInGroundTruth = 0;
+            for(int j=0; j<groundTruthBlocks_code.get(i).size(); j++){
+                numberOfCodeBlocksOverallInGroundTruth += groundTruthBlocks_code.get(i).get(j).size();
+            }
+
+            int numberOfCodeBlocksOverallInComputedMetric = 0;
+            List<BlockLifeSpan> blockLifeSpansComputedCode = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionsListManagement.postVersionLists.get(i), BlockLifeSpan.Type.codeblock);
+            for(int j=0; j<blockLifeSpansComputedCode.size(); j++){
+                numberOfCodeBlocksOverallInComputedMetric += blockLifeSpansComputedCode.get(j).size();
+            }
+
+            if(numberOfCodeBlocksOverallInGroundTruth != numberOfCodeBlocksOverallInComputedMetric){
+                System.err.println(
+                        "Number of code blocks that will be compared must be the same but are different in post with id "
+                                + postVersionsListManagement.postVersionLists.get(i).getFirst().getPostId()
+                                + " (" + numberOfCodeBlocksOverallInGroundTruth + " and " + numberOfCodeBlocksOverallInComputedMetric + ")");
+                System.exit(0);
+            }
+        }
+    }
 
     // ****** Edit based *****
     static BiFunction<String, String, Double> levenshteinStandard = (x, y) -> levenshtein(x,y);
@@ -1485,104 +1587,34 @@ public class MetricsComparator extends StaticPostVersionsLists {
     static BiFunction<String, String, Double> overlapNormalizedShingles3 = (x, y) -> shingleOverlapNormalized(x,y,3);
 
 
-    private static Vector<Vector<BlockLifeSpan>> setPerfectLinksAndCreateAllGroundTruthBlockLifeSpans_FromAllPostVersionLists_text(){
 
-        // compute and get related blocks
-        GroundTruth groundTruth = new GroundTruth();
-        groundTruth.init();
-        groundTruth.setPerfectPredAndSucc();
 
-        Vector<Vector<BlockLifeSpan>> allGroundTruthBlocks_text = new Vector<>();
 
-        for(int i=0; i< PostVersionListEnum.values().length; i++){
-            Vector<BlockLifeSpan> metricToBeComparedBlocks_text = BlockLifeSpan.getLifeSpansOfAllBlocks(groundTruth.getPostVersionListWithEnumID(PostVersionListEnum.values()[i]), BlockLifeSpan.Type.textblock);
-            allGroundTruthBlocks_text.add(metricToBeComparedBlocks_text);
-        }
-
-        return allGroundTruthBlocks_text;
-    }
-
-    private static Vector<Vector<BlockLifeSpan>> setPerfectLinksAndCreateAllGroundTruthBlockLifeSpans_FromAllPostVersionLists_code(){
-
-        // compute and get related blocks
-        GroundTruth groundTruth = new GroundTruth();
-        groundTruth.init();
-        groundTruth.setPerfectPredAndSucc();
-
-        Vector<Vector<BlockLifeSpan>> allGroundTruthBlocks_code = new Vector<>();
-
-        for(int i=0; i< PostVersionListEnum.values().length; i++){
-            Vector<BlockLifeSpan> metricToBeComparedBlocks_code = BlockLifeSpan.getLifeSpansOfAllBlocks(groundTruth.getPostVersionListWithEnumID(PostVersionListEnum.values()[i]), BlockLifeSpan.Type.codeblock);
-
-            allGroundTruthBlocks_code.add(metricToBeComparedBlocks_code);
-        }
-
-        return allGroundTruthBlocks_code;
-    }
-
-/** code seems to be superfluous
-    private static Vector<Vector<BlockLifeSpan>> computeSimilarityAndCreateAllBlocks_FromMetricToCompare_text(PostVersionListEnum postVersionListEnumID, BiFunction metric){
-
-        // compute and get related blocks
-        MetricsComparator metricsComparator = new MetricsComparator();
-        metricsComparator.init();
-
-        metricsComparator.computeSimilarityAndDiffsOfAllBlocksFromMetricToCompare_text(postVersionListEnumID, metric);
-
-        Vector<Vector<BlockLifeSpan>> allMetricToBeComparedBlocks_text = new Vector<>();
-
-        for(int i=0; i< PostVersionListEnum.values().length; i++){
-            Vector<BlockLifeSpan> metricToBeComparedBlocks_text = BlockLifeSpan.getLifeSpansOfAllBlocks(staticPostVersionsLists.getPostVersionListWithEnumID(PostVersionListEnum.values()[i]), BlockLifeSpan.Type.textblock);
-            allMetricToBeComparedBlocks_text.add(metricToBeComparedBlocks_text);
-        }
-
-        return allMetricToBeComparedBlocks_text;
-    }
-
-    private static Vector<Vector<BlockLifeSpan>> computeSimilarityAndCreateAllBlocks_FromMetricToCompare_code(PostVersionListEnum postVersionListEnumID, BiFunction metric){
-
-        // compute and get related blocks
-        MetricsComparator metricsComparator = new MetricsComparator();
-        metricsComparator.init();
-
-        metricsComparator.computeSimilarityAndDiffsOfAllBlocksFromMetricToCompare_code(postVersionListEnumID, metric);
-
-        Vector<Vector<BlockLifeSpan>> allMetricToBeComparedBlocks_code = new Vector<>();
-
-        for(int i=0; i< PostVersionListEnum.values().length; i++){
-            Vector<BlockLifeSpan> metricToBeComparedBlocks_code = BlockLifeSpan.getLifeSpansOfAllBlocks(staticPostVersionsLists.getPostVersionListWithEnumID(PostVersionListEnum.values()[i]), BlockLifeSpan.Type.codeblock);
-            allMetricToBeComparedBlocks_code.add(metricToBeComparedBlocks_code);
-        }
-
-        return allMetricToBeComparedBlocks_code;
-    }
-*/
-
-    public MetricResult computeSimilarity_extractLifeSpans_writeInResult_text(PostVersionListEnum postVersionListEnumID, BiFunction metric) {
+    public MetricResult computeSimilarity_extractLifeSpans_writeInResult_text(int postVersionListID, BiFunction<String, String, Double> metric) {
 
         MetricResult metricResult = new MetricResult();
 
         metricResult.stopWatch.reset();
         metricResult.stopWatch.start();
         TextBlockVersion.similarityMetric = metric;
-        this.getPostVersionListWithEnumID(postVersionListEnumID).processVersionHistory();
-        //metricResult = this.computeSimilarityAndDiffsOfPostVersionList_text(postVersionListEnumID, metric);
+        postVersionsListManagement.getPostVersionListWithID(postVersionListID).processVersionHistory();
         metricResult.stopWatch.stop();
         metricResult.stopWatch.getNanoTime();
 
         metricResult.lifeSpansOfAllBlocks_text = BlockLifeSpan.getLifeSpansOfAllBlocks(
-                this.getPostVersionListWithEnumID(
-                        postVersionListEnumID
+                postVersionsListManagement.getPostVersionListWithID(
+                        postVersionListID
                 ), BlockLifeSpan.Type.textblock
         );
 
         metricResult.numberOfSplittings_text = compareTwoListsOfBlockLifeSpans_splitting(
-                groundTruthBlocks_text.get(staticPostVersionsLists.getPositionOfEnum(postVersionListEnumID)),
+                groundTruthBlocks_text.get(postVersionsListManagement.getPositionOfPostWithID(postVersionListID)),
                 metricResult.lifeSpansOfAllBlocks_text);
 
         metricResult.numberOfFalsePositives_text = compareTwoListsOfBlockLifeSpans_falsePositives(
-                groundTruthBlocks_text.get(staticPostVersionsLists.getPositionOfEnum(postVersionListEnumID)),
-                metricResult.lifeSpansOfAllBlocks_text);
+                metricResult.lifeSpansOfAllBlocks_text,
+                groundTruthBlocks_text.get(postVersionsListManagement.getPositionOfPostWithID(postVersionListID))
+                );
 
         metricResult.updateMetricResult_text();
 
@@ -1591,67 +1623,33 @@ public class MetricsComparator extends StaticPostVersionsLists {
         return metricResult;
     }
 
-    public MetricResult computeSimilarity_extractLifeSpans_writeInResult_code(PostVersionListEnum postVersionListEnumID, BiFunction metric){
+    public MetricResult computeSimilarity_extractLifeSpans_writeInResult_code(int postVersionListID, BiFunction<String, String, Double> metric){
 
         MetricResult metricResult = new MetricResult();
 
         metricResult.stopWatch.reset();
         metricResult.stopWatch.start();
         CodeBlockVersion.similarityMetric = metric;
-        this.getPostVersionListWithEnumID(postVersionListEnumID).processVersionHistory();
-        //metricResult = this.computeSimilarityAndDiffsOfPostVersionList_code(postVersionListEnumID, metric);
+        postVersionsListManagement.getPostVersionListWithID(postVersionListID).processVersionHistory();
         metricResult.stopWatch.stop();
         metricResult.stopWatch.getNanoTime();
 
         metricResult.lifeSpansOfAllBlocks_code = BlockLifeSpan.getLifeSpansOfAllBlocks(
-                this.getPostVersionListWithEnumID(
-                        postVersionListEnumID
-                ), BlockLifeSpan.Type.codeblock
+                postVersionsListManagement.getPostVersionListWithID(
+                        postVersionListID
+                ),
+                BlockLifeSpan.Type.codeblock
         );
 
         metricResult.numberOfSplittings_code = compareTwoListsOfBlockLifeSpans_splitting(
-                groundTruthBlocks_code.get(staticPostVersionsLists.getPositionOfEnum(postVersionListEnumID)),
+                groundTruthBlocks_code.get(postVersionsListManagement.getPositionOfPostWithID(postVersionListID)),
                 metricResult.lifeSpansOfAllBlocks_code);
 
         metricResult.numberOfFalsePositives_code = compareTwoListsOfBlockLifeSpans_falsePositives(
-                groundTruthBlocks_code.get(staticPostVersionsLists.getPositionOfEnum(postVersionListEnumID)),
-                metricResult.lifeSpansOfAllBlocks_code);
-
-        metricResult.updateMetricResult_code();
-
-        metricResult.calculateAverageTime();
-
-        return metricResult;
-    }
-
-/** code seems to be superfluous
-    private MetricResult computeSimilarityAndDiffsOfPostVersionList_text(PostVersionListEnum postVersionListEnum, BiFunction metric){
-
-        MetricResult metricResult = new MetricResult();
-
-        metricResult.stopWatch.reset();
-        metricResult.stopWatch.start();
-        this.getPostVersionListWithEnumID(
-                postVersionListEnum
-        ).computeSimilarityAndDiffs_code(metric);
-        metricResult.stopWatch.stop();
-
-        metricResult.lifeSpansOfAllBlocks_text = BlockLifeSpan.getLifeSpansOfAllBlocks(
-                this.getPostVersionListWithEnumID(
-                        postVersionListEnum
-                ), BlockLifeSpan.Type.textblock
+                metricResult.lifeSpansOfAllBlocks_code,
+                groundTruthBlocks_code.get(postVersionsListManagement.getPositionOfPostWithID(postVersionListID))
         );
 
-        metricResult.numberOfSplittings_text = compareTwoListsOfBlockLifeSpans_splitting(
-                groundTruthBlocks_text.get(staticPostVersionsLists.getPositionOfEnum(postVersionListEnum)),
-                metricResult.lifeSpansOfAllBlocks_text,
-                metric);
-
-        metricResult.numberOfFalsePositives_text = compareTwoListsOfBlockLifeSpans_falsePositives(
-                groundTruthBlocks_text.get(staticPostVersionsLists.getPositionOfEnum(postVersionListEnum)),
-                metricResult.lifeSpansOfAllBlocks_text,
-                metric);
-
         metricResult.updateMetricResult_code();
 
         metricResult.calculateAverageTime();
@@ -1659,44 +1657,10 @@ public class MetricsComparator extends StaticPostVersionsLists {
         return metricResult;
     }
 
-    private MetricResult computeSimilarityAndDiffsOfPostVersionList_code(PostVersionListEnum postVersionListEnum, BiFunction metric){
-
-        MetricResult metricResult = new MetricResult();
-
-        metricResult.stopWatch.reset();
-        metricResult.stopWatch.start();
-        this.getPostVersionListWithEnumID(
-                postVersionListEnum
-        ).computeSimilarityAndDiffs_code(metric);
-        metricResult.stopWatch.stop();
-
-        metricResult.lifeSpansOfAllBlocks_code = BlockLifeSpan.getLifeSpansOfAllBlocks(
-                this.getPostVersionListWithEnumID(
-                        postVersionListEnum
-                ), BlockLifeSpan.Type.codeblock
-        );
-
-        metricResult.numberOfSplittings_code = compareTwoListsOfBlockLifeSpans_splitting(
-                groundTruthBlocks_code.get(staticPostVersionsLists.getPositionOfEnum(postVersionListEnum)),
-                metricResult.lifeSpansOfAllBlocks_code,
-                metric);
-
-        metricResult.numberOfFalsePositives_code = compareTwoListsOfBlockLifeSpans_falsePositives(
-                groundTruthBlocks_code.get(staticPostVersionsLists.getPositionOfEnum(postVersionListEnum)),
-                metricResult.lifeSpansOfAllBlocks_code,
-                metric);
-
-        metricResult.updateMetricResult_code();
-
-        metricResult.calculateAverageTime();
-
-        return metricResult;
-    }
-*/
 
     // ****** similarities of lifeSpans
     // gets number of (different) blocks in blockLifeSpans in which elements from lifeSpan are found
-    public static int getNumberOfSplittingsOfOneLifeSpan(BlockLifeSpan lifeSpan, Vector<BlockLifeSpan> blockLifeSpans){
+    public static int getNumberOfSplittingsOfOneLifeSpan(BlockLifeSpan lifeSpan, List<BlockLifeSpan> blockLifeSpans){
 
         Vector<Integer> appearances = new Vector<>();
 
@@ -1706,9 +1670,11 @@ public class MetricsComparator extends StaticPostVersionsLists {
                 if(lifeSpan.getType() != blockLifeSpans.get(j).getType())
                     continue;
 
-                if(blockLifeSpans.get(j).contains((Object)lifeSpan.get(i)))
-                    if (!appearances.contains(j))
-                        appearances.add(j);
+                for(int k=0; k<blockLifeSpans.get(j).size(); k++) {
+                    if (blockLifeSpans.get(j).get(k).getVersion() == lifeSpan.get(i).getVersion() && blockLifeSpans.get(j).get(k).getLocalId() == lifeSpan.get(i).getLocalId())
+                        if (!appearances.contains(j))
+                            appearances.add(j);
+                }
             }
         }
 
@@ -1717,33 +1683,39 @@ public class MetricsComparator extends StaticPostVersionsLists {
     }
 
     // checks how much "unnecessary" splitting were made
-    public static int compareTwoListsOfBlockLifeSpans_splitting(Vector<BlockLifeSpan> lifeSpanListOfMetric1, Vector<BlockLifeSpan> lifeSpanListOfMetric2){
+    public static int compareTwoListsOfBlockLifeSpans_splitting(List<BlockLifeSpan> lifeSpanListOfMetric1, List<BlockLifeSpan> lifeSpanListOfMetric2){
 
         int numberOfSplittingsOverall = 0;
 
         for (int i=0; i<lifeSpanListOfMetric1.size(); i++) {
-            double numberOfSplittings = getNumberOfSplittingsOfOneLifeSpan(lifeSpanListOfMetric1.get(i), lifeSpanListOfMetric2);
+            int numberOfSplittings = getNumberOfSplittingsOfOneLifeSpan(lifeSpanListOfMetric1.get(i), lifeSpanListOfMetric2);
             numberOfSplittingsOverall += numberOfSplittings;
         }
 
-        // return (double)numberOfSplittingsOverall / lifeSpanListOfMetric1.size(); // TODO : find best measure. May be in combination with method getNumberOfFalsePositives
         return numberOfSplittingsOverall - lifeSpanListOfMetric1.size();
     }
 
 
     // counts false positives in a block
-    private static int getNumberOfFalsePositives(BlockLifeSpan lifeSpan, Vector<BlockLifeSpan> groundTruthLifeSpans){
+    private static int getNumberOfFalsePositives(BlockLifeSpan lifeSpan, List<BlockLifeSpan> groundTruthLifeSpans){
+
+        // TODO ..............
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
         for(int i=0; i<lifeSpan.size(); i++){
             for(int j=0; j<groundTruthLifeSpans.size(); j++){
                 for(int k=0; k<groundTruthLifeSpans.get(j).size(); k++){
-                    if(groundTruthLifeSpans.get(j).get(k).equals(lifeSpan.get(i))){     // found life span with same element
+                    if(groundTruthLifeSpans.get(j).get(k).getVersion() == lifeSpan.get(i).getVersion()
+                        && groundTruthLifeSpans.get(j).get(k).getLocalId() == lifeSpan.get(i).getLocalId()){     // found life span with same element
 
                         // count number of differences: false positives
                         int differences = 0;
                         for(int l=0; l<groundTruthLifeSpans.get(j).size(); l++){
-                            if(!lifeSpan.contains(groundTruthLifeSpans.get(j).get(l))){
-                                differences++;
+                            for(int m=0; m<lifeSpan.size(); m++){
+                                if(lifeSpan.get(m).getVersion() == groundTruthLifeSpans.get(j).get(l).getVersion() && lifeSpan.get(m).getLocalId() == groundTruthLifeSpans.get(j).get(l).getLocalId()){
+                                    differences++;
+                                    break;
+                                }
                             }
                         }
 
@@ -1756,7 +1728,7 @@ public class MetricsComparator extends StaticPostVersionsLists {
         return 0;
     }
 
-    private static int compareTwoListsOfBlockLifeSpans_falsePositives(Vector<BlockLifeSpan> lifeSpanListOfMetric1, Vector<BlockLifeSpan> lifeSpanListOfMetric2){
+    private static int compareTwoListsOfBlockLifeSpans_falsePositives(List<BlockLifeSpan> lifeSpanListOfMetric1, List<BlockLifeSpan> lifeSpanListOfMetric2){
 
         int additionElementsOverall = 0;
 
@@ -1769,39 +1741,10 @@ public class MetricsComparator extends StaticPostVersionsLists {
         //return (double)1 / (1+additionElementsOverall);
     }
 
-/**
-    public static double compareMetricWithAllVersionsInGroundTruth_text(PostVersionListEnum postVersionListEnumID, BiFunction metric){
 
-        Vector<Vector<BlockLifeSpan>> metricToBeComparedBlocks = computeSimilarityAndCreateAllBlocks_FromMetricToCompare_text(postVersionListEnumID, metric);
+    public void createStatisticsFiles() throws IOException {
 
-        double similarity = 0;
-
-        for(int k=0; k<groundTruthBlocks_text.size(); k++) {
-            similarity += compareTwoListsOfBlockLifeSpans_splitting(groundTruthBlocks_text.get(k), metricToBeComparedBlocks.get(k), metric);
-        }
-
-        // TODO : compute similarity **** There might exist some better similarity function
-        return similarity / groundTruthBlocks_text.size();
-    }
-
-    public static double compareMetricWithAllVersionsInGroundTruth_code(PostVersionListEnum postVersionListEnumID, BiFunction metric){
-
-        Vector<Vector<BlockLifeSpan>> metricToBeComparedBlocks = computeSimilarityAndCreateAllBlocks_FromMetricToCompare_code(postVersionListEnumID, metric);
-
-        double similarity = 0;
-
-        for(int k=0; k<groundTruthBlocks_code.size(); k++) {
-            similarity += compareTwoListsOfBlockLifeSpans_splitting(groundTruthBlocks_code.get(k), metricToBeComparedBlocks.get(k), metric);
-        }
-
-        // TODO : compute similarity **** There might exist some better similarity function
-        return similarity / groundTruthBlocks_code.size();
-    }
-*/
-
-    public void createStatisticsFiles(int run) throws FileNotFoundException {
-
-        MetricsComparator metricsComparator = new MetricsComparator();
+        MetricsComparator metricsComparator = new MetricsComparator(pathToDirectoryOfAllPostHistories, pathToDirectoryOfAllCompletedCSVs);
 
 
         MetricEnum[] metrics = MetricEnum.values().clone();
@@ -1813,44 +1756,36 @@ public class MetricsComparator extends StaticPostVersionsLists {
             metrics[rnd] = tmp;
         }
 
-        /* for test
-        MetricEnum[] metrics = new MetricEnum[1];
-        metrics[0] = MetricEnum.overlapNormalizedTokens;
-        */
+        //for test
+        //MetricEnum[] metrics = new MetricEnum[1];
+        //metrics[0] = MetricEnum.overlapNormalizedTokens;
+        //
 
-        PrintWriter[] printWriters = new PrintWriter[10];
-        printWriters[0] = new PrintWriter(new File("./metric results/max time for a PostVersionList measured (text) run id = " + run + ".csv"));
-        printWriters[1] = new PrintWriter(new File("./metric results/total time for 10 PostVersionLists measured (text) run id = " + run + ".csv"));
-        printWriters[2] = new PrintWriter(new File("./metric results/average time for 10 PostVersionLists measured (text) run id = " + run + ".csv"));
-        printWriters[3] = new PrintWriter(new File("./metric results/similarity (splittings) (text) run id = " + run + ".csv"));
-        printWriters[4] = new PrintWriter(new File("./metric results/similarity (false positives) (text) run id = " + run + ".csv"));
+        PrintWriter[] printWriters = new PrintWriter[6];
+        printWriters[0] = new PrintWriter(new File("./metric results/total time for all PostVersionLists measured (text)" + ".csv"));
+        printWriters[1] = new PrintWriter(new File("./metric results/similarity (unnecessary splittings) (text)" + ".csv"));
+        printWriters[2] = new PrintWriter(new File("./metric results/similarity (false positives) (text)" + ".csv"));
 
-        printWriters[5] = new PrintWriter(new File("./metric results/max time for a PostVersionList measured (code) run id = " + run + ".csv"));
-        printWriters[6] = new PrintWriter(new File("./metric results/total time for 10 PostVersionLists measured (code) run id = " + run + ".csv"));
-        printWriters[7] = new PrintWriter(new File("./metric results/average time for 10 PostVersionLists measured (code) run id = " + run + ".csv"));
-        printWriters[8] = new PrintWriter(new File("./metric results/similarity (splittings) (code) run id = " + run + ".csv"));
-        printWriters[9] = new PrintWriter(new File("./metric results/similarity (false positives) (code) run id = " + run + ".csv"));
+        printWriters[3] = new PrintWriter(new File("./metric results/total time for 10 PostVersionLists measured (code)" + ".csv"));
+        printWriters[4] = new PrintWriter(new File("./metric results/similarity (unnecessary splittings) (code)" + ".csv"));
+        printWriters[5] = new PrintWriter(new File("./metric results/similarity (false positives) (code)" + ".csv"));
 
         for(int i=0; i<metrics.length+1; i++) {
 //        for(int i=0; i<=3; i++) {             // TODO : use this for testing
 
-            for (int j = 0; j < PostVersionListEnum.values().length+1; j++) {
+            for (int j = 0; j < postVersionsListManagement.postVersionLists.size()+1; j++) {
 
                 if(i == 0 && j == 0){
-                    printWriters[0].write("max time for a PostVersionList measured (text)");
-                    printWriters[1].write("total time for 10 PostVersionLists measured (text)");
-                    printWriters[2].write("average time for 10 PostVersionLists measured (text)");
-                    printWriters[3].write("similarity (splittings) (text)");
-                    printWriters[4].write("similarity (false positives) (text)");
+                    printWriters[0].write("total time for all PostVersionLists measured (text)");
+                    printWriters[1].write("similarity (unnecessary splittings) (text)");
+                    printWriters[2].write("similarity (false positives) (text)");
 
-                    printWriters[5].write("max time for a PostVersionList measured (code)");
-                    printWriters[6].write("total time for 10 PostVersionLists measured (code)");
-                    printWriters[7].write("average time for 10 PostVersionLists measured (code)");
-                    printWriters[8].write("similarity (splittings) (code)");
-                    printWriters[9].write("similarity (false positives) (code)");
+                    printWriters[3].write("total time for all PostVersionLists measured (code)");
+                    printWriters[4].write("similarity (unnecessary splittings) (code)");
+                    printWriters[5].write("similarity (false positives) (code)");
                 }else if(i == 0){
                     for (PrintWriter printWriter : printWriters) {
-                        printWriter.write(PostVersionListEnum.values()[j - 1].toString());
+                        printWriter.write(postVersionsListManagement.postVersionLists.get(j-1).getFirst().getPostId().toString());
                     }
                 }else if(j == 0){
                     for (PrintWriter printWriter : printWriters) {
@@ -1858,45 +1793,41 @@ public class MetricsComparator extends StaticPostVersionsLists {
                     }
                 }else{
                     try {
-                        metricsComparator.init();
+                        // postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfAllPostHistories);
+                        // TODO? : metricsComparator.init();
+                        // postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfAllPostHistories);
                         MetricResult tmpMetricResult
                                 = metricsComparator.computeSimilarity_extractLifeSpans_writeInResult_text(
-                                PostVersionListEnum.values()[j - 1],
+                                postVersionsListManagement.postVersionLists.get(j-1).getFirst().getPostId(),
                                 getBiFunctionMetric(metrics[i - 1]));
 
-                        printWriters[0].write(tmpMetricResult.maxTimeMeasured_text + "");
-                        printWriters[1].write(tmpMetricResult.totalTimeMeasured_text + "");
-                        printWriters[2].write(tmpMetricResult.averageTimeMeasured_text + "");
-                        printWriters[3].write(tmpMetricResult.numberOfSplittings_text + "");
-                        printWriters[4].write(tmpMetricResult.numberOfFalsePositives_text + "");
+                        printWriters[0].write(tmpMetricResult.totalTimeMeasured_text + "");
+                        printWriters[1].write(tmpMetricResult.numberOfSplittings_text + "");
+                        printWriters[2].write(tmpMetricResult.numberOfFalsePositives_text + "");
 
-                        metricsComparator.init();
+                        // postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfAllPostHistories);
+                        // TODO? : metricsComparator.init();
+                        // postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfAllPostHistories);
                         tmpMetricResult
                                 = metricsComparator.computeSimilarity_extractLifeSpans_writeInResult_code(
-                                PostVersionListEnum.values()[j - 1],
+                                postVersionsListManagement.postVersionLists.get(j-1).getFirst().getPostId(),
                                 getBiFunctionMetric(metrics[i - 1]));
-                        printWriters[5].write(tmpMetricResult.maxTimeMeasured_code + "");
-                        printWriters[6].write(tmpMetricResult.totalTimeMeasured_code + "");
-                        printWriters[7].write(tmpMetricResult.averageTimeMeasured_code + "");
-                        printWriters[8].write(tmpMetricResult.numberOfSplittings_code + "");
-                        printWriters[9].write(tmpMetricResult.numberOfFalsePositives_code + "");
+                        printWriters[3].write(tmpMetricResult.totalTimeMeasured_code + "");
+                        printWriters[4].write(tmpMetricResult.numberOfSplittings_code + "");
+                        printWriters[5].write(tmpMetricResult.numberOfFalsePositives_code + "");
 
                     }catch (Exception e){
                         printWriters[0].write("no result");
                         printWriters[1].write("no result");
                         printWriters[2].write("no result");
+
                         printWriters[3].write("no result");
                         printWriters[4].write("no result");
-
                         printWriters[5].write("no result");
-                        printWriters[6].write("no result");
-                        printWriters[7].write("no result");
-                        printWriters[8].write("no result");
-                        printWriters[9].write("no result");
                     }
                 }
 
-                if(j < PostVersionListEnum.values().length){
+                if(j < postVersionsListManagement.postVersionLists.size()){
                     for (PrintWriter printWriter : printWriters) {
                         printWriter.write(", ");
                     }
@@ -1910,12 +1841,13 @@ public class MetricsComparator extends StaticPostVersionsLists {
             for (PrintWriter printWriter : printWriters) {
                 printWriter.flush();
             }
+
+            if(i>0)
+                System.out.println("metric " + metrics[i-1] + " completed (" + i + " of " + metrics.length + ")");
         }
 
         for (PrintWriter printWriter : printWriters) {
             printWriter.close();
         }
     }
-
 }
-

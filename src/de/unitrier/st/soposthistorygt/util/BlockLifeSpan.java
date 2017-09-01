@@ -5,6 +5,7 @@ import de.unitrier.st.soposthistory.blocks.PostBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 
+import java.util.List;
 import java.util.Vector;
 
 public class BlockLifeSpan extends Vector<BlockLifeSpanSnapshot> {
@@ -41,75 +42,56 @@ public class BlockLifeSpan extends Vector<BlockLifeSpanSnapshot> {
 
 
     // ****** extract LifeSpans
-    public static Vector<BlockLifeSpan> getLifeSpansOfAllBlocks(PostVersionList postVersions, Type type){ // TODO: optimize getLifeSpansOfAllBlocks to O(n*m) for n versions and m blocks
+    public static List<BlockLifeSpan> getLifeSpansOfAllBlocks(PostVersionList postVersions, Type type){ // TODO: optimize getLifeSpansOfAllBlocks to O(n*m) for n versions and m blocks
 
-        Vector<BlockLifeSpan> blockLifeSpansOutput = new Vector<>();
+        List<BlockLifeSpan> listOfBlockLifeSpans = new Vector<>();
 
         for(int i=0; i<postVersions.size(); i++){
             for(int j=0; j<postVersions.get(i).getPostBlocks().size(); j++){
 
+                PostBlockVersion tmpPostBlock = postVersions.get(i).getPostBlocks().get(j);
+
                 switch (type){
                     case codeblock:
-                        if((postVersions.get(i).getPostBlocks().get(j) instanceof TextBlockVersion))
+                        if((tmpPostBlock instanceof TextBlockVersion))
                             continue;
                         break;
 
                     case textblock:
-                        if((postVersions.get(i).getPostBlocks().get(j) instanceof CodeBlockVersion))
+                        if((tmpPostBlock instanceof CodeBlockVersion))
                             continue;
                         break;
                 }
 
-                Integer tmpPredId = null;
-                try {
-                    tmpPredId = postVersions.get(i).getPostBlocks().get(j).getPred().getLocalId();
-                }catch(Exception e){}
-
                 BlockLifeSpanSnapshot tmpLifeSnapshot
                         = new BlockLifeSpanSnapshot(
-                                postVersions.get(i).getPostBlocks().get(j).getId(),
-                                postVersions.get(i).getPostHistoryId(),
-                                i+1,
-                                j+1);
+                        tmpPostBlock.getId(),
+                        postVersions.get(i).getPostHistoryId(),
+                        i+1,
+                        j+1);
 
-                if(tmpPredId == null){
-                    BlockLifeSpan tmpBlockLifeSpan = null;
-                    if(postVersions.get(i).getPostBlocks().get(j) instanceof TextBlockVersion)
-                        tmpBlockLifeSpan = new BlockLifeSpan(BlockLifeSpan.Type.textblock);
-                    else if(postVersions.get(i).getPostBlocks().get(j) instanceof CodeBlockVersion)
-                        tmpBlockLifeSpan = new BlockLifeSpan(BlockLifeSpan.Type.codeblock);
-                    tmpBlockLifeSpan.add(tmpLifeSnapshot);
-
-                    PostBlockVersion tmpBlock = postVersions.get(i).getPostBlocks().get(j);
-                    int k=i+1;
-                    while(k < postVersions.size()){
-                        boolean found = false;
-                        for(int l=0; l<postVersions.get(k).getPostBlocks().size(); l++){
-                            if(postVersions.get(k).getPostBlocks().get(l).getPred() == tmpBlock){
-                                tmpLifeSnapshot
-                                        = new BlockLifeSpanSnapshot(
-                                                postVersions.get(i).getPostBlocks().get(j).getId(),
-                                                postVersions.get(i).getPostHistoryId(),
-                                                k+1,
-                                                l+1);
-                                tmpBlock = postVersions.get(k).getPostBlocks().get(l);
-                                found = true;
-                                tmpBlockLifeSpan.add(tmpLifeSnapshot);
-                                break;
-                            }
-                        }
-                        if(found)
-                            k++;
-                        else
-                            break;
+                boolean chainExists = false;
+                for(int k=0; k<listOfBlockLifeSpans.size(); k++){
+                    if((listOfBlockLifeSpans.get(k).lastElement().getVersion() == i)
+                            && (tmpPostBlock.getPred() != null)
+                            && (tmpPostBlock.getPred().getLocalId() == listOfBlockLifeSpans.get(k).lastElement().getLocalId())){
+                        chainExists = true;
+                        listOfBlockLifeSpans.get(k).add(tmpLifeSnapshot);
+                        break;
                     }
+                }
 
-                    blockLifeSpansOutput.add(tmpBlockLifeSpan);
+                if(!chainExists) {
+                    BlockLifeSpan tmpBlockLifeSpan = new BlockLifeSpan(type);
+                    tmpBlockLifeSpan.add(tmpLifeSnapshot);
+                    listOfBlockLifeSpans.add(tmpBlockLifeSpan);
                 }
             }
         }
-        return blockLifeSpansOutput;
+
+        return listOfBlockLifeSpans;
     }
+
 
 
     public BlockLifeSpan(Type type){

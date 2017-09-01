@@ -24,7 +24,6 @@ public class AnchorTextAndUrlHandler {
 
         mergeMarkdownLinkReferences(anchorTextAndUrlPairs);
 
-        System.out.println(anchorTextAndUrlPairs); // TODO : LOESCHEN
         return anchorTextAndUrlPairs;
     }
 
