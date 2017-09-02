@@ -1,5 +1,5 @@
 package de.unitrier.st.soposthistorygt.researchPracticumResults;
-
+/*
 import de.unitrier.st.soposthistory.version.PostVersionList;
 
 public class GroundTruth extends StaticPostVersionsLists{
@@ -274,3 +274,4 @@ public class GroundTruth extends StaticPostVersionsLists{
         setPerfectLinks_2581754();
     }
 }
+*/
