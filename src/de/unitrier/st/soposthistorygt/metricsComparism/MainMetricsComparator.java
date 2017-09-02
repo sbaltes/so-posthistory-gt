@@ -13,8 +13,8 @@ public class MainMetricsComparator {
         stopWatch.reset();
         stopWatch.start();
 
-        String pathToAllCompletedCSVs = System.getProperty("user.dir") + "\\data\\Completed_PostId_VersionCount_SO_17-06_sample_100_1_files\\Completed_PostId_VersionCount_SO_17-06_sample_100_1_files";    // https://stackoverflow.com/a/13011927
-        String pathToPostHistories = System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_17-06_sample_100_1_files\\PostId_VersionCount_SO_17-06_sample_100_1_files";                           // https://stackoverflow.com/a/13011927
+        String pathToAllCompletedCSVs = System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_17-06_sample_100_2_files\\PostId_VersionCount_SO_17-06_sample_100_2_files";    // https://stackoverflow.com/a/13011927
+        String pathToPostHistories = System.getProperty("user.dir") + "\\data\\Completed_PostId_VersionCount_SO_17-06_sample_100_2_files\\Completed_PostId_VersionCount_SO_17-06_sample_100_2_files";                           // https://stackoverflow.com/a/13011927
 
         MetricsComparator metricsComparator = new MetricsComparator(
                 pathToPostHistories,
