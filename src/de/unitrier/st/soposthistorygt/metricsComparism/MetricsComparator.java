@@ -1105,6 +1105,10 @@ public class MetricsComparator{
 
     private void checkWhetherNumberOfBlocksIsSame() {
 
+        if(groundTruthBlocks_text.size() != postVersionsListManagement.postVersionLists.size() || groundTruthBlocks_code.size() != postVersionsListManagement.postVersionLists.size()){
+            System.err.println("number of ground truths and number of post version lists are different");
+        }
+
         for(int i=0; i<groundTruthBlocks_text.size(); i++){
 
             int numberOfTextBlocksOverallInGroundTruth = 0;
@@ -1121,8 +1125,9 @@ public class MetricsComparator{
             if(numberOfTextBlocksOverallInGroundTruth != numberOfTextBlocksOverallInComputedMetric){
                 System.err.println(
                         "Number of text blocks that will be compared must be the same but are different in post with id "
-                                + postVersionsListManagement.postVersionLists.get(i).getFirst().getPostId()
-                + " (" + numberOfTextBlocksOverallInGroundTruth + " and " + numberOfTextBlocksOverallInComputedMetric + ")");
+                                + postVersionsListManagement.postVersionLists.get(i).getFirst().getPostId() + ": "
+                                + numberOfTextBlocksOverallInGroundTruth + " text blocks in ground truth and "
+                                + numberOfTextBlocksOverallInComputedMetric + " text blocks in computed metric");
                 System.exit(0);
             }
         }
@@ -1142,9 +1147,9 @@ public class MetricsComparator{
 
             if(numberOfCodeBlocksOverallInGroundTruth != numberOfCodeBlocksOverallInComputedMetric){
                 System.err.println(
-                        "Number of code blocks that will be compared must be the same but are different in post with id "
-                                + postVersionsListManagement.postVersionLists.get(i).getFirst().getPostId()
-                                + " (" + numberOfCodeBlocksOverallInGroundTruth + " and " + numberOfCodeBlocksOverallInComputedMetric + ")");
+                        "Number of text blocks that will be compared must be the same but are different in post with id "
+                                + postVersionsListManagement.postVersionLists.get(i).getFirst().getPostId() + ": "
+                                + " (" + numberOfCodeBlocksOverallInGroundTruth + " text blocks in ground truth and " + numberOfCodeBlocksOverallInComputedMetric + " text blocks in computed metric");
                 System.exit(0);
             }
         }

@@ -93,7 +93,7 @@ public class GroundTruthExtractionOfCSVs {
             }catch (NumberFormatException ignored){}
 
             if(predLocalId == null){
-                BlockLifeSpan blockLifeSpan = new BlockLifeSpan((postBlockTypeId == 1 ? BlockLifeSpan.Type.textblock : BlockLifeSpan.Type.codeblock));
+                BlockLifeSpan blockLifeSpan = new BlockLifeSpan((postBlockTypeId == 1 ? BlockLifeSpan.Type.textblock : postBlockTypeId == 2 ? BlockLifeSpan.Type.codeblock : null));
                 for(int i=listOfBlockLifeSpanSnapshots.size()-1; i>=0; i--){
                     if(listOfBlockLifeSpanSnapshots.get(i).getPostHistoryId() == postHistoryId && listOfBlockLifeSpanSnapshots.get(i).getLocalId() == localId){
                         blockLifeSpan.add(listOfBlockLifeSpanSnapshots.get(i));
