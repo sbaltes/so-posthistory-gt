@@ -1,5 +1,5 @@
 package de.unitrier.st.soposthistorygt.researchPracticumResults;
-
+/*
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -57,3 +57,4 @@ public class MetricResult {
         averageTimeMeasured_code = countedHistories_code > 0 ? (double)totalTimeMeasured_code / countedHistories_code : 0;
     }
 }
+*/
