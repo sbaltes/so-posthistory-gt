@@ -1700,7 +1700,7 @@ public class MetricsComparator{
     private static int getNumberOfFalsePositives(BlockLifeSpan lifeSpan, List<BlockLifeSpan> groundTruthLifeSpans){
 
         // TODO ..............
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
         for(int i=0; i<lifeSpan.size(); i++){
             for(int j=0; j<groundTruthLifeSpans.size(); j++){
