@@ -2,6 +2,18 @@ package de.unitrier.st.soposthistorygt.tests;
 
 // TODO: Lorik: create new (or copy old) classes for URL matching and normalization
 
+import de.unitrier.st.soposthistory.version.PostVersionList;
+import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlHandler;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
+
+import static de.unitrier.st.soposthistorygt.GroundTruthApp.GroundTruthCreator.normalizeURLsInTextBlocksOfAllVersions;
+import static de.unitrier.st.soposthistorygt.GroundTruthApp.GroundTruthCreator.removeEmptyTextAndCodeBlocks;
+import static de.unitrier.st.soposthistorygt.metricsComparism.PostVersionsListManagement.pattern_groundTruth;
+
 class GroundTruthAppTest {
 
     private String inputText1 = "You can force Android to hide the virtual keyboard using the [InputMethodManager][1], calling [`hideSoftInputFromWindow`][2], passing in the token of the window containing your focused view.\n" +
@@ -172,6 +184,37 @@ class GroundTruthAppTest {
 //    }
 
 
+    @Test
+    public void testSetIfParsable() throws IOException {
+
+        Vector<String> pathToAllDirectories = new Vector<>();
+        pathToAllDirectories.add(System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_17-06_sample_100_1_files\\PostId_VersionCount_SO_17-06_sample_100_1_files\\PostId_VersionCount_SO_17-06_sample_100_1_files");
+        pathToAllDirectories.add(System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_17-06_sample_100_1_files\\PostId_VersionCount_SO_17-06_sample_100_1_files\\PostId_VersionCount_SO_17-06_sample_100_1_files");
+        pathToAllDirectories.add(System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_Java_17-06_sample_100_1_files\\PostId_VersionCount_SO_Java_17-06_sample_100_1");
+        pathToAllDirectories.add(System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_Java_17-06_sample_100_2_files\\PostId_VersionCount_SO_Java_17-06_sample_100_2");
+
+
+        for (String path : pathToAllDirectories) {
+            File file = new File(path);
+            File[] allPostHistoriesInFolder = file.listFiles((dir, name) -> name.matches(pattern_groundTruth.pattern())); // https://stackoverflow.com/questions/4852531/find-files-in-a-folder-using-java
+
+            assert allPostHistoriesInFolder != null;
+            for (File postHistory : allPostHistoriesInFolder) {
+                try {
+                    PostVersionList tmpPostVersionList = new PostVersionList();
+                    int postId = Integer.valueOf(postHistory.getName().substring(0, postHistory.getName().length() - 4));
+                    tmpPostVersionList.readFromCSV(path + "\\", postId, 2);
+
+                    AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
+                    normalizeURLsInTextBlocksOfAllVersions(tmpPostVersionList, anchorTextAndUrlHandler);
+                    removeEmptyTextAndCodeBlocks(tmpPostVersionList);
+                } catch (Exception e) {
+
+                    System.out.println("Failed to parse " + postHistory.getPath());
+                }
+            }
+        }
+    }
 }
 
 

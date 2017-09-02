@@ -1,6 +1,5 @@
 package de.unitrier.st.soposthistorygt.util.anchorsURLs;
 
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -43,7 +42,6 @@ public class AnchorTextAndUrlHandler {
         }
 
         // delete references with urls if merged, otherwise keep them only to delete invalid markdown link references
-        Iterator<AnchorTextAndUrlPair> iterator = anchorTextAndUrlPairs.iterator();
         for (int i=0; i<anchorTextAndUrlPairs.size(); i++) {
             AnchorTextAndUrlPair pairA = anchorTextAndUrlPairs.get(i);
             boolean canBeDeleted = false;
@@ -62,6 +60,14 @@ public class AnchorTextAndUrlHandler {
                     anchorTextAndUrlPairs.add(pairA);
                 }
             }
+        }
+
+        // remove anchors with references that do not point to have urls they point. Otherwise cases like 36273118 and 37625877 with "double[][]" occuring in text causes false positives as well as real anchor texts with references that do not have references with urls.
+        for(int i=anchorTextAndUrlPairs.size()-1; i>=0; i--){
+            if(anchorTextAndUrlPairs.get(i).url == null){
+                anchorTextAndUrlPairs.remove(i);
+            }
+
         }
     }
 
