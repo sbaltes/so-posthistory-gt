@@ -1,5 +1,8 @@
 package de.unitrier.st.soposthistorygt.metricsComparism;
 
+import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
+import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
+import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlHandler;
 
@@ -10,7 +13,6 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 
 import static de.unitrier.st.soposthistorygt.GroundTruthApp.GroundTruthCreator.normalizeURLsInTextBlocksOfAllVersions;
-import static de.unitrier.st.soposthistorygt.GroundTruthApp.GroundTruthCreator.removeEmptyTextAndCodeBlocks;
 
 
 public class PostVersionsListManagement {
@@ -20,8 +22,13 @@ public class PostVersionsListManagement {
     public static Pattern pattern_groundTruth = Pattern.compile("[0-9]+" + "\\.csv");
     List<PostVersionList> postVersionLists = new Vector<>();
 
-
+    // constructor
     public PostVersionsListManagement(String pathToDirectoryOfPostHistories){
+        parseAllPostVersionLists(pathToDirectoryOfPostHistories);
+
+    }
+
+    private void parseAllPostVersionLists(String pathToDirectoryOfPostHistories){
         this.pathToDirectory = pathToDirectoryOfPostHistories;
 
         File file = new File(pathToDirectoryOfPostHistories);
@@ -35,7 +42,7 @@ public class PostVersionsListManagement {
 
             AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
             normalizeURLsInTextBlocksOfAllVersions(tmpPostVersionList, anchorTextAndUrlHandler);
-            removeEmptyTextAndCodeBlocks(tmpPostVersionList);
+            // removeEmptyTextAndCodeBlocks(tmpPostVersionList);
 
             postVersionLists.add(
                     tmpPostVersionList
@@ -45,6 +52,7 @@ public class PostVersionsListManagement {
         postVersionLists.sort(Comparator.comparingInt(o -> o.getFirst().getPostId()));
     }
 
+    // access to post verion lists
     public PostVersionList getPostVersionListWithID(int postID){
         for(PostVersionList postVersionList : postVersionLists){
             if(postID == postVersionList.getFirst().getPostId()){
@@ -56,139 +64,83 @@ public class PostVersionsListManagement {
     }
 
 
-    int getPositionOfPostWithID(int postVersionListID){
-        for(int i=0; i<postVersionLists.size(); i++){
-            if(postVersionLists.get(i).getFirst().getPostId() == postVersionListID){
-                return i;
+    // converting post verion lists to make them easier to compare with ground truth
+    private ConnectionsOfTwoVersions getAllConnectionsBetweenTwoVersions_text(int leftVersionId, PostVersion leftPostVersion, PostVersion rightPostVersion){
+        ConnectionsOfTwoVersions connectionsOfTwoVersions = new ConnectionsOfTwoVersions(leftVersionId);
+
+        for(int i=0; i<leftPostVersion.getPostBlocks().size(); i++){
+            if(leftPostVersion.getPostBlocks().get(i) instanceof CodeBlockVersion)
+                continue;
+
+            Integer rightLocalId = null;
+            for(int j=0; j<rightPostVersion.getPostBlocks().size(); j++) {
+                if(rightPostVersion.getPostBlocks().get(j).getPred() != null && rightPostVersion.getPostBlocks().get(j).getPred().equals(leftPostVersion.getPostBlocks().get(i))){
+                    rightLocalId = rightPostVersion.getPostBlocks().get(j).getLocalId();
+                    break;
+                }
             }
+
+            connectionsOfTwoVersions.add(
+                    new ConnectedBlocks(
+                            leftPostVersion.getPostBlocks().get(i).getLocalId(),
+                            rightLocalId,
+                            leftPostVersion.getPostBlocks().get(i) instanceof TextBlockVersion ? 1 : 2
+                    ));
+
         }
-        return -1;
+
+        return connectionsOfTwoVersions;
+    }
+
+    private ConnectionsOfTwoVersions getAllConnectionsBetweenTwoVersions_code(int leftVersionId, PostVersion leftPostVersion, PostVersion rightPostVersion){
+        ConnectionsOfTwoVersions connectionsOfTwoVersions = new ConnectionsOfTwoVersions(leftVersionId);
+
+        for(int i=0; i<leftPostVersion.getPostBlocks().size(); i++){
+            if(leftPostVersion.getPostBlocks().get(i) instanceof TextBlockVersion)
+                continue;
+
+            Integer rightLocalId = null;
+            for(int j=0; j<rightPostVersion.getPostBlocks().size(); j++) {
+                if(rightPostVersion.getPostBlocks().get(j).getPred() != null && rightPostVersion.getPostBlocks().get(j).getPred().equals(leftPostVersion.getPostBlocks().get(i))){
+                    rightLocalId = rightPostVersion.getPostBlocks().get(j).getLocalId();
+                    break;
+                }
+            }
+
+            connectionsOfTwoVersions.add(
+                    new ConnectedBlocks(
+                            leftPostVersion.getPostBlocks().get(i).getLocalId(),
+                            rightLocalId,
+                            leftPostVersion.getPostBlocks().get(i) instanceof TextBlockVersion ? 1 : 2
+                    ));
+
+        }
+
+        return connectionsOfTwoVersions;
     }
 
 
-/*
-    public String getStatisticsOfPostVersionList(){
+    public ConnectionsOfAllVersions getAllConnectionsOfAllConsecutiveVersions_text(int postId){
+        ConnectionsOfAllVersions connectionsOfAllVersions = new ConnectionsOfAllVersions(postId);
 
-        int numberOfPostVersionsOverall = 0;
-        int numberOfTextBlocksOverall = 0;
-        int lengthOfTextBlocksOverall = 0;
-        int numberOfCodeBlocksOverall = 0;
-        int lengthOfCodeBlocksOverall = 0;
-
-        int numberOfVersionsMin = -1;
-        int numberOfVersionsMax = 0;
-
-        int numberOfTextBlocksMin = 0;
-        int lengthOfTextBlocksMin = 0;
-        int numberOfTextBlocksMax = 0;
-        int lengthOfTextBlocksMax = 0;
-
-        int numberOfCodeBlocksMin = -1;
-        int lengthOfCodeBlocksMin = -1;
-        int numberOfCodeBlocksMax = -1;
-        int lengthOfCodeBlocksMax = -1;
-
-        for(int i=0; i<PostVersionListEnum.values().length; i++) {
-
-            PostVersionList tmpPostVersionList = getPostVersionListWithEnumID(PostVersionListEnum.values()[i]);
-
-            int numberOfVersionsTmp = tmpPostVersionList.size();
-
-            numberOfPostVersionsOverall += numberOfVersionsTmp;
-            numberOfVersionsMax = (numberOfVersionsTmp > numberOfVersionsMax) ? numberOfVersionsTmp : numberOfVersionsMax;
-            numberOfVersionsMin = (numberOfVersionsTmp < numberOfVersionsMin || (numberOfVersionsMin == -1)) ? numberOfVersionsTmp : numberOfVersionsMin;
-
-            for (PostVersion postVersion : tmpPostVersionList) {
-
-                // text
-                List<TextBlockVersion> textBlocks = postVersion.getTextBlocks();
-
-                numberOfTextBlocksOverall += textBlocks.size();
-                numberOfTextBlocksMax = (textBlocks.size() > numberOfTextBlocksMax) ? textBlocks.size() : numberOfTextBlocksMax;
-                numberOfTextBlocksMin = (textBlocks.size() < numberOfTextBlocksMin || (numberOfTextBlocksMin == -1)) ? textBlocks.size() : numberOfTextBlocksMin;
-
-                for (TextBlockVersion textBlockVersion : textBlocks) {
-                    int tmpTextBlockLength = Normalization.removeWhitespaces(textBlockVersion.getContent().replaceAll("", "")).length();    // TODO : which normalization to take?
-                    lengthOfTextBlocksOverall += tmpTextBlockLength;
-                    lengthOfTextBlocksMax = (tmpTextBlockLength > lengthOfTextBlocksMax) ? tmpTextBlockLength : lengthOfTextBlocksMax;
-                    lengthOfTextBlocksMin = (tmpTextBlockLength < lengthOfTextBlocksMin || lengthOfTextBlocksMin == -1) ? tmpTextBlockLength : lengthOfTextBlocksMin;
-                }
-
-
-                // code
-                List<CodeBlockVersion> codeBlocks = postVersion.getCodeBlocks();
-
-                numberOfCodeBlocksOverall += codeBlocks.size();
-                numberOfCodeBlocksMax = (codeBlocks.size() > numberOfCodeBlocksMax) ? codeBlocks.size() : numberOfCodeBlocksMax;
-                numberOfCodeBlocksMin = (codeBlocks.size() < numberOfCodeBlocksMin || (numberOfCodeBlocksMin == -1)) ? codeBlocks.size() : numberOfCodeBlocksMin;
-
-                for (CodeBlockVersion codeBlockVersion : codeBlocks) {
-                    int tmpCodeBlockLength = Normalization.removeWhitespaces(codeBlockVersion.getContent().replaceAll("", "")).length();    // TODO : which normalization to take?
-                    lengthOfCodeBlocksOverall += tmpCodeBlockLength;
-                    lengthOfCodeBlocksMax = (tmpCodeBlockLength > lengthOfCodeBlocksMax) ? tmpCodeBlockLength : lengthOfCodeBlocksMax;
-                    lengthOfCodeBlocksMin = (tmpCodeBlockLength < lengthOfCodeBlocksMin || lengthOfCodeBlocksMin == -1) ? tmpCodeBlockLength : lengthOfCodeBlocksMin;
-                }
-            }
+        for(int i=0; i<getPostVersionListWithID(postId).size()-1; i++){
+            connectionsOfAllVersions.add(
+                    getAllConnectionsBetweenTwoVersions_text(i, getPostVersionListWithID(postId).get(i), getPostVersionListWithID(postId).get(i+1))
+            );
         }
 
-
-        Vector<Vector<BlockLifeSpan>> groundTruth_text = MetricsComparator.groundTruthBlocks_text;
-        Vector<Vector<BlockLifeSpan>> groundTruth_code = MetricsComparator.groundTruthBlocks_code;
-
-        int sumOfLifeSpans_text = 0;
-        double averageLifeSpanSize_text = 0;
-        for (Vector<BlockLifeSpan> blockLifeSpans : groundTruth_text) {
-            sumOfLifeSpans_text += blockLifeSpans.size();
-            for (BlockLifeSpan blockLifeSpan : blockLifeSpans) {
-                averageLifeSpanSize_text += blockLifeSpan.size();
-            }
-        }
-        averageLifeSpanSize_text /= sumOfLifeSpans_text;
-
-
-        int sumOfLifeSpans_code = 0;
-        double averageLifeSpanSize_code = 0;
-        for (Vector<BlockLifeSpan> blockLifeSpans : groundTruth_code) {
-            sumOfLifeSpans_code += blockLifeSpans.size();
-            for (BlockLifeSpan blockLifeSpan : blockLifeSpans) {
-                averageLifeSpanSize_code += blockLifeSpan.size();
-            }
-        }
-        averageLifeSpanSize_code /= sumOfLifeSpans_code;
-
-
-        return "number of post versions overall: " + numberOfPostVersionsOverall + "\n"
-                + "max number of versions found: " + numberOfVersionsMax + "\n"
-                + "min number of versions found: " + numberOfVersionsMin + "\n"
-                + "average number of post versions: " + (double)numberOfPostVersionsOverall / PostVersionListEnum.values().length + "\n"
-                + "\n"
-                + "number of text blocks overall: " + numberOfTextBlocksOverall + "\n"
-                + "max number of text blocks found: " + numberOfTextBlocksMax + "\n"
-                + "min number of text blocks found: " + numberOfTextBlocksMin + "\n"
-                + "average number of text blocks per post in one version: " + (double)numberOfTextBlocksOverall / numberOfPostVersionsOverall + "\n"    // TODO : is this right?
-                + "\n"
-                + "number of code blocks overall: " + numberOfCodeBlocksOverall + "\n"
-                + "max number of code blocks found: " + numberOfCodeBlocksMax + "\n"
-                + "min number of code blocks found: " + numberOfCodeBlocksMin + "\n"
-                + "average number of code blocks per post in one version: " + (double)numberOfCodeBlocksOverall / numberOfPostVersionsOverall + "\n"    // TODO : is this right?
-                + "\n"
-                + "overall length of text blocks: " + lengthOfTextBlocksOverall + "\n"
-                + "max length of a text block found: " + lengthOfTextBlocksMax + "\n"
-                + "min length of a text block found: " + lengthOfTextBlocksMin + "\n"
-                + "average length of a text block per post in one version: " + (double)lengthOfTextBlocksOverall / numberOfPostVersionsOverall + "\n"    // TODO : is this right?
-                + "\n"
-                + "overall length of code blocks: " + lengthOfCodeBlocksOverall + "\n"
-                + "max length of a code block found: " + lengthOfCodeBlocksMax + "\n"
-                + "min length of a code block found: " + lengthOfCodeBlocksMin + "\n"
-                + "average length of a code block per post in one version: " + (double)lengthOfCodeBlocksOverall / numberOfPostVersionsOverall + "\n"    // TODO : is this right?
-
-                + "\n\n"
-                + "sum of text life spans (cohesive pairs): " + sumOfLifeSpans_text + "\n"
-                + "average lifeSpan size text: " + averageLifeSpanSize_text + "\n\n"
-                + "sum of code life spans (cohesive pairs): " + sumOfLifeSpans_code + "\n"
-                + "average lifeSpan size code: " + averageLifeSpanSize_code + "\n\n"
-                ;
-
+        return connectionsOfAllVersions;
     }
-    */
+
+    public ConnectionsOfAllVersions getAllConnectionsOfAllConsecutiveVersions_code(int postId){
+        ConnectionsOfAllVersions connectionsOfAllVersions = new ConnectionsOfAllVersions(postId);
+
+        for(int i=0; i<getPostVersionListWithID(postId).size()-1; i++){
+            connectionsOfAllVersions.add(
+                    getAllConnectionsBetweenTwoVersions_code(i, getPostVersionListWithID(postId).get(i), getPostVersionListWithID(postId).get(i+1))
+            );
+        }
+
+        return connectionsOfAllVersions;
+    }
 }

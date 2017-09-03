@@ -1,28 +1,48 @@
 package de.unitrier.st.soposthistorygt.metricsComparism;
 
-import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpanSnapshot;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
+import java.io.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.Vector;
 import java.util.regex.Pattern;
 
 public class GroundTruthExtractionOfCSVs {
 
-    private static HashMap<Integer, Integer> mapPostHistoryId_to_version = new HashMap<>();
+    Vector<ConnectionsOfAllVersions> groundTruth = new Vector<>();
+    Vector<ConnectionsOfAllVersions> groundTruth_text = new Vector<>();
+    Vector<ConnectionsOfAllVersions> groundTruth_code = new Vector<>();
 
 
-    private static List<String> parseLines(String pathToExportedCSV) throws IOException {
+    // constructor
+    public GroundTruthExtractionOfCSVs(String pathOfDirectoryOfCSVs){
+        groundTruth = extractListOfConnectionsOfAllVersionsOfAllExportedCSVs(pathOfDirectoryOfCSVs);
+        groundTruth.sort(Comparator.comparingInt(o -> o.postId));
+        divideGroundTruthIntoTextAndCode();
+    }
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(pathToExportedCSV));
+
+    private List<String> parseLines(String pathToExportedCSV){
+
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(pathToExportedCSV));
+        } catch (FileNotFoundException e) {
+            System.err.println("Failed to read file with path '" + pathToExportedCSV + "'.");
+            System.exit(0);
+        }
         List<String> lines = new Vector<>();
 
         String line;
-        while((line = bufferedReader.readLine()) != null){
-            lines.add(line);
+        try {
+            while((line = bufferedReader.readLine()) != null){
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to parse line from data at path " + pathToExportedCSV + ".");
+            System.exit(0);
         }
 
         lines.remove(0); // first line contains header
@@ -30,53 +50,12 @@ public class GroundTruthExtractionOfCSVs {
         return lines;
     }
 
-    private static List<BlockLifeSpanSnapshot> extractBlockLifeSpanSnapshotsUnordered(List<String> lines){
+    private List<BlockLifeSpanSnapshot> extractBlockLifeSpanSnapshotsUnordered(List<String> lines){
 
         List<BlockLifeSpanSnapshot> blockLifeSpanSnapshots = new Vector<>();
 
         for(String line : lines){
             StringTokenizer tokens = new StringTokenizer(line, "; ");
-            int postId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-            int postHistoryId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-            int postBlockTypeId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-            int localId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-            Integer predLocalId = null;
-            Integer succLocalId = null;
-
-            BlockLifeSpanSnapshot blockLifeSpanSnapshot = new BlockLifeSpanSnapshot(postId, postHistoryId, -1, localId);
-            blockLifeSpanSnapshots.add(blockLifeSpanSnapshot);
-        }
-
-        return blockLifeSpanSnapshots;
-    }
-
-    private static void orderBlockLifeSpanSnapshotsByPostHistoryId(List<BlockLifeSpanSnapshot> blockLifeSpanSnapshots){
-        blockLifeSpanSnapshots.sort(Comparator.comparingInt(BlockLifeSpanSnapshot::getPostHistoryId));
-    }
-
-    private static void setVersionsForAllBlockLifeSnapshots(List<BlockLifeSpanSnapshot> listOfBlockLifeSpanSnapshots){
-        int count = 1;
-        for(int i=0; i<listOfBlockLifeSpanSnapshots.size(); i++){
-            listOfBlockLifeSpanSnapshots.get(i).setVersion(count);
-
-            mapPostHistoryId_to_version.put(listOfBlockLifeSpanSnapshots.get(i).getPostHistoryId(), count);
-
-            int j=i+1;
-            while(j < listOfBlockLifeSpanSnapshots.size() && listOfBlockLifeSpanSnapshots.get(j).getPostHistoryId() == listOfBlockLifeSpanSnapshots.get(i).getPostHistoryId()){
-                listOfBlockLifeSpanSnapshots.get(j).setVersion(count);
-                j++;
-            }
-            i = j-1;
-            count++;
-        }
-    }
-
-    private static List<BlockLifeSpan> listOfBlockLifeSnapshots_to_listOfBlockLifeSpans(List<BlockLifeSpanSnapshot> listOfBlockLifeSpanSnapshots, List<String> lines){
-
-        List<BlockLifeSpan> listOfBlockLifeSpans = new Vector<>();
-
-        for(int k=lines.size()-1; k>=0; k--){
-            StringTokenizer tokens = new StringTokenizer(lines.get(k), "; ");
             int postId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
             int postHistoryId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
             int postBlockTypeId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
@@ -92,75 +71,64 @@ public class GroundTruthExtractionOfCSVs {
                 succLocalId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
             }catch (NumberFormatException ignored){}
 
-            if(predLocalId == null){
-                BlockLifeSpan blockLifeSpan = new BlockLifeSpan((postBlockTypeId == 1 ? BlockLifeSpan.Type.textblock : postBlockTypeId == 2 ? BlockLifeSpan.Type.codeblock : null));
-                for(int i=listOfBlockLifeSpanSnapshots.size()-1; i>=0; i--){
-                    if(listOfBlockLifeSpanSnapshots.get(i).getPostHistoryId() == postHistoryId && listOfBlockLifeSpanSnapshots.get(i).getLocalId() == localId){
-                        blockLifeSpan.add(listOfBlockLifeSpanSnapshots.get(i));
-                        listOfBlockLifeSpanSnapshots.remove(i+0);
-                        lines.remove(k);
-                        break;
-                    }
-                }
-
-                listOfBlockLifeSpans.add(blockLifeSpan);
-            }
+            BlockLifeSpanSnapshot blockLifeSpanSnapshot = new BlockLifeSpanSnapshot(postId, postHistoryId, postBlockTypeId, -1, localId, predLocalId, succLocalId);
+            blockLifeSpanSnapshots.add(blockLifeSpanSnapshot);
         }
 
-        while(!lines.isEmpty()){
-            for (int k = 0; k < lines.size(); k++) {
-                StringTokenizer tokens = new StringTokenizer(lines.get(k), "; ");
-                int postId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-                int postHistoryId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-                int postBlockTypeId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-                int localId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-                Integer predLocalId = null;
-                Integer succLocalId = null;
-
-                try {
-                    predLocalId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-                } catch (NumberFormatException ignored) {}
-
-                try {
-                    succLocalId = Integer.valueOf(tokens.nextToken().replace("\"", ""));
-                } catch (NumberFormatException ignored) {}
-
-                for(int j=0; j<listOfBlockLifeSpans.size(); j++){
-                    if(listOfBlockLifeSpans.get(j).lastElement().getVersion()+1 == mapPostHistoryId_to_version.get(postHistoryId)){
-                        if(listOfBlockLifeSpans.get(j).lastElement().getLocalId() == predLocalId){
-
-                            for(int i=listOfBlockLifeSpanSnapshots.size()-1; i>=0; i--){
-                                if(listOfBlockLifeSpanSnapshots.get(i).getPostHistoryId() == postHistoryId && listOfBlockLifeSpanSnapshots.get(i).getLocalId() == localId){
-                                    listOfBlockLifeSpans.get(j).add(listOfBlockLifeSpanSnapshots.get(i));
-                                    listOfBlockLifeSpanSnapshots.remove(i+0);
-                                    lines.remove(k);
-                                    break;
-                                }
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-
-        Collections.reverse(listOfBlockLifeSpans);
-        return listOfBlockLifeSpans;
+        return blockLifeSpanSnapshots;
     }
 
+    private Vector<Vector<BlockLifeSpanSnapshot>> orderBlockLifeSpanSnapshotsByPostHistoryId(List<BlockLifeSpanSnapshot> blockLifeSpanSnapshots){
+        blockLifeSpanSnapshots.sort(Comparator.comparingInt(BlockLifeSpanSnapshot::getPostHistoryId));
 
-    public static List<BlockLifeSpan> extractExportedCsvToListOfBlockLifeSpans(String pathToCSV) throws IOException {
+        int count = 1;
+        Vector<Vector<BlockLifeSpanSnapshot>> listOfListOfBlockLifeSnapshotsOrderedByVersions = new Vector<>();
+
+        for (BlockLifeSpanSnapshot snapshot : blockLifeSpanSnapshots) {
+            if (!listOfListOfBlockLifeSnapshotsOrderedByVersions.isEmpty()
+                    && listOfListOfBlockLifeSnapshotsOrderedByVersions.lastElement().lastElement().getPostHistoryId() == snapshot.getPostHistoryId()) {
+                listOfListOfBlockLifeSnapshotsOrderedByVersions.lastElement().add(snapshot);
+            } else {
+                listOfListOfBlockLifeSnapshotsOrderedByVersions.add(new Vector<>());
+                listOfListOfBlockLifeSnapshotsOrderedByVersions.lastElement().add(snapshot);
+                count++;
+            }
+            listOfListOfBlockLifeSnapshotsOrderedByVersions.lastElement().lastElement().setVersion(count);
+        }
+
+        return listOfListOfBlockLifeSnapshotsOrderedByVersions;
+    }
+
+    private ConnectionsOfTwoVersions getAllConnectionsBetweenTwoVersions(int leftVersionId, Vector<BlockLifeSpanSnapshot> leftVersionOfBlocks){
+        ConnectionsOfTwoVersions connectionsOfTwoVersions = new ConnectionsOfTwoVersions(leftVersionId);
+        for(int i=0; i<leftVersionOfBlocks.size(); i++){
+            connectionsOfTwoVersions.add(
+                    new ConnectedBlocks(
+                            leftVersionOfBlocks.get(i).getLocalId(),
+                            leftVersionOfBlocks.get(i).getSuccLocalId(),
+                            leftVersionOfBlocks.get(i).getPostBlockTypeId()
+                    ));
+        }
+        return connectionsOfTwoVersions;
+    }
+
+    private ConnectionsOfAllVersions getAllConnectionsOfAllConsecutiveVersions(String pathToCSV){
         List<String> lines = parseLines(pathToCSV);
         List<BlockLifeSpanSnapshot> listOfBlockLifeSpanSnapshots = extractBlockLifeSpanSnapshotsUnordered(lines);
-        orderBlockLifeSpanSnapshotsByPostHistoryId(listOfBlockLifeSpanSnapshots);
-        setVersionsForAllBlockLifeSnapshots(listOfBlockLifeSpanSnapshots);
+        Vector<Vector<BlockLifeSpanSnapshot>> listOfListOfBlockLifeSpanSnapshots = orderBlockLifeSpanSnapshotsByPostHistoryId(listOfBlockLifeSpanSnapshots);
 
-        return listOfBlockLifeSnapshots_to_listOfBlockLifeSpans(listOfBlockLifeSpanSnapshots, lines);
+        ConnectionsOfAllVersions connectionsOfAllVersions = new ConnectionsOfAllVersions(listOfListOfBlockLifeSpanSnapshots.firstElement().firstElement().getPostId());
+
+        for(int i=0; i<listOfListOfBlockLifeSpanSnapshots.size()-1; i++){
+            connectionsOfAllVersions.add(
+                    getAllConnectionsBetweenTwoVersions(i+1, listOfListOfBlockLifeSpanSnapshots.get(i))
+            );
+        }
+
+        return connectionsOfAllVersions;
     }
 
-    public static List<List<BlockLifeSpan>> extractListOfListsOfBlockLifeSpansOfAllExportedCSVs(String directoryOfGroundTruthCSVs) throws IOException {
-
-        List<List<BlockLifeSpan>> groundTruth = new Vector<>();
+    private Vector<ConnectionsOfAllVersions> extractListOfConnectionsOfAllVersionsOfAllExportedCSVs(String directoryOfGroundTruthCSVs){
 
         File file = new File(directoryOfGroundTruthCSVs);
         Pattern pattern = Pattern.compile("completed_" + "[0-9]+" + "\\.csv");
@@ -168,25 +136,53 @@ public class GroundTruthExtractionOfCSVs {
 
         assert allCompletedPostVersionListsInFolder != null;
         for(File completedCSV : allCompletedPostVersionListsInFolder){
-            groundTruth.add(extractExportedCsvToListOfBlockLifeSpans(completedCSV.getCanonicalPath()));
+            try {
+                groundTruth.add(getAllConnectionsOfAllConsecutiveVersions(completedCSV.getCanonicalPath()));
+            } catch (IOException e) {
+                System.err.println("Failed to read canonical path of data '" + completedCSV.getName() + "'.");
+                System.exit(0);
+            }
         }
 
-        groundTruth.sort(Comparator.comparingInt(o -> o.get(0).firstElement().getPostId()));
+        //groundTruth.sort(Comparator.comparingInt(o -> o.firstElement().firstElement()));
 
         return groundTruth;
     }
 
-    public static List<List<BlockLifeSpan>> filterListOfListOfBlockLifeSpansByType(List<List<BlockLifeSpan>> groundTruth, BlockLifeSpan.Type type){
-        List<List<BlockLifeSpan>> groundTruth_text = new Vector<>();
-        for (List<BlockLifeSpan> blockLifeSpans : groundTruth) {
-            List<BlockLifeSpan> tmpListOfBlockLifeSpans = new Vector<>();
-            for (int j = 0; j < blockLifeSpans.size(); j++) {
-                if (blockLifeSpans.get(j).getType() == type) {
-                    tmpListOfBlockLifeSpans.add(blockLifeSpans.get(j));
+    private void divideGroundTruthIntoTextAndCode(){
+        for(ConnectionsOfAllVersions allVersionsOfConnections : groundTruth){
+            groundTruth_text.add(new ConnectionsOfAllVersions(allVersionsOfConnections.postId));
+            groundTruth_code.add(new ConnectionsOfAllVersions(allVersionsOfConnections.postId));
+            int count = 1;
+            for(ConnectionsOfTwoVersions twoVersionsOfConnections : allVersionsOfConnections){
+                groundTruth_text.lastElement().add(new ConnectionsOfTwoVersions(count));
+                groundTruth_code.lastElement().add(new ConnectionsOfTwoVersions(count));
+                for(ConnectedBlocks connectedBlock : twoVersionsOfConnections){
+                    if(connectedBlock.postBlockTypeId == 1){
+                        groundTruth_text.lastElement().lastElement().add(connectedBlock);
+                    }else{
+                        groundTruth_code.lastElement().lastElement().add(connectedBlock);
+                    }
                 }
+                count++;
             }
-            groundTruth_text.add(tmpListOfBlockLifeSpans);
         }
-        return groundTruth_text;
+    }
+
+
+    public ConnectionsOfAllVersions getAllConnectionsOfAllConsecutiveVersions_text(int postId){
+        for (ConnectionsOfAllVersions groundTruth_text : groundTruth_text)
+            if (groundTruth_text.postId == postId)
+                return groundTruth_text;
+
+        return null;
+    }
+
+    public ConnectionsOfAllVersions getAllConnectionsOfAllConsecutiveVersions_code(int postId){
+        for (ConnectionsOfAllVersions groundTruth_code : groundTruth_code)
+            if (groundTruth_code.postId == postId)
+                return groundTruth_code;
+
+        return null;
     }
 }
