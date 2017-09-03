@@ -155,7 +155,7 @@ public class MetricsComparatorTest {
 
         boolean snapshotSizesWereCorrect = true;
 
-        for(int i = 0; i< MetricsComparator.MetricEnum.values().length; i++) {
+        for(int i = 0; i< MetricsComparator.Type.values().length; i++) {
 
             for (int j = 0; j < StaticPostVersionsLists.PostVersionListEnum.values().length; j++) {
 
@@ -166,11 +166,11 @@ public class MetricsComparatorTest {
                     MetricResult tmpMetricResult
                             = metricsComparator.computeSimilarity_extractLifeSpans_writeInResult_text(
                             StaticPostVersionsLists.PostVersionListEnum.values()[j],
-                            metricsComparator.getBiFunctionMetric(MetricsComparator.MetricEnum.values()[i]));
+                            metricsComparator.getBiFunctionMetric(MetricsComparator.Type.values()[i]));
 
                     if(BlockLifeSpan.getNumberOfSnapshots(tmpMetricResult.lifeSpansOfAllBlocks_text) != BlockLifeSpan.getNumberOfSnapshots(MetricsComparator.groundTruthBlocks_text.get(j))){
                         System.out.println(
-                                "problem found at i=" + i + ", j=" + j + ": in post version list: " + StaticPostVersionsLists.PostVersionListEnum.values()[j] + " and metric " + MetricsComparator.MetricEnum.values()[i] + "\n"
+                                "problem found at i=" + i + ", j=" + j + ": in post version list: " + StaticPostVersionsLists.PostVersionListEnum.values()[j] + " and metric " + MetricsComparator.Type.values()[i] + "\n"
                               + "number of snapshots in testet metric (text): " + BlockLifeSpan.getNumberOfSnapshots(tmpMetricResult.lifeSpansOfAllBlocks_text) + "\n"
                               + "number of snapshots in ground truth (text): " + BlockLifeSpan.getNumberOfSnapshots(MetricsComparator.groundTruthBlocks_text.get(j))
                               + "\n");
@@ -186,11 +186,11 @@ public class MetricsComparatorTest {
                     tmpMetricResult
                             = metricsComparator.computeSimilarity_extractLifeSpans_writeInResult_code(
                             StaticPostVersionsLists.PostVersionListEnum.values()[j],
-                            metricsComparator.getBiFunctionMetric(MetricsComparator.MetricEnum.values()[i]));
+                            metricsComparator.getBiFunctionMetric(MetricsComparator.Type.values()[i]));
 
                     if(BlockLifeSpan.getNumberOfSnapshots(tmpMetricResult.lifeSpansOfAllBlocks_code) != BlockLifeSpan.getNumberOfSnapshots(MetricsComparator.groundTruthBlocks_code.get(j))){
                         System.out.println(
-                                "problem found at i=" + i + ", j=" + j + ": in post version list: " + StaticPostVersionsLists.PostVersionListEnum.values()[j] + " and metric " + MetricsComparator.MetricEnum.values()[i] + "\n"
+                                "problem found at i=" + i + ", j=" + j + ": in post version list: " + StaticPostVersionsLists.PostVersionListEnum.values()[j] + " and metric " + MetricsComparator.Type.values()[i] + "\n"
                                         + "number of snapshots in testet metric (code): " + BlockLifeSpan.getNumberOfSnapshots(tmpMetricResult.lifeSpansOfAllBlocks_code) + "\n"
                                         + "number of snapshots in ground truth (code): " + BlockLifeSpan.getNumberOfSnapshots(MetricsComparator.groundTruthBlocks_code.get(j))
                                         + "\n");
@@ -211,7 +211,7 @@ public class MetricsComparatorTest {
                             "Run successful: "
                             + "snapshot sizes of ground truth and metric to be compared of post version list: "
                             + StaticPostVersionsLists.PostVersionListEnum.values()[j]
-                            + " and metric " + MetricsComparator.MetricEnum.values()[i]
+                            + " and metric " + MetricsComparator.Type.values()[i]
                             + " correspond!");
                 }
             }

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Vector;
 
 import static de.unitrier.st.soposthistorygt.GroundTruthApp.GroundTruthCreator.normalizeURLsInTextBlocksOfAllVersions;
-import static de.unitrier.st.soposthistorygt.GroundTruthApp.GroundTruthCreator.removeEmptyTextAndCodeBlocks;
 import static de.unitrier.st.soposthistorygt.metricsComparism.PostVersionsListManagement.pattern_groundTruth;
 
 class GroundTruthAppTest {
@@ -207,7 +206,6 @@ class GroundTruthAppTest {
 
                     AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
                     normalizeURLsInTextBlocksOfAllVersions(tmpPostVersionList, anchorTextAndUrlHandler);
-                    removeEmptyTextAndCodeBlocks(tmpPostVersionList);
                 } catch (Exception e) {
 
                     System.out.println("Failed to parse " + postHistory.getPath());

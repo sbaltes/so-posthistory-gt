@@ -4,6 +4,7 @@ public class BlockLifeSpanSnapshot{
 
     private int postId;
     private int postHistoryId;
+    private int postBlockTypeId;
     private int version;
     private int localId;
     private Integer predLocalId;
@@ -16,6 +17,17 @@ public class BlockLifeSpanSnapshot{
         this.postHistoryId = postHistoryId;
         this.version = version;
         this.localId = localId;
+    }
+
+
+    public BlockLifeSpanSnapshot(int postId, int postHistoryId, int postBlockTypeId, int version, int localId, Integer predLocalId, Integer succLocalId){
+        this.postId = postId;
+        this.postHistoryId = postHistoryId;
+        this.postBlockTypeId = postBlockTypeId;
+        this.version = version;
+        this.localId = localId;
+        this.predLocalId = predLocalId;
+        this.succLocalId = succLocalId;
     }
 
     @Override
@@ -68,6 +80,10 @@ public class BlockLifeSpanSnapshot{
 
     public void setSuccLocalId(Integer succLocalId) {
         this.succLocalId = succLocalId;
+    }
+
+    public int getPostBlockTypeId() {
+        return postBlockTypeId;
     }
 
     @Override

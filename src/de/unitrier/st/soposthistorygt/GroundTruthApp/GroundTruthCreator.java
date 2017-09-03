@@ -125,7 +125,7 @@ public class GroundTruthCreator extends JFrame{
         mainPanel.setBackground(Color.BLACK);
 
         normalizeURLsInTextBlocksOfAllVersions(postVersionList, anchorTextAndUrlHandler);
-        removeEmptyTextAndCodeBlocks(postVersionList);
+        // removeEmptyTextAndCodeBlocks(postVersionList);
         // mergeConsecutiveBlocksOfSameType();
 
 
@@ -383,7 +383,7 @@ public class GroundTruthCreator extends JFrame{
         }
     }
 
-
+/*
     public static void removeEmptyTextAndCodeBlocks(PostVersionList postVersionList){
         if(postVersionList == null)
             return;
@@ -402,6 +402,7 @@ public class GroundTruthCreator extends JFrame{
             }
         }
     }
+*/
 
     private void mergeConsecutiveBlocksOfSameType(){
         if(postVersionList == null)
