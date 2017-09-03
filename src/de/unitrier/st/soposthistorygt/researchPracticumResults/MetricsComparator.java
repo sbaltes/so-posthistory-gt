@@ -1,5 +1,5 @@
 package de.unitrier.st.soposthistorygt.researchPracticumResults;
-
+/*
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
 import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
@@ -1556,7 +1556,7 @@ public class MetricsComparator extends StaticPostVersionsLists {
 
         return allMetricToBeComparedBlocks_code;
     }
-*/
+
 
     public MetricResult computeSimilarity_extractLifeSpans_writeInResult_text(PostVersionListEnum postVersionListEnumID, BiFunction metric) {
 
@@ -1692,7 +1692,7 @@ public class MetricsComparator extends StaticPostVersionsLists {
 
         return metricResult;
     }
-*/
+
 
     // ****** similarities of lifeSpans
     // gets number of (different) blocks in blockLifeSpans in which elements from lifeSpan are found
@@ -1797,7 +1797,7 @@ public class MetricsComparator extends StaticPostVersionsLists {
         // TODO : compute similarity **** There might exist some better similarity function
         return similarity / groundTruthBlocks_code.size();
     }
-*/
+
 
     public void createStatisticsFiles(int run) throws FileNotFoundException {
 
@@ -1816,7 +1816,7 @@ public class MetricsComparator extends StaticPostVersionsLists {
         /* for test
         MetricEnum[] metrics = new MetricEnum[1];
         metrics[0] = MetricEnum.overlapNormalizedTokens;
-        */
+
 
         PrintWriter[] printWriters = new PrintWriter[10];
         printWriters[0] = new PrintWriter(new File("./metric results/max time for a PostVersionList measured (text) run id = " + run + ".csv"));
@@ -1919,3 +1919,4 @@ public class MetricsComparator extends StaticPostVersionsLists {
 
 }
 
+*/

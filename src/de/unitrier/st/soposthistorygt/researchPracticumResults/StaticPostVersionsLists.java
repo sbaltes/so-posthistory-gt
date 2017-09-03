@@ -1,5 +1,5 @@
 package de.unitrier.st.soposthistorygt.researchPracticumResults;
-
+/*
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
 import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
@@ -237,3 +237,4 @@ public class StaticPostVersionsLists {
 
     }
 }
+*/

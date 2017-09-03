@@ -17,7 +17,7 @@ public class PostVersionsListManagement {
 
     private String pathToDirectory;
 
-    private Pattern pattern_groundTruth = Pattern.compile("[0-9]+" + "\\.csv");
+    public static Pattern pattern_groundTruth = Pattern.compile("[0-9]+" + "\\.csv");
     List<PostVersionList> postVersionLists = new Vector<>();
 
 
