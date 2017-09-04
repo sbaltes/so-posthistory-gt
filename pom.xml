@@ -5,7 +5,7 @@
     <name>SOPostHistoryGroundTruth</name>
     <groupId>de.unitrier.st.soposthistorygt</groupId>
     <artifactId>so-posthistory-gt</artifactId>
-    <version>0.1.8</version>
+    <version>0.1.9</version>
     <url>https://github.com/sbaltes/so-posthistory-gt</url>
 
     <repositories>
