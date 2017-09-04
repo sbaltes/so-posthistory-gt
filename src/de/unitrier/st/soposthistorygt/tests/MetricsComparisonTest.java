@@ -8,18 +8,20 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class MetricsComparisonTest {
+
+    private static Path pathToCSVs = Paths.get("testdata", "comparison");
 
     @Test
     public void testExtraction(){
 
         int postId = 3758880;
 
-        String pathToCSV = System.getProperty("user.dir") + "\\src\\de\\unitrier\\st\\soposthistorygt\\tests";
-
-        GroundTruthExtractionOfCSVs groundTruthExtractionOfCSVs = new GroundTruthExtractionOfCSVs(pathToCSV);
-        PostVersionsListManagement postVersionsListManagement = new PostVersionsListManagement(pathToCSV);
+        GroundTruthExtractionOfCSVs groundTruthExtractionOfCSVs = new GroundTruthExtractionOfCSVs(pathToCSVs.toString());
+        PostVersionsListManagement postVersionsListManagement = new PostVersionsListManagement(pathToCSVs.toString());
 
         ConnectionsOfAllVersions connectionsOfAllVersionsGroundTruth_text = groundTruthExtractionOfCSVs.getAllConnectionsOfAllConsecutiveVersions_text(postId);
         ConnectionsOfAllVersions connectionsOfAllVersionsGroundTruth_code = groundTruthExtractionOfCSVs.getAllConnectionsOfAllConsecutiveVersions_code(postId);
@@ -55,12 +57,9 @@ public class MetricsComparisonTest {
         stopWatch.reset();
         stopWatch.start();
 
-        String pathToAllCompletedCSVs = System.getProperty("user.dir") + "\\src\\de\\unitrier\\st\\soposthistorygt\\tests";
-        String pathToPostHistories = System.getProperty("user.dir") + "\\src\\de\\unitrier\\st\\soposthistorygt\\tests";
-
         MetricsComparator metricsComparator = new MetricsComparator(
-                pathToPostHistories,
-                pathToAllCompletedCSVs);
+                pathToCSVs.toString(),
+                pathToCSVs.toString());
 
         metricsComparator.createStatisticsFiles();
 
