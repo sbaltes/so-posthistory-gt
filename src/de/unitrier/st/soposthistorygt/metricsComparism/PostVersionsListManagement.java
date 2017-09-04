@@ -38,7 +38,8 @@ public class PostVersionsListManagement {
         for(File postHistory : allPostHistoriesInFolder){
             PostVersionList tmpPostVersionList = new PostVersionList();
             int postId = Integer.valueOf(postHistory.getName().substring(0, postHistory.getName().length()-4));
-            tmpPostVersionList.readFromCSV(pathToDirectory + "\\", postId, 2);
+
+            tmpPostVersionList.readFromCSV(pathToDirectory, postId, 2);
 
             AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
             normalizeURLsInTextBlocksOfAllVersions(tmpPostVersionList, anchorTextAndUrlHandler);
