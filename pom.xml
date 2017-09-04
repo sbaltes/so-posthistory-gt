@@ -11,11 +11,11 @@
     <repositories>
         <repository>
             <id>soposthistory</id>
-            <url>file://${basedir}../so-posthistory-extractor/target/</url>
+            <url>file://${basedir}/../so-posthistory-extractor/target/</url>
         </repository>
         <repository>
             <id>stringsimilarity</id>
-            <url>file://${basedir}../string-similarity/target/</url>
+            <url>file://${basedir}/../string-similarity/target/</url>
         </repository>
     </repositories>
 
