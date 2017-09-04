@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static de.unitrier.st.soposthistory.history.PostHistoryIterator.logger;
 
@@ -441,8 +443,9 @@ public class GroundTruthCreator extends JFrame{
 
                 if (markdownText.trim().isEmpty()){ // https://stackoverflow.com/a/3745432
                     postVersion.getPostBlocks().remove(textBlock);
-                }else
+                }else{
                     textBlock.setContent(markdownText);
+                }
             }
         }
     }
@@ -453,78 +456,107 @@ public class GroundTruthCreator extends JFrame{
         String string1 = postVersionList.get(leftVersion).getPostBlocks().get(leftBlockPosition).getContent();
         String string2 = postVersionList.get(rightVersion).getPostBlocks().get(rightBlockPosition).getContent();
 
-        String uniqueLineDiffSeparator_left = "$$$$$$";
-        String uniqueLineDiffSeparator_right = "§§§§§§";
+        String uniqueLineDiffSeparator_left_start = "§§§§§§1";
+        String uniqueLineDiffSeparator_right_start = "§§§§§§2";
+        String uniqueLineDiffSeparator_left_end = "§§§§§§3";
+        String uniqueLineDiffSeparator_right_end = "§§§§§§4";
 
         LineDiff lineDiff = new LineDiff();
         List<diff_match_patch.Diff> diffs = lineDiff.diff_lines_only(string1, string2);
-        StringBuilder outputRight = new StringBuilder();
+        StringBuilder outputRightSb = new StringBuilder();
 
         for (diff_match_patch.Diff diff : diffs) {
 
             if (diff.operation == diff_match_patch.Operation.EQUAL) {
-                if (!outputRight.toString().endsWith("\n"))
-                    outputRight.append("\n");
-                outputRight.append(diff.text);
+                if (!outputRightSb.toString().endsWith("\n"))
+                    outputRightSb.append("\n");
+                outputRightSb.append(diff.text);
 
             } else if (diff.operation == diff_match_patch.Operation.DELETE || diff.operation == diff_match_patch.Operation.INSERT) {
                 String lineColor = (diff.operation == diff_match_patch.Operation.DELETE) ? "red" : (diff.operation == diff_match_patch.Operation.INSERT) ? "green" : "";
 
                 StringTokenizer tokens = new StringTokenizer(diff.text, "\n");
                 while (tokens.hasMoreTokens()) {
-                    if (!outputRight.toString().endsWith("\n"))
-                        outputRight.append("\n");
+                    if (!outputRightSb.toString().endsWith("\n"))
+                        outputRightSb.append("\n");
                     String tmpToken = tokens.nextToken();
                     int j = 0;
                     tmpToken = tmpToken.replace("\t", "    ");
                     while (j < tmpToken.length() && (tmpToken.charAt(j) == ' ' || tmpToken.charAt(j) == '\t')) {
-                        outputRight.append(" ");
+                        outputRightSb.append(" ");
                         j++;
                     }
-                    outputRight.append(uniqueLineDiffSeparator_left).append("<span style=\"color:").append(lineColor).append("\">").append(tmpToken.substring(j)).append("</span>");
+                    outputRightSb
+                            .append(uniqueLineDiffSeparator_left_start)
+                            .append("<span style=\"color:")
+                            .append(lineColor).append("\">")
+                            .append(uniqueLineDiffSeparator_left_end)
+                            .append(tmpToken.substring(j))
+                            .append(uniqueLineDiffSeparator_right_start)
+                            .append("</span>")
+                            .append(uniqueLineDiffSeparator_right_end)
+                    ;
                 }
             }
 
-            if (!outputRight.toString().endsWith("\n")){
+            if (!outputRightSb.toString().endsWith("\n")){
                 if(blockIsInstanceOfTextBlockVersion)
-                    outputRight.append("\n\n");
+                    outputRightSb.append("\n\n");
                 else
-                    outputRight.append("\n");
+                    outputRightSb.append("\n");
             }
         }
 
 
-        outputRight = new StringBuilder("<html><head></head><body>" +
+        outputRightSb = new StringBuilder("<html><head></head><body>" +
                 commonmarkMarkUp(
-                        outputRight.toString()
+                        outputRightSb.toString()
                 )
                 + "</body></html>");
 
-        boolean inSpansToReplace = false;
-        StringBuilder stringToBeReplaced = new StringBuilder();
-        for(int i=0; i<outputRight.length(); i++){
-            if(outputRight.substring(i).startsWith(uniqueLineDiffSeparator_left)){
-                inSpansToReplace = true;
-            } else if(outputRight.substring(i).endsWith(uniqueLineDiffSeparator_right)){
-                inSpansToReplace = false;
-            }
 
-            if(inSpansToReplace) {
-                stringToBeReplaced.append(outputRight.charAt(i));
-            }
+
+        String output = outputRightSb.toString();
+
+
+        Pattern pattern_left = Pattern.compile(uniqueLineDiffSeparator_left_start + ".*" + uniqueLineDiffSeparator_left_end);
+        Matcher matcher_left = pattern_left.matcher(output);
+
+        while(matcher_left.find()) {
+            String newStringLeft = matcher_left.group();
+            newStringLeft = newStringLeft.replace("&lt;", "<");
+            newStringLeft = newStringLeft.replace("&gt;", ">");
+            newStringLeft = newStringLeft.replace("&quot;", "\"");
+
+            output = output.replace(matcher_left.group(), newStringLeft);
         }
 
-        String replacingString = stringToBeReplaced.toString();
-        replacingString = replacingString.replace("&quot;", "\"");
-        replacingString = replacingString.replace("&lt;", "<");
-        replacingString = replacingString.replace("&gt;", ">");
 
-        replacingString = replacingString.replace(uniqueLineDiffSeparator_left, "");
-        replacingString = replacingString.replace(uniqueLineDiffSeparator_right, "");
 
-        outputRight = new StringBuilder(outputRight.toString().replace(stringToBeReplaced.toString(), replacingString));
+        Pattern pattern_right = Pattern.compile(uniqueLineDiffSeparator_right_start + ".*" + uniqueLineDiffSeparator_right_end);
+        Matcher matcher_right = pattern_right.matcher(output);
 
-        return outputRight.toString();
+        while(matcher_right.find()) {
+            String newStringRight = matcher_right.group();
+
+            System.out.println(newStringRight);
+
+            newStringRight = newStringRight.replace("&lt;", "<");
+            newStringRight = newStringRight.replace("&gt;", ">");
+            newStringRight = newStringRight.replace("&quot;", "\"");
+
+            output = output.replace(matcher_right.group(), newStringRight);
+        }
+
+
+
+
+        output = output.replace(uniqueLineDiffSeparator_left_start, "");
+        output = output.replace(uniqueLineDiffSeparator_left_end, "");
+        output = output.replace(uniqueLineDiffSeparator_right_start, "");
+        output = output.replace(uniqueLineDiffSeparator_right_end, "");
+
+        return output;
     }
 
     // displays all blocks of two versions and current linking
