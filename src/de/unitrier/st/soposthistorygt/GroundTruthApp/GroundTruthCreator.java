@@ -539,8 +539,6 @@ public class GroundTruthCreator extends JFrame{
         while(matcher_right.find()) {
             String newStringRight = matcher_right.group();
 
-            System.out.println(newStringRight);
-
             newStringRight = newStringRight.replace("&lt;", "<");
             newStringRight = newStringRight.replace("&gt;", ">");
             newStringRight = newStringRight.replace("&quot;", "\"");
