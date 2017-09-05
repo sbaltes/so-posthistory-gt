@@ -27,9 +27,24 @@ quantile(data_filtered$VersionCount, c(0.95, 0.96, 0.97, 0.98, 0.99))
 data_filtered$VersionCount[data_filtered$VersionCount>50]
 data_filtered_many_versions <- data[data$VersionCount>=7,] # 99% quantile
 
+# all posts, large sample (may intersect, just used for robustness testing)
+nrow(data_filtered)
+
+#for (i in 1:10) {
+#  sample <- data_filtered[sample(nrow(data_filtered), 10000), c("PostId", "PostTypeId")]
+#  filename <- paste0("PostId_VersionCount_SO_17-06_sample_10000_", i, ".csv")
+#  write.table(sample, file=filename, sep=";", col.names=TRUE, row.names=FALSE, na="", quote=TRUE, qmethod="double", fileEncoding="UTF-8")
+#}
+
+# all posts, sample with posts having most versions (just used for robustness testing)
+#data_filtered_most_versions <- data_filtered[base::order(data_filtered$VersionCount, data_filtered$PostId, decreasing=TRUE),]
+#sample_most_versions <- data_filtered_most_versions[1:100, c("PostId", "PostTypeId")]
+#write.table(sample_most_versions, file="PostId_VersionCount_SO_17-06_sample_100_most_versions.csv", sep=";", col.names=TRUE, row.names=FALSE, na="", quote=TRUE, qmethod="double", fileEncoding="UTF-8")
+
+
 # read and exclude posts that are already present in previous sample(s)
 
-# all posts
+# all posts, small sample
 nrow(data_filtered)
 # 12,962,337
 sample_1 <- fread("PostId_VersionCount_SO_17-06_sample_100_1.csv", header=TRUE, sep=";", quote="\"", strip.white=TRUE, showProgress=TRUE, encoding="UTF-8", na.strings=c(""))
