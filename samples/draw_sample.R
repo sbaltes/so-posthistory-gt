@@ -31,7 +31,7 @@ data_filtered_many_versions <- data[data$VersionCount>=7,] # 99% quantile
 nrow(data_filtered)
 
 #for (i in 1:10) {
-#  sample <- data_filtered[sample(nrow(data_filtered), 10000), c("PostId", "PostTypeId")]
+#  sample <- data_filtered[sample(nrow(data_filtered), 10000),]
 #  filename <- paste0("PostId_VersionCount_SO_17-06_sample_10000_", i, ".csv")
 #  write.table(sample, file=filename, sep=";", col.names=TRUE, row.names=FALSE, na="", quote=TRUE, qmethod="double", fileEncoding="UTF-8")
 #}
@@ -96,9 +96,9 @@ nrow(data_filtered_many_versions_s2)
 data_filtered_many_versions <- data_filtered_many_versions_s2
 
 # draw new sample
-sample <- data_filtered[sample(nrow(data_filtered), 100), c("PostId", "PostTypeId")]
-sample_java <- data_java_filtered[sample(nrow(data_java_filtered), 100), c("PostId", "PostTypeId")]
-sample_many <- data_filtered_many_versions[sample(nrow(data_filtered_many_versions), 100), c("PostId", "PostTypeId")]
+sample <- data_filtered[sample(nrow(data_filtered), 100),]
+sample_java <- data_java_filtered[sample(nrow(data_java_filtered), 100),]
+sample_many <- data_filtered_many_versions[sample(nrow(data_filtered_many_versions), 100),]
 
 # write sampled posts to CSV files
 write.table(sample, file="PostId_VersionCount_SO_17-06_sample_100_3.csv", sep=";", col.names=TRUE, row.names=FALSE, na="", quote=TRUE, qmethod="double", fileEncoding="UTF-8")
