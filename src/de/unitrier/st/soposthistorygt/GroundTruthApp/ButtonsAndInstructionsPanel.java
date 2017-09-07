@@ -2,6 +2,7 @@ package de.unitrier.st.soposthistorygt.GroundTruthApp;
 
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
+import de.unitrier.st.soposthistorygt.metricsComparism.GroundTruthExtractionOfCSVs;
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpanSnapshot;
 import de.unitrier.st.soposthistorygt.util.GTLogger;
@@ -14,19 +15,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Vector;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 
 class ButtonsAndInstructionsPanel extends JPanel {
 
     private GroundTruthCreator groundTruthCreator;
-
-
-    // TODO: add icons to buttons
-    // TODO: add/finish functions to buttons and check them
 
     /***** Swing components *****/
     private JButton buttonRequestSpecialPost = new JButton("request post");
@@ -71,10 +68,11 @@ class ButtonsAndInstructionsPanel extends JPanel {
         } catch (AWTException e) {
             e.printStackTrace();
         }
+        
     }
 
 
-        /***** Methods *****/
+    /***** Methods *****/
     private void getButtonsAndInstructionsOnPanel(){
         textFieldRequestSpecialPost.setColumns(10); // https://stackoverflow.com/questions/14805124/how-to-set-the-height-and-the-width-of-a-textfield-in-java
 
@@ -94,15 +92,15 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 "<html>" +
                         "<head/>" +
                         "<body>" +
-                            "<ul>" +
-                                "<li>If you click at a block b (text blocks are blue, code blocks are orange) of one version you mark b</li>" +
-                                "<li>If you click this (now pink) block again you umark it.</li>" +
-                                "<li>If a block is marked and you click another block of the opposite version<br>" +
-                                    "you create a link between blocks of two versions.</li>" +
-                                "<li>If you click 'next' but there are some blocks left unmarked (orange) those blocks will be set as new/deleted.</li>" +
-                            "</ul>" +
+                        "<ul>" +
+                        "<li>If you click at a block b (text blocks are blue, code blocks are orange) of one version you mark b</li>" +
+                        "<li>If you click this (now pink) block again you umark it.</li>" +
+                        "<li>If a block is marked and you click another block of the opposite version<br>" +
+                        "you create a link between blocks of two versions.</li>" +
+                        "<li>If you click 'next' but there are some blocks left unmarked (orange) those blocks will be set as new/deleted.</li>" +
+                        "</ul>" +
                         "</body>" +
-                     "</html>.");
+                        "</html>.");
         instructionsLabel.setFont(new Font("courier new", Font.PLAIN, 12));
         JPanel instructionsPanel = new JPanel();
         instructionsPanel.setBackground(new Color(205, 255, 220));
@@ -156,12 +154,12 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
         buttonNext.setEnabled(
                 groundTruthCreator.postVersionList != null &&
-                groundTruthCreator.currentLeftVersion + 1 != groundTruthCreator.postVersionList.size() - 1
+                        groundTruthCreator.currentLeftVersion + 1 != groundTruthCreator.postVersionList.size() - 1
         );
 
         buttonBack.setEnabled(
                 groundTruthCreator.postVersionList != null &&
-                groundTruthCreator.currentLeftVersion != 0
+                        groundTruthCreator.currentLeftVersion != 0
         );
     }
 
@@ -438,7 +436,149 @@ class ButtonsAndInstructionsPanel extends JPanel {
             }
         });
 
-        //buttonLoadPost.addMouseListener(); // TODO
+        buttonLoadPost.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+
+                Integer requestedPostId = null;
+                try {
+                    requestedPostId = Integer.parseInt(textFieldRequestSpecialPost.getText());
+                }catch (Exception ignored){
+                    return;
+                }
+                Integer finalRequestedPostId = requestedPostId;
+
+
+                File file = null;
+                File[] postVersionList = null;
+                File[] completedCSV = null;
+                try {
+                    file = new File(GroundTruthCreator.path);
+                    postVersionList = file.listFiles((dir, name) -> name.matches(finalRequestedPostId + "\\.csv"));  // //https://stackoverflow.com/questions/4852531/find-files-in-a-folder-using-java
+                    completedCSV = file.listFiles((dir, name) -> name.matches("completed_" + finalRequestedPostId + "\\.csv")); // //https://stackoverflow.com/questions/4852531/find-files-in-a-folder-using-java
+                }catch (Exception ignored){
+                    JOptionPane.showMessageDialog(null, "the files completed_" + requestedPostId + ".csv and " + requestedPostId + ".csv both needs to be in same folder postVersionLists.");
+                    return;
+                }
+
+                if(postVersionList == null || completedCSV == null || postVersionList.length == 0 || completedCSV.length == 0){
+                    JOptionPane.showMessageDialog(null, "the files completed_" + requestedPostId + ".csv and " + requestedPostId + ".csv both needs to be in same folder postVersionLists.");
+                    return;
+                }
+
+                loadPost(requestedPostId);
+
+
+
+
+                Path pathToCSV = FileSystems.getDefault().getPath("postVersionLists", completedCSV[0].getName());
+                List<String> lines = GroundTruthExtractionOfCSVs.parseLines(pathToCSV.toString());
+
+                Collections.sort(lines, new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        StringTokenizer tokens_o1 = new StringTokenizer(o1, "; ");
+                        int postId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                        int postHistoryId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                        int postBlockTypeId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                        int localId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+
+                        Integer predLocalId_o1 = null;
+                        Integer succLocalId_o1 = null;
+                        try {
+                            predLocalId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                        }catch (Exception e1){}
+
+                        try {
+                            succLocalId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                        }catch (Exception e1){}
+
+
+
+                        StringTokenizer tokens_o2 = new StringTokenizer(o2, "; ");
+                        int postId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                        int postHistoryId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                        int postBlockTypeId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                        int localId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+
+                        Integer predLocalId_o2 = null;
+                        Integer succLocalId_o2 = null;
+                        try {
+                            predLocalId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                        }catch (Exception e1){}
+
+                        try {
+                            succLocalId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                        }catch (Exception e1){}
+
+
+                        if(postHistoryId_o1 != postHistoryId_o2)
+                            return postHistoryId_o1 - postHistoryId_o2;
+                        else
+                            return localId_o1 - localId_o2;
+                    }
+                });
+
+
+                Integer version = 0;
+                Integer lastPostHistoryId = null;
+                for(String line : lines){
+                    StringTokenizer tokens = new StringTokenizer(line, "; ");
+
+                    int postId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
+                    int postHistoryId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
+                    int postBlockTypeId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
+                    int localId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
+
+
+                    Integer predLocalId = null;
+                    Integer succLocalId = null;
+                    try {
+                        predLocalId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
+                    }catch (Exception e1){}
+
+                    try {
+                        succLocalId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
+                    }catch (Exception e1){}
+
+
+
+                    String comment = tokens.nextToken();
+                    if(!comment.matches("\"\\s*\"")){
+                        String newComment = "vers: " + (version) + " | " + "pos: " + localId + " | " + "<font color=\"gray\">" + comment + "</font>";
+                        comments.add(newComment);
+                    }
+
+
+                    if(lastPostHistoryId != null && postHistoryId > lastPostHistoryId)
+                        version++;
+
+                    if(succLocalId != null){
+                        groundTruthCreator.allAutomaticSetBlockPairs.get(version).add(
+                                new BlockPair(
+                                        null,
+                                        null,
+                                        postBlockTypeId == 1,
+                                        localId-1,
+                                        succLocalId-1));
+                    }
+
+                    lastPostHistoryId = postHistoryId;
+                }
+
+                // TODO: comments are removed and therefore not shown
+                StringBuilder text = new StringBuilder("<html></head><body>");
+                for(int i=0; i<comments.size(); i++){
+                    text.append("<font color=\"orange\">").append(i + 1).append("</font>").append(") ").append(comments.get(i).replace("\"", "")).append("<br>");
+                }
+                text.append("</body></html>");
+                labelSavedComments.setText(text.toString());
+                savedCommentsScrollPane.validate();
+                savedCommentsScrollPane.repaint();
+            }
+        });
+
 
         buttonSwitchConnectionDisplayMode.addMouseListener(new MouseInputAdapter() {
             @Override
@@ -483,17 +623,17 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
                         BlockLifeSpanSnapshot leftBlockLifeSpanSnapshot
                                 = new BlockLifeSpanSnapshot(
-                                       groundTruthCreator.postVersionList.get(i).getPostId(),
-                                       groundTruthCreator.postVersionList.get(i).getPostHistoryId(),
-                                       i+1,
-                                       groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).leftBlockPosition+1);
+                                groundTruthCreator.postVersionList.get(i).getPostId(),
+                                groundTruthCreator.postVersionList.get(i).getPostHistoryId(),
+                                i+1,
+                                groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).leftBlockPosition+1);
 
                         BlockLifeSpanSnapshot rightBlockLifeSpanSnapshot
                                 = new BlockLifeSpanSnapshot(
-                                       groundTruthCreator.postVersionList.get(i).getPostId(),
-                                       groundTruthCreator.postVersionList.get(i+1).getPostHistoryId(),
-                                       i+2,
-                                       groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).rightBlockPosition+1);
+                                groundTruthCreator.postVersionList.get(i).getPostId(),
+                                groundTruthCreator.postVersionList.get(i+1).getPostHistoryId(),
+                                i+2,
+                                groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).rightBlockPosition+1);
 
                         boolean leftSnapshotfoundInAChain = false;
                         for(int k = 0; k<groundTruthCreator.blockLifeSpansExtractedFromClicks.size(); k++){
@@ -521,11 +661,11 @@ class ButtonsAndInstructionsPanel extends JPanel {
                     for(int j=0; j<groundTruthCreator.postVersionList.get(i).getPostBlocks().size(); j++){
                         BlockLifeSpanSnapshot tmpBlockLifeSpanSnapshot
                                 = new BlockLifeSpanSnapshot(
-                                        groundTruthCreator.postVersionList.get(i).getPostId(),
-                                        groundTruthCreator.postVersionList.get(i).getPostHistoryId(),
-                                        i+1,
-                                        j+1
-                                );
+                                groundTruthCreator.postVersionList.get(i).getPostId(),
+                                groundTruthCreator.postVersionList.get(i).getPostHistoryId(),
+                                i+1,
+                                j+1
+                        );
 
                         boolean tmpBlockLifeSpanSnapshotHasBeenFound = false;
                         for(int k = 0; k<groundTruthCreator.blockLifeSpansExtractedFromClicks.size(); k++){
