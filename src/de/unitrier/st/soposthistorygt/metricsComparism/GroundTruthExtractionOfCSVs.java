@@ -24,7 +24,7 @@ public class GroundTruthExtractionOfCSVs {
     }
 
 
-    private List<String> parseLines(String pathToExportedCSV){
+    public static List<String> parseLines(String pathToExportedCSV){
 
         BufferedReader bufferedReader = null;
         try {

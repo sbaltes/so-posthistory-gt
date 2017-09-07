@@ -40,7 +40,7 @@ public class GroundTruthCreator extends JFrame{
     JPanel mainPanel = new JPanel(new BorderLayout());
     JScrollPane scrollPaneIncludingMainPanel = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-    private ButtonsAndInstructionsPanel buttonsAtTopPanel = null;
+    ButtonsAndInstructionsPanel buttonsAtTopPanel = null;
 
     private JPanel compareVersionsPanel = null;
     JPanel versionLeftPanel = new JPanel(new MigLayout());
@@ -73,7 +73,7 @@ public class GroundTruthCreator extends JFrame{
     private AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
 
     Vector<Vector<BlockPair>> allCreatedBlockPairsByClicks = new Vector<>();
-    private Vector<Vector<BlockPair>> allAutomaticSetBlockPairs = new Vector<>();
+    Vector<Vector<BlockPair>> allAutomaticSetBlockPairs = new Vector<>();
     Vector<BlockLifeSpan> blockLifeSpansExtractedFromClicks = new Vector<>();
 
     Robot bot = null;
@@ -784,7 +784,7 @@ public class GroundTruthCreator extends JFrame{
     private String exportBlockLinksToCSV(){
         StringBuilder output = new StringBuilder("PostId; PostHistoryId; PostBlockTypeId; LocalId; PredLocalId; SuccLocalId; Comment" + "\n");
 
-        Vector<String> comments = ((ButtonsAndInstructionsPanel)buttonsAtTopPanel).comments;
+        Vector<String> comments = buttonsAtTopPanel.comments;
 
         for (String commentLine : comments) {
             StringTokenizer tokens = new StringTokenizer(commentLine, "|");
