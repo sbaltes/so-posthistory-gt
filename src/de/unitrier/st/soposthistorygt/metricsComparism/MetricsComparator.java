@@ -3,6 +3,7 @@ package de.unitrier.st.soposthistorygt.metricsComparism;
 
 import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
+import de.unitrier.st.soposthistory.version.PostVersionList;
 
 import java.io.File;
 import java.io.IOException;
@@ -141,7 +142,7 @@ public class MetricsComparator{
         metricResult.stopWatch.reset();
         metricResult.stopWatch.start();
         TextBlockVersion.similarityMetric = metric;
-        postVersionsListManagement.getPostVersionListWithID(postVersionListID).processVersionHistory();
+        postVersionsListManagement.getPostVersionListWithID(postVersionListID).processVersionHistory(PostVersionList.PostBlockTypeFilter.TEXT);
         metricResult.stopWatch.stop();
         metricResult.stopWatch.getNanoTime();
 
@@ -160,7 +161,7 @@ public class MetricsComparator{
         metricResult.stopWatch.reset();
         metricResult.stopWatch.start();
         CodeBlockVersion.similarityMetric = metric;
-        postVersionsListManagement.getPostVersionListWithID(postVersionListID).processVersionHistory();
+        postVersionsListManagement.getPostVersionListWithID(postVersionListID).processVersionHistory(PostVersionList.PostBlockTypeFilter.CODE);
         metricResult.stopWatch.stop();
         metricResult.stopWatch.getNanoTime();
 
