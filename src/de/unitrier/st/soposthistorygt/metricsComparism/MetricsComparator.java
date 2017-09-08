@@ -201,7 +201,7 @@ public class MetricsComparator{
         printWriters[3] = new PrintWriter(new File("./metric results/similarity (true negatives) (text)" + ".csv"));
         printWriters[4] = new PrintWriter(new File("./metric results/similarity (false negatives) (text)" + ".csv"));
 
-        printWriters[5] = new PrintWriter(new File("./metric results/total time for 10 PostVersionLists measured (code)" + ".csv"));
+        printWriters[5] = new PrintWriter(new File("./metric results/total time for all PostVersionLists measured (code)" + ".csv"));
         printWriters[6] = new PrintWriter(new File("./metric results/similarity (true positives) (code)" + ".csv"));
         printWriters[7] = new PrintWriter(new File("./metric results/similarity (false positives) (code)" + ".csv"));
         printWriters[8] = new PrintWriter(new File("./metric results/similarity (true negatives) (code)" + ".csv"));
@@ -234,9 +234,7 @@ public class MetricsComparator{
                     }
                 }else{
                     try {
-                        // postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfAllPostHistories);
-                        // TODO? : metricsComparator.init();
-                        // postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfAllPostHistories);
+
                         MetricResult tmpMetricResult
                                 = metricsComparator.computeSimilarity_writeInResult_text(
                                 postVersionsListManagement.postVersionLists.get(j-1).getFirst().getPostId(),
@@ -248,9 +246,7 @@ public class MetricsComparator{
                         printWriters[3].write(tmpMetricResult.trueNegatives_text + "");
                         printWriters[4].write(tmpMetricResult.falseNegatives_text + "");
 
-                        // postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfAllPostHistories);
-                        // TODO? : metricsComparator.init();
-                        // postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfAllPostHistories);
+
                         tmpMetricResult
                                 = metricsComparator.computeSimilarity_writeInResult_code(
                                 postVersionsListManagement.postVersionLists.get(j-1).getFirst().getPostId(),
