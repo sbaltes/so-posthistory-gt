@@ -1,9 +1,12 @@
 package de.unitrier.st.soposthistorygt.tests;
 
+import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistorygt.metricsComparism.ConnectionsOfAllVersions;
 import de.unitrier.st.soposthistorygt.metricsComparism.GroundTruthExtractionOfCSVs;
 import de.unitrier.st.soposthistorygt.metricsComparism.MetricsComparator;
 import de.unitrier.st.soposthistorygt.metricsComparism.PostVersionsListManagement;
+import de.unitrier.st.stringsimilarity.fingerprint.Variants;
+import de.unitrier.st.stringsimilarity.profile.Base;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.jupiter.api.Test;
 
@@ -65,5 +68,31 @@ public class MetricsComparisonTest {
 
         stopWatch.stop();
         System.out.println(stopWatch.getTime() + " milliseconds overall");
+    }
+
+    @Test
+    public void testNumberOfPredecessors(){
+        int postId = 3758880;
+
+        GroundTruthExtractionOfCSVs groundTruthExtractionOfCSVs = new GroundTruthExtractionOfCSVs(pathToCSVs.toString());
+
+        TextBlockVersion.similarityMetric = de.unitrier.st.stringsimilarity.profile.Variants::tokensProfileCosineNormalized;
+        PostVersionsListManagement postVersionsListManagement = new PostVersionsListManagement(pathToCSVs.toString());
+
+        ConnectionsOfAllVersions connectionsOfAllVersionsGroundTruth_text = groundTruthExtractionOfCSVs.getAllConnectionsOfAllConsecutiveVersions_text(postId);
+        ConnectionsOfAllVersions connectionsOfAllVersionsComputedMetric_text = postVersionsListManagement.getAllConnectionsOfAllConsecutiveVersions_text(postId);
+
+
+        System.out.println("Ground Truth: ");
+        System.out.println("All text blocks:");
+        for(int i=0; i<connectionsOfAllVersionsGroundTruth_text.size(); i++){
+            System.out.println(connectionsOfAllVersionsGroundTruth_text.get(i));
+        }
+
+        System.out.println("\n\nComputed Metric: ");
+        System.out.println("All text blocks:");
+        for(int i=0; i<connectionsOfAllVersionsComputedMetric_text.size(); i++){
+            System.out.println(connectionsOfAllVersionsComputedMetric_text.get(i));
+        }
     }
 }
