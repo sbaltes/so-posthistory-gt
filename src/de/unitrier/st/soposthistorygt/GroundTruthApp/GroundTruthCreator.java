@@ -652,6 +652,7 @@ public class GroundTruthCreator extends JFrame{
             for (BlockPair tmpBlockPair : allCreatedBlockPairsByClicks.get(versionNumber)) {
                 paintOneConnectionBetweenTwoBlocks(tmpBlockPair.labelLeftBlock, tmpBlockPair.labelRightBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion);
             }
+            buttonsAtTopPanel.paintCommentPanel();
         }
     }
 

@@ -43,7 +43,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
     private JButton buttonRemoveComment = new JButton("remove comment");
     private JScrollPane savedCommentsScrollPane;
     private JLabel labelSavedComments = new JLabel("");
-    Vector<String> comments = new Vector<>();
+    static Vector<String> comments = new Vector<>();
 
     private static final Color tooltipColor = new Color(255, 255, 150);
 
@@ -68,8 +68,10 @@ class ButtonsAndInstructionsPanel extends JPanel {
         } catch (AWTException e) {
             e.printStackTrace();
         }
-        
+
+        paintCommentPanel();
     }
+
 
 
     /***** Methods *****/
@@ -233,8 +235,11 @@ class ButtonsAndInstructionsPanel extends JPanel {
                     GroundTruthCreator.HEIGHT,
                     GroundTruthCreator.LOCATION);
 
+            comments.removeAllElements();
+
             setEnablingOfNextAndBackButton();
 
+            paintCommentPanel();
             groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
 
         }catch (Exception e) {
@@ -242,7 +247,6 @@ class ButtonsAndInstructionsPanel extends JPanel {
             System.exit(0);
         }
     }
-
 
     private void setListenersToButtons(){
 
@@ -395,14 +399,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
                 if(procedure == JOptionPane.YES_OPTION && !comments.contains(newComment)){
                     comments.add(newComment);
-                    StringBuilder text = new StringBuilder("<html></head><body>");
-                    for(int i=0; i<comments.size(); i++){
-                        text.append("<font color=\"orange\">").append(i + 1).append("</font>").append(") ").append(comments.get(i)).append("<br>");
-                    }
-                    text.append("</body></html>");
-                    labelSavedComments.setText(text.toString());
-                    savedCommentsScrollPane.validate();
-                    savedCommentsScrollPane.repaint();
+                    paintCommentPanel();
                 }
             }
         });
@@ -426,15 +423,11 @@ class ButtonsAndInstructionsPanel extends JPanel {
                         "Delete Comment", JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
                     comments.remove((int)commentIds.getSelectedItem()-1);
-                    StringBuilder text = new StringBuilder("<html></head><body>");
-                    for(int i=0; i<comments.size(); i++){
-                        text.append("<font color=\"orange\">").append(i + 1).append("</font>").append("): ").append(comments.get(i)).append("<br>");
-                    }
-                    text.append("</body></html>");
-                    labelSavedComments.setText(text.toString());
+                    paintCommentPanel();
                 }
             }
         });
+
 
         buttonLoadPost.addMouseListener(new MouseInputAdapter() {
             @Override
@@ -475,49 +468,49 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 Path pathToCSV = FileSystems.getDefault().getPath("postVersionLists", completedCSV[0].getName());
                 List<String> lines = GroundTruthExtractionOfCSVs.parseLines(pathToCSV.toString());
 
-                Collections.sort(lines, new Comparator<String>() {
-                    @Override
-                    public int compare(String o1, String o2) {
-                        StringTokenizer tokens_o1 = new StringTokenizer(o1, "; ");
-                        int postId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
-                        int postHistoryId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
-                        int postBlockTypeId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
-                        int localId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                lines.sort((o1, o2) -> {
+                    StringTokenizer tokens_o1 = new StringTokenizer(o1, "; ");
+                    int postId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                    int postHistoryId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                    int postBlockTypeId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                    int localId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
 
-                        Integer predLocalId_o1 = null;
-                        Integer succLocalId_o1 = null;
-                        try {
-                            predLocalId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
-                        }catch (Exception e1){}
-
-                        try {
-                            succLocalId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
-                        }catch (Exception e1){}
-
-
-
-                        StringTokenizer tokens_o2 = new StringTokenizer(o2, "; ");
-                        int postId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
-                        int postHistoryId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
-                        int postBlockTypeId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
-                        int localId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
-
-                        Integer predLocalId_o2 = null;
-                        Integer succLocalId_o2 = null;
-                        try {
-                            predLocalId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
-                        }catch (Exception e1){}
-
-                        try {
-                            succLocalId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
-                        }catch (Exception e1){}
-
-
-                        if(postHistoryId_o1 != postHistoryId_o2)
-                            return postHistoryId_o1 - postHistoryId_o2;
-                        else
-                            return localId_o1 - localId_o2;
+                    Integer predLocalId_o1 = null;
+                    Integer succLocalId_o1 = null;
+                    try {
+                        predLocalId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                    } catch (Exception e1) {
                     }
+
+                    try {
+                        succLocalId_o1 = Integer.valueOf(tokens_o1.nextToken().replaceAll("\"", ""));
+                    } catch (Exception e1) {
+                    }
+
+
+                    StringTokenizer tokens_o2 = new StringTokenizer(o2, "; ");
+                    int postId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                    int postHistoryId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                    int postBlockTypeId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                    int localId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+
+                    Integer predLocalId_o2 = null;
+                    Integer succLocalId_o2 = null;
+                    try {
+                        predLocalId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                    } catch (Exception e1) {
+                    }
+
+                    try {
+                        succLocalId_o2 = Integer.valueOf(tokens_o2.nextToken().replaceAll("\"", ""));
+                    } catch (Exception e1) {
+                    }
+
+
+                    if (postHistoryId_o1 != postHistoryId_o2)
+                        return postHistoryId_o1 - postHistoryId_o2;
+                    else
+                        return localId_o1 - localId_o2;
                 });
 
 
@@ -543,11 +536,10 @@ class ButtonsAndInstructionsPanel extends JPanel {
                     }catch (Exception e1){}
 
 
-
-                    String comment = tokens.nextToken();
-                    if(!comment.matches("\"\\s*\"")){
-                        String newComment = "vers: " + (version) + " | " + "pos: " + localId + " | " + "<font color=\"gray\">" + comment + "</font>";
-                        comments.add(newComment);
+                    String comment = tokens.nextToken().replaceAll("\"", "");
+                    if(!comment.replaceAll("\"", "").matches("\\s*")){
+                        comment = "vers: " + (version) + " | " + "pos: " + localId + " | " + "<font color=\"gray\">" + comment + "</font>";
+                        comments.add(comment);
                     }
 
 
@@ -566,16 +558,6 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
                     lastPostHistoryId = postHistoryId;
                 }
-
-                // TODO: comments are removed and therefore not shown
-                StringBuilder text = new StringBuilder("<html></head><body>");
-                for(int i=0; i<comments.size(); i++){
-                    text.append("<font color=\"orange\">").append(i + 1).append("</font>").append(") ").append(comments.get(i).replace("\"", "")).append("<br>");
-                }
-                text.append("</body></html>");
-                labelSavedComments.setText(text.toString());
-                savedCommentsScrollPane.validate();
-                savedCommentsScrollPane.repaint();
             }
         });
 
@@ -728,5 +710,18 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 setEnablingOfNextAndBackButton();
             }
         });
+    }
+
+    void paintCommentPanel(){
+        StringBuilder text = new StringBuilder("<html></head><body>");
+        for(int i=0; i<comments.size(); i++){
+            text.append("<font color=\"orange\">").append(i + 1).append("</font>").append("): ").append(comments.get(i).replace("\"", "")).append("<br>");
+        }
+        text.append("</body></html>");
+        labelSavedComments.setText(text.toString());
+        labelSavedComments.validate();
+        labelSavedComments.repaint();
+        savedCommentsScrollPane.validate();
+        savedCommentsScrollPane.repaint();
     }
 }
