@@ -24,7 +24,7 @@ public class GroundTruthExtractionOfCSVs {
     }
 
 
-    public static List<String> parseLines(String pathToExportedCSV){
+    public static Vector<String> parseLines(String pathToExportedCSV){
 
         BufferedReader bufferedReader = null;
         try {
@@ -33,7 +33,7 @@ public class GroundTruthExtractionOfCSVs {
             System.err.println("Failed to read file with path '" + pathToExportedCSV + "'.");
             System.exit(0);
         }
-        List<String> lines = new Vector<>();
+        Vector<String> lines = new Vector<>();
 
         String line;
         try {
