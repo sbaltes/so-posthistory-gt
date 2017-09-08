@@ -99,14 +99,14 @@ public class GroundTruthExtractionOfCSVs {
         return listOfListOfBlockLifeSnapshotsOrderedByVersions;
     }
 
-    private ConnectionsOfTwoVersions getAllConnectionsBetweenTwoVersions(int leftVersionId, Vector<BlockLifeSpanSnapshot> leftVersionOfBlocks){
+    private ConnectionsOfTwoVersions getAllConnectionsBetweenTwoVersions(int leftVersionId, Vector<BlockLifeSpanSnapshot> rightVersionOfBlocks){
         ConnectionsOfTwoVersions connectionsOfTwoVersions = new ConnectionsOfTwoVersions(leftVersionId);
-        for(int i=0; i<leftVersionOfBlocks.size(); i++){
+        for(int i=0; i<rightVersionOfBlocks.size(); i++){
             connectionsOfTwoVersions.add(
                     new ConnectedBlocks(
-                            leftVersionOfBlocks.get(i).getLocalId(),
-                            leftVersionOfBlocks.get(i).getSuccLocalId(),
-                            leftVersionOfBlocks.get(i).getPostBlockTypeId()
+                            rightVersionOfBlocks.get(i).getPredLocalId(),
+                            rightVersionOfBlocks.get(i).getLocalId(),
+                            rightVersionOfBlocks.get(i).getPostBlockTypeId()
                     ));
         }
         return connectionsOfTwoVersions;
@@ -119,7 +119,7 @@ public class GroundTruthExtractionOfCSVs {
 
         ConnectionsOfAllVersions connectionsOfAllVersions = new ConnectionsOfAllVersions(listOfListOfBlockLifeSpanSnapshots.firstElement().firstElement().getPostId());
 
-        for(int i=0; i<listOfListOfBlockLifeSpanSnapshots.size()-1; i++){
+        for(int i=1; i<listOfListOfBlockLifeSpanSnapshots.size(); i++){
             connectionsOfAllVersions.add(
                     getAllConnectionsBetweenTwoVersions(i+1, listOfListOfBlockLifeSpanSnapshots.get(i))
             );

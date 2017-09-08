@@ -34,13 +34,13 @@ public class MetricsComparisonTest {
         for(int i=0; i<connectionsOfAllVersionsGroundTruth_text.size(); i++){
             System.out.println(connectionsOfAllVersionsGroundTruth_text.get(i));
         }
-        System.out.println("\n\nAll code blocks:");
+        System.out.println("\nAll code blocks:");
         for(int i=0; i<connectionsOfAllVersionsGroundTruth_code.size(); i++){
             System.out.println(connectionsOfAllVersionsGroundTruth_code.get(i));
         }
 
 
-        System.out.println("Computed Metric: ");
+        System.out.println("\n\nComputed Metric: ");
         System.out.println("All text blocks:");
         for(int i=0; i<connectionsOfAllVersionsComputedMetric_text.size(); i++){
             System.out.println(connectionsOfAllVersionsComputedMetric_text.get(i));

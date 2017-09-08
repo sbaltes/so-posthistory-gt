@@ -9,6 +9,7 @@ import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlHandler;
 import java.io.File;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -69,23 +70,26 @@ public class PostVersionsListManagement {
     private ConnectionsOfTwoVersions getAllConnectionsBetweenTwoVersions_text(int leftVersionId, PostVersion leftPostVersion, PostVersion rightPostVersion){
         ConnectionsOfTwoVersions connectionsOfTwoVersions = new ConnectionsOfTwoVersions(leftVersionId);
 
-        for(int i=0; i<leftPostVersion.getPostBlocks().size(); i++){
-            if(leftPostVersion.getPostBlocks().get(i) instanceof CodeBlockVersion)
+        for(int i=0; i<rightPostVersion.getPostBlocks().size(); i++){
+            if(rightPostVersion.getPostBlocks().get(i) instanceof CodeBlockVersion)
                 continue;
 
-            Integer rightLocalId = null;
-            for(int j=0; j<rightPostVersion.getPostBlocks().size(); j++) {
-                if(rightPostVersion.getPostBlocks().get(j).getPred() != null && rightPostVersion.getPostBlocks().get(j).getPred().equals(leftPostVersion.getPostBlocks().get(i))){
-                    rightLocalId = rightPostVersion.getPostBlocks().get(j).getLocalId();
-                    break;
+            int rightLocalId = rightPostVersion.getPostBlocks().get(i).getLocalId();
+            Integer leftLocalId = null;
+            if(rightPostVersion.getPostBlocks().get(i).getPred() != null) {
+                for (int j = 0; j < leftPostVersion.getPostBlocks().size(); j++) {
+                    if (Objects.equals(leftPostVersion.getPostBlocks().get(j).getLocalId(), rightPostVersion.getPostBlocks().get(i).getPred().getLocalId())) {
+                        leftLocalId = leftPostVersion.getPostBlocks().get(j).getLocalId();
+                        break;
+                    }
                 }
             }
 
             connectionsOfTwoVersions.add(
                     new ConnectedBlocks(
-                            leftPostVersion.getPostBlocks().get(i).getLocalId(),
+                            leftLocalId,
                             rightLocalId,
-                            leftPostVersion.getPostBlocks().get(i) instanceof TextBlockVersion ? 1 : 2
+                            rightPostVersion.getPostBlocks().get(i) instanceof TextBlockVersion ? 1 : 2
                     ));
 
         }
@@ -96,23 +100,26 @@ public class PostVersionsListManagement {
     private ConnectionsOfTwoVersions getAllConnectionsBetweenTwoVersions_code(int leftVersionId, PostVersion leftPostVersion, PostVersion rightPostVersion){
         ConnectionsOfTwoVersions connectionsOfTwoVersions = new ConnectionsOfTwoVersions(leftVersionId);
 
-        for(int i=0; i<leftPostVersion.getPostBlocks().size(); i++){
-            if(leftPostVersion.getPostBlocks().get(i) instanceof TextBlockVersion)
+        for(int i=0; i<rightPostVersion.getPostBlocks().size(); i++){
+            if(rightPostVersion.getPostBlocks().get(i) instanceof TextBlockVersion)
                 continue;
 
-            Integer rightLocalId = null;
-            for(int j=0; j<rightPostVersion.getPostBlocks().size(); j++) {
-                if(rightPostVersion.getPostBlocks().get(j).getPred() != null && rightPostVersion.getPostBlocks().get(j).getPred().equals(leftPostVersion.getPostBlocks().get(i))){
-                    rightLocalId = rightPostVersion.getPostBlocks().get(j).getLocalId();
-                    break;
+            int rightLocalId = rightPostVersion.getPostBlocks().get(i).getLocalId();
+            Integer leftLocalId = null;
+            if(rightPostVersion.getPostBlocks().get(i).getPred() != null) {
+                for (int j = 0; j < leftPostVersion.getPostBlocks().size(); j++) {
+                    if (Objects.equals(leftPostVersion.getPostBlocks().get(j).getLocalId(), rightPostVersion.getPostBlocks().get(i).getPred().getLocalId())) {
+                        leftLocalId = leftPostVersion.getPostBlocks().get(j).getLocalId();
+                        break;
+                    }
                 }
             }
 
             connectionsOfTwoVersions.add(
                     new ConnectedBlocks(
-                            leftPostVersion.getPostBlocks().get(i).getLocalId(),
+                            leftLocalId,
                             rightLocalId,
-                            leftPostVersion.getPostBlocks().get(i) instanceof TextBlockVersion ? 1 : 2
+                            rightPostVersion.getPostBlocks().get(i) instanceof TextBlockVersion ? 1 : 2
                     ));
 
         }

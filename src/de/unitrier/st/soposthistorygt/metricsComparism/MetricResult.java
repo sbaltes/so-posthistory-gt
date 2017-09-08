@@ -43,14 +43,14 @@ public class MetricResult {
                 ConnectedBlocks connectedBlocksGroundTruth = groundTruth.get(i).get(j);
                 ConnectedBlocks connectedBlocksComputedMetric = connectionsOfAllVersions_text.get(i).get(j);
 
-                if(Objects.equals(connectedBlocksGroundTruth.rightLocalId, connectedBlocksComputedMetric.rightLocalId)){
-                    if(connectedBlocksGroundTruth.rightLocalId != null){
+                if(Objects.equals(connectedBlocksGroundTruth.leftLocalId, connectedBlocksComputedMetric.leftLocalId)){
+                    if(connectedBlocksGroundTruth.leftLocalId != null){
                         truePositives_text++;
                     }else{
                         trueNegatives_text++;
                     }
                 }else{
-                    if(connectedBlocksGroundTruth.rightLocalId == null){
+                    if(connectedBlocksGroundTruth.leftLocalId == null){
                         falsePositives_text++;
                     }else{
                         falseNegatives_text++;
@@ -68,14 +68,14 @@ public class MetricResult {
                 ConnectedBlocks connectedBlocksGroundTruth = groundTruth.get(i).get(j);
                 ConnectedBlocks connectedBlocksComputedMetric = connectionsOfAllVersions_code.get(i).get(j);
 
-                if(Objects.equals(connectedBlocksGroundTruth.rightLocalId, connectedBlocksComputedMetric.rightLocalId)){
-                    if(connectedBlocksGroundTruth.rightLocalId != null){
+                if(Objects.equals(connectedBlocksGroundTruth.leftLocalId, connectedBlocksComputedMetric.leftLocalId)){
+                    if(connectedBlocksGroundTruth.leftLocalId != null){
                         truePositives_code++;
                     }else{
                         trueNegatives_code++;
                     }
                 }else{
-                    if(connectedBlocksGroundTruth.rightLocalId == null){
+                    if(connectedBlocksGroundTruth.leftLocalId == null){
                         falsePositives_code++;
                     }else{
                         falseNegatives_code++;

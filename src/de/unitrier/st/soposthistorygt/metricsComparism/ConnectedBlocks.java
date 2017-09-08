@@ -6,7 +6,7 @@ public class ConnectedBlocks {
     Integer rightLocalId;
     int postBlockTypeId;
 
-    public ConnectedBlocks(int leftLocalId, Integer rightLocalId, Integer postBlockTypeId){
+    public ConnectedBlocks(Integer leftLocalId, Integer rightLocalId, Integer postBlockTypeId){
         this.leftLocalId = leftLocalId;
         this.rightLocalId = rightLocalId;
         this.postBlockTypeId = postBlockTypeId;
