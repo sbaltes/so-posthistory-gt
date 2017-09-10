@@ -9,6 +9,8 @@ class Metric {
 
     // to make automated process ease
     public enum Type{
+
+        // edit based
         levenshteinStandard,
         levenshteinNormalized,
 
@@ -53,6 +55,8 @@ class Metric {
         longestCommonSubsequenceShingle2FingerprintNormalized,
         longestCommonSubsequenceShingle3FingerprintNormalized,
 
+
+        // fingerprint based
         winnowingTokenJaccard,
 
         winnowing2GramJaccard,
@@ -133,6 +137,8 @@ class Metric {
         winnowingNormalizedShingle2Overlap,
         winnowingNormalizedShingle3Overlap,
 
+
+        // profile based
         cosineNormalizedTokensBool,
         cosineNormalizedTokensTermFrequency,
         cosineNormalizedTokensNormalizedTermFrequency,
@@ -169,6 +175,8 @@ class Metric {
         manhattanNormalizedShingles2,
         manhattanNormalizedShingles3,
 
+
+        // set based
         jaccardTokens,
         jaccardNormalizedTokens,
 
@@ -259,8 +267,12 @@ class Metric {
         overlapShingles2,
         overlapShingles3,
         overlapNormalizedShingles2,
-        overlapNormalizedShingles3
+        overlapNormalizedShingles3,
 
+        twoGramSimilarityKondrak05,
+        threeGramSimilarityKondrak05,
+        fourGramSimilarityKondrak05,
+        fiveGramSimilarityKondrak05
         }
 
 
@@ -603,6 +615,15 @@ class Metric {
             case overlapNormalizedShingles3:
                 return threeShingleOverlapNormalized;
 
+            case twoGramSimilarityKondrak05:
+                return twoGramSimilarityKondrak05;
+            case threeGramSimilarityKondrak05:
+                return threeGramSimilarityKondrak05;
+            case fourGramSimilarityKondrak05:
+                return fourGramSimilarityKondrak05;
+            case fiveGramSimilarityKondrak05:
+                return fiveGramSimilarityKondrak05;
+
             default:
                 return null;
         }
@@ -842,5 +863,11 @@ class Metric {
 
     private static BiFunction<String, String, Double> twoShingleOverlapNormalized = de.unitrier.st.stringsimilarity.set.Variants::twoShingleOverlapNormalized;
     private static BiFunction<String, String, Double> threeShingleOverlapNormalized = de.unitrier.st.stringsimilarity.set.Variants::threeShingleOverlapNormalized;
+
+
+    private static BiFunction<String, String, Double> twoGramSimilarityKondrak05 = de.unitrier.st.stringsimilarity.set.Variants::twoGramSimilarityKondrak05;
+    private static BiFunction<String, String, Double> threeGramSimilarityKondrak05 = de.unitrier.st.stringsimilarity.set.Variants::threeGramSimilarityKondrak05;
+    private static BiFunction<String, String, Double> fourGramSimilarityKondrak05 = de.unitrier.st.stringsimilarity.set.Variants::fourGramSimilarityKondrak05;
+    private static BiFunction<String, String, Double> fiveGramSimilarityKondrak05 = de.unitrier.st.stringsimilarity.set.Variants::fiveGramSimilarityKondrak05;
 
 }
