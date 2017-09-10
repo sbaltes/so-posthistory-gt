@@ -7,27 +7,25 @@ import de.unitrier.st.soposthistory.version.PostVersionList;
 import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlHandler;
 
 import java.io.File;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static de.unitrier.st.soposthistorygt.GroundTruthApp.GroundTruthCreator.normalizeURLsInTextBlocksOfAllVersions;
 
 
-public class PostVersionsListManagement {
+public class PostVersionsListManagement{
 
     private String pathToDirectory;
 
     public static Pattern pattern_groundTruth = Pattern.compile("[0-9]+" + "\\.csv");
-    List<PostVersionList> postVersionLists = new Vector<>();
+    public List<PostVersionList> postVersionLists = new Vector<>();
+
 
     // constructor
     public PostVersionsListManagement(String pathToDirectoryOfPostHistories){
         parseAllPostVersionLists(pathToDirectoryOfPostHistories);
-
     }
+
 
     private void parseAllPostVersionLists(String pathToDirectoryOfPostHistories){
         this.pathToDirectory = pathToDirectoryOfPostHistories;
@@ -40,7 +38,7 @@ public class PostVersionsListManagement {
             PostVersionList tmpPostVersionList = new PostVersionList();
             int postId = Integer.valueOf(postHistory.getName().substring(0, postHistory.getName().length()-4));
 
-            tmpPostVersionList.readFromCSV(pathToDirectory, postId, 2);
+            tmpPostVersionList.readFromCSV(pathToDirectory, postId, 2, false);
 
             AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
             normalizeURLsInTextBlocksOfAllVersions(tmpPostVersionList, anchorTextAndUrlHandler);
@@ -151,4 +149,6 @@ public class PostVersionsListManagement {
 
         return connectionsOfAllVersions;
     }
+
+
 }

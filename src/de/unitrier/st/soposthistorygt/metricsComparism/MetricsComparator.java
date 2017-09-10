@@ -18,8 +18,8 @@ public class MetricsComparator{
     private String pathToDirectoryOfAllPostHistories;
     private String pathToDirectoryOfAllCompletedCSVs;
 
-    public static PostVersionsListManagement postVersionsListManagement;
-    public static GroundTruthExtractionOfCSVs groundTruthExtractionOfCSVs;
+    public PostVersionsListManagement postVersionsListManagement;
+    public GroundTruthExtractionOfCSVs groundTruthExtractionOfCSVs;
 
 
     // constructor and helping methods
@@ -177,9 +177,6 @@ public class MetricsComparator{
 
     public void createStatisticsFiles() throws IOException {
 
-        MetricsComparator metricsComparator = new MetricsComparator(pathToDirectoryOfAllPostHistories, pathToDirectoryOfAllCompletedCSVs);
-
-
         Metric.Type[] metrics = Metric.Type.values().clone();
 
         for(int i=0; i<metrics.length; i++){
@@ -189,9 +186,10 @@ public class MetricsComparator{
             metrics[rnd] = tmp;
         }
 
+
         //for test
         //Type[] metrics = new Type[1];
-        //metrics[0] = Type.overlapNormalizedTokens;
+        //metrics[0] = Type.tokenOverlapNormalized;
         //
 
         PrintWriter[] printWriters = new PrintWriter[10];
@@ -234,10 +232,11 @@ public class MetricsComparator{
                     }
                 }else{
                     try {
+                        this.postVersionsListManagement = new PostVersionsListManagement(pathToDirectoryOfAllPostHistories);
 
                         MetricResult tmpMetricResult
-                                = metricsComparator.computeSimilarity_writeInResult_text(
-                                postVersionsListManagement.postVersionLists.get(j-1).getFirst().getPostId(),
+                                = this.computeSimilarity_writeInResult_text(
+                                this.postVersionsListManagement.postVersionLists.get(j-1).getFirst().getPostId(),
                                 Metric.getBiFunctionMetric(metrics[i-1]));
 
                         printWriters[0].write(tmpMetricResult.totalTimeMeasured_text + "");
@@ -245,19 +244,24 @@ public class MetricsComparator{
                         printWriters[2].write(tmpMetricResult.falsePositives_text + "");
                         printWriters[3].write(tmpMetricResult.trueNegatives_text + "");
                         printWriters[4].write(tmpMetricResult.falseNegatives_text + "");
+                    }catch (IllegalArgumentException e){
+                        for (PrintWriter printWriter : printWriters) {
+                            printWriter.write("no result");
+                        }
+                    }
 
-
-                        tmpMetricResult
-                                = metricsComparator.computeSimilarity_writeInResult_code(
-                                postVersionsListManagement.postVersionLists.get(j-1).getFirst().getPostId(),
+                    try {
+                        MetricResult tmpMetricResult
+                                = this.computeSimilarity_writeInResult_code(
+                                this.postVersionsListManagement.postVersionLists.get(j-1).getFirst().getPostId(),
                                 Metric.getBiFunctionMetric(metrics[i - 1]));
+
                         printWriters[5].write(tmpMetricResult.totalTimeMeasured_code + "");
                         printWriters[6].write(tmpMetricResult.truePositives_code + "");
                         printWriters[7].write(tmpMetricResult.falsePositives_code + "");
                         printWriters[8].write(tmpMetricResult.trueNegatives_code + "");
                         printWriters[9].write(tmpMetricResult.falseNegatives_code + "");
-
-                    }catch (Exception e){
+                    }catch (IllegalArgumentException e){
                         for (PrintWriter printWriter : printWriters) {
                             printWriter.write("no result");
                         }
