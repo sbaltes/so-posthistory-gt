@@ -122,7 +122,7 @@ public class MetricsComparatorTest {
 
 
         Vector<BlockLifeSpan> groundTruthLifeSpans_text = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListGroundTruth, textblock);
-        TextBlockVersion.similarityMetric = MetricsComparator.overlapNormalized4Grams;
+        TextBlockVersion.similarityMetric = MetricsComparator.fourGramOverlapNormalized;
         postVersionListMetric.processVersionHistory();
         Vector<BlockLifeSpan> metricToBeComparedLifeSpans_text = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListMetric, textblock);
 
@@ -131,7 +131,7 @@ public class MetricsComparatorTest {
 
 
         Vector<BlockLifeSpan> groundTruthLifeSpans_code = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListGroundTruth, BlockLifeSpan.Type.codeblock);
-        CodeBlockVersion.similarityMetric = MetricsComparator.overlapNormalized4Grams;
+        CodeBlockVersion.similarityMetric = MetricsComparator.fourGramOverlapNormalized;
         postVersionListMetric.processVersionHistory();
         Vector<BlockLifeSpan> metricToBeComparedLifeSpans_code = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListMetric, BlockLifeSpan.Type.codeblock);
 
@@ -270,7 +270,7 @@ public class MetricsComparatorTest {
 
 
         Vector<BlockLifeSpan> groundTruthLifeSpans_text = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListGroundTruth, textblock);
-        TextBlockVersion.similarityMetric = MetricsComparator.overlapNormalized4Grams;
+        TextBlockVersion.similarityMetric = MetricsComparator.fourGramOverlapNormalized;
         postVersionListMetric.processVersionHistory();
         Vector<BlockLifeSpan> metricToBeComparedLifeSpans_text = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListMetric, textblock);
 
@@ -279,7 +279,7 @@ public class MetricsComparatorTest {
 
 
         Vector<BlockLifeSpan> groundTruthLifeSpans_code = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListGroundTruth, BlockLifeSpan.Type.codeblock);
-        CodeBlockVersion.similarityMetric = MetricsComparator.overlapNormalized4Grams;
+        CodeBlockVersion.similarityMetric = MetricsComparator.fourGramOverlapNormalized;
         postVersionListMetric.processVersionHistory();
         Vector<BlockLifeSpan> metricToBeComparedLifeSpans_code = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListMetric, BlockLifeSpan.Type.codeblock);
 
@@ -309,7 +309,7 @@ public class MetricsComparatorTest {
 
 
         Vector<BlockLifeSpan> groundTruthLifeSpans_text = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListGroundTruth, textblock);
-        TextBlockVersion.similarityMetric = MetricsComparator.overlap2Grams;
+        TextBlockVersion.similarityMetric = MetricsComparator.twoGramOverlap;
         postVersionListMetric.processVersionHistory();
         Vector<BlockLifeSpan> metricToBeComparedLifeSpans_text = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListMetric, textblock);
 
@@ -318,7 +318,7 @@ public class MetricsComparatorTest {
 
 
         Vector<BlockLifeSpan> groundTruthLifeSpans_code = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListGroundTruth, BlockLifeSpan.Type.codeblock);
-        CodeBlockVersion.similarityMetric = MetricsComparator.overlap2Grams;
+        CodeBlockVersion.similarityMetric = MetricsComparator.twoGramOverlap;
         postVersionListMetric.processVersionHistory();
         Vector<BlockLifeSpan> metricToBeComparedLifeSpans_code = BlockLifeSpan.getLifeSpansOfAllBlocks(postVersionListMetric, BlockLifeSpan.Type.codeblock);
 
