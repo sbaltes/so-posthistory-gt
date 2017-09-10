@@ -517,28 +517,30 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 Integer version = 0;
                 Integer lastPostHistoryId = null;
                 for(String line : lines){
-                    StringTokenizer tokens = new StringTokenizer(line, "; ");
+                    StringTokenizer tokens = new StringTokenizer(line, ";");
 
-                    int postId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
-                    int postHistoryId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
-                    int postBlockTypeId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
-                    int localId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
+                    int postId = Integer.valueOf(tokens.nextToken().replaceAll("\"", "").replaceAll("\\s+", ""));
+                    int postHistoryId = Integer.valueOf(tokens.nextToken().replaceAll("\"", "").replaceAll("\\s+", ""));
+                    int postBlockTypeId = Integer.valueOf(tokens.nextToken().replaceAll("\"", "").replaceAll("\\s+", ""));
+                    int localId = Integer.valueOf(tokens.nextToken().replaceAll("\"", "").replaceAll("\\s+", ""));
 
 
                     Integer predLocalId = null;
                     Integer succLocalId = null;
                     try {
-                        predLocalId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
+                        predLocalId = Integer.valueOf(tokens.nextToken().replaceAll("\"", "").replaceAll("\\s+", ""));
                     }catch (Exception e1){}
 
                     try {
-                        succLocalId = Integer.valueOf(tokens.nextToken().replaceAll("\"", ""));
+                        succLocalId = Integer.valueOf(tokens.nextToken().replaceAll("\"", "").replaceAll("\\s+", ""));
                     }catch (Exception e1){}
 
 
-                    String comment = tokens.nextToken().replaceAll("\"", "");
-                    if(!comment.replaceAll("\"", "").matches("\\s*")){
-                        comment = "vers: " + (version) + " | " + "pos: " + localId + " | " + "<font color=\"gray\">" + comment + "</font>";
+                    String comment = tokens.nextToken();
+                    comment = comment.substring(1,comment.length()-1);
+                    if(comment.length() > 1){
+
+                        comment = "vers: " + (version+1) + " | " + "pos: " + localId + " | " + "<font color=\"gray\">" + comment + "</font>";
                         comments.add(comment);
                     }
 
@@ -721,7 +723,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
         labelSavedComments.setText(text.toString());
         labelSavedComments.validate();
         labelSavedComments.repaint();
-        savedCommentsScrollPane.validate();
-        savedCommentsScrollPane.repaint();
+        //savedCommentsScrollPane.validate();
+        //savedCommentsScrollPane.repaint();
     }
 }

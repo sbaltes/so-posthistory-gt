@@ -496,14 +496,14 @@ public class MetricsComparator extends StaticPostVersionsLists {
         overlapTokens,
         overlapNormalizedTokens,
 
-        overlap2Grams,
+        twoGramOverlap,
         overlap3Grams,
         overlap4Grams,
         overlap5Grams,
 
         overlapNormalized2Grams,
         overlapNormalized3Grams,
-        overlapNormalized4Grams,
+        fourGramOverlapNormalized,
         overlapNormalized5Grams,
 
         overlapNormalizedPadding2grams,
@@ -1005,8 +1005,8 @@ public class MetricsComparator extends StaticPostVersionsLists {
                 return overlapTokens;
             case overlapNormalizedTokens:
                 return overlapNormalizedTokens;
-            case overlap2Grams:
-                return overlap2Grams;
+            case twoGramOverlap:
+                return twoGramOverlap;
             case overlap3Grams:
                 return overlap3Grams;
             case overlap4Grams:
@@ -1017,8 +1017,8 @@ public class MetricsComparator extends StaticPostVersionsLists {
                 return overlapNormalized2Grams;
             case overlapNormalized3Grams:
                 return overlapNormalized3Grams;
-            case overlapNormalized4Grams:
-                return overlapNormalized4Grams;
+            case fourGramOverlapNormalized:
+                return fourGramOverlapNormalized;
             case overlapNormalized5Grams:
                 return overlapNormalized5Grams;
             case overlapNormalizedPadding2grams:
@@ -1463,14 +1463,14 @@ public class MetricsComparator extends StaticPostVersionsLists {
     static BiFunction<String, String, Double> overlapTokens = (x, y) -> tokenOverlap(x,y);
     static BiFunction<String, String, Double> overlapNormalizedTokens = (x, y) -> tokenOverlapNormalized(x,y);
 
-    public static BiFunction<String, String, Double> overlap2Grams = (x, y) -> nGramOverlap(x,y,2);
+    public static BiFunction<String, String, Double> twoGramOverlap = (x, y) -> nGramOverlap(x,y,2);
     static BiFunction<String, String, Double> overlap3Grams = (x, y) -> nGramOverlap(x,y,3);
     static BiFunction<String, String, Double> overlap4Grams = (x, y) -> nGramOverlap(x,y,4);
     static BiFunction<String, String, Double> overlap5Grams = (x, y) -> nGramOverlap(x,y,5);
 
     static BiFunction<String, String, Double> overlapNormalized2Grams = (x, y) -> nGramOverlapNormalized(x,y,2);
     static BiFunction<String, String, Double> overlapNormalized3Grams = (x, y) -> nGramOverlapNormalized(x,y,3);
-    public static BiFunction<String, String, Double> overlapNormalized4Grams = (x, y) -> nGramOverlapNormalized(x,y,4);
+    public static BiFunction<String, String, Double> fourGramOverlapNormalized = (x, y) -> nGramOverlapNormalized(x,y,4);
     static BiFunction<String, String, Double> overlapNormalized5Grams = (x, y) -> nGramOverlapNormalized(x,y,5);
 
     static BiFunction<String, String, Double> overlapNormalizedPadding2grams = (x, y) -> nGramOverlapNormalizedPadding(x,y,2);
