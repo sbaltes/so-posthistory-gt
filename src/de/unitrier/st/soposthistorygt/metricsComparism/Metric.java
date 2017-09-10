@@ -1,24 +1,11 @@
 package de.unitrier.st.soposthistorygt.metricsComparism;
 
-import de.unitrier.st.stringsimilarity.profile.Base;
+import de.unitrier.st.stringsimilarity.edit.Variants;
 
 import java.util.function.BiFunction;
 
-import static de.unitrier.st.stringsimilarity.edit.Base.*;
-import static de.unitrier.st.stringsimilarity.edit.Variants.*;
-import static de.unitrier.st.stringsimilarity.edit.Variants.nGramFingerprintLongestCommonSubsequenceNormalized;
-import static de.unitrier.st.stringsimilarity.edit.Variants.shingleFingerprintLongestCommonSubsequenceNormalized;
-import static de.unitrier.st.stringsimilarity.fingerprint.Variants.*;
-import static de.unitrier.st.stringsimilarity.fingerprint.Variants.winnowingNormalizedNGramOverlap;
-import static de.unitrier.st.stringsimilarity.fingerprint.Variants.winnowingNormalizedShingleOverlap;
-import static de.unitrier.st.stringsimilarity.profile.Variants.*;
-import static de.unitrier.st.stringsimilarity.profile.Variants.nGramManhattanNormalized;
-import static de.unitrier.st.stringsimilarity.profile.Variants.shingleManhattanNormalized;
-import static de.unitrier.st.stringsimilarity.set.Variants.*;
-import static de.unitrier.st.stringsimilarity.set.Variants.shingleOverlap;
-import static de.unitrier.st.stringsimilarity.set.Variants.shingleOverlapNormalized;
 
-public class Metric {
+class Metric {
 
     // to make automated process ease
     public enum Type{
@@ -146,246 +133,6 @@ public class Metric {
         winnowingNormalizedShingle2Overlap,
         winnowingNormalizedShingle3Overlap,
 
-/*
-        rkrGstTokenJaccardMinMatchLength1,
-
-        rkrGst2GramJaccardMinMatchLength1,
-        rkrGst3GramJaccardMinMatchLength1,
-        rkrGst4GramJaccardMinMatchLength1,
-        rkrGst5GramJaccardMinMatchLength1,
-
-        rkrGstShingle2JaccardMinMatchLength1,
-        rkrGstShingle3JaccardMinMatchLength1,
-
-        rkrGstNormalizedTokenJaccardMinMatchLength1,
-
-        rkrGstNormalized2GramJaccardMinMatchLength1,
-        rkrGstNormalized3GramJaccardMinMatchLength1,
-        rkrGstNormalized4GramJaccardMinMatchLength1,
-        rkrGstNormalized5GramJaccardMinMatchLength1,
-
-        rkrGstNormalizedShingle2JaccardMinMatchLength1,
-        rkrGstNormalizedShingle3JaccardMinMatchLength1,
-
-        rkrGstTokenDiceMinMatchLength1,
-
-        rkrGst2GramDiceMinMatchLength1,
-        rkrGst3GramDiceMinMatchLength1,
-        rkrGst4GramDiceMinMatchLength1,
-        rkrGst5GramDiceMinMatchLength1,
-
-        rkrGstShingle2DiceMinMatchLength1,
-        rkrGstShingle3DiceMinMatchLength1,
-
-        rkrGstNormalizedTokenDiceMinMatchLength1,
-
-        rkrGstNormalized2GramDiceMinMatchLength1,
-        rkrGstNormalized3GramDiceMinMatchLength1,
-        rkrGstNormalized4GramDiceMinMatchLength1,
-        rkrGstNormalized5GramDiceMinMatchLength1,
-
-        rkrGstNormalizedShingle2DiceMinMatchLength1,
-        rkrGstNormalizedShingle3DiceMinMatchLength1,
-
-        rkrGstTokenDiceVariantMinMatchLength1,
-
-        rkrGst2GramDiceVariantMinMatchLength1,
-        rkrGst3GramDiceVariantMinMatchLength1,
-        rkrGst4GramDiceVariantMinMatchLength1,
-        rkrGst5GramDiceVariantMinMatchLength1,
-
-        rkrGstShingle2DiceVariantMinMatchLength1,
-        rkrGstShingle3DiceVariantMinMatchLength1,
-
-        rkrGstNormalizedTokenDiceVariantMinMatchLength1,
-
-        rkrGstNormalized2GramDiceVariantMinMatchLength1,
-        rkrGstNormalized3GramDiceVariantMinMatchLength1,
-        rkrGstNormalized4GramDiceVariantMinMatchLength1,
-        rkrGstNormalized5GramDiceVariantMinMatchLength1,
-
-        rkrGstNormalizedShingle2DiceVariantMinMatchLength1,
-        rkrGstNormalizedShingle3DiceVariantMinMatchLength1,
-
-        rkrGstTokenOverlapMinMatchLength1,
-
-        rkrGst2GramOverlapMinMatchLength1,
-        rkrGst3GramOverlapMinMatchLength1,
-        rkrGst4GramOverlapMinMatchLength1,
-        rkrGst5GramOverlapMinMatchLength1,
-
-        rkrGstShingle2OverlapMinMatchLength1,
-        rkrGstShingle3OverlapMinMatchLength1,
-
-        rkrGstNormalizedTokenOverlapMinMatchLength1,
-
-        rkrGstNormalized2GramOverlapMinMatchLength1,
-        rkrGstNormalized3GramOverlapMinMatchLength1,
-        rkrGstNormalized4GramOverlapMinMatchLength1,
-        rkrGstNormalized5GramOverlapMinMatchLength1,
-
-        rkrGstNormalizedShingle2OverlapMinMatchLength1,
-        rkrGstNormalizedShingle3OverlapMinMatchLength1,
-
-        rkrGstTokenJaccardMinMatchLength2,
-
-        rkrGst2GramJaccardMinMatchLength2,
-        rkrGst3GramJaccardMinMatchLength2,
-        rkrGst4GramJaccardMinMatchLength2,
-        rkrGst5GramJaccardMinMatchLength2,
-
-        rkrGstShingle2JaccardMinMatchLength2,
-        rkrGstShingle3JaccardMinMatchLength2,
-
-        rkrGstNormalizedTokenJaccardMinMatchLength2,
-
-        rkrGstNormalized2GramJaccardMinMatchLength2,
-        rkrGstNormalized3GramJaccardMinMatchLength2,
-        rkrGstNormalized4GramJaccardMinMatchLength2,
-        rkrGstNormalized5GramJaccardMinMatchLength2,
-
-        rkrGstNormalizedShingle2JaccardMinMatchLength2,
-        rkrGstNormalizedShingle3JaccardMinMatchLength2,
-
-        rkrGstTokenDiceMinMatchLength2,
-
-        rkrGst2GramDiceMinMatchLength2,
-        rkrGst3GramDiceMinMatchLength2,
-        rkrGst4GramDiceMinMatchLength2,
-        rkrGst5GramDiceMinMatchLength2,
-
-        rkrGstShingle2DiceMinMatchLength2,
-        rkrGstShingle3DiceMinMatchLength2,
-
-        rkrGstNormalizedTokenDiceMinMatchLength2,
-
-        rkrGstNormalized2GramDiceMinMatchLength2,
-        rkrGstNormalized3GramDiceMinMatchLength2,
-        rkrGstNormalized4GramDiceMinMatchLength2,
-        rkrGstNormalized5GramDiceMinMatchLength2,
-
-        rkrGstNormalizedShingle2DiceMinMatchLength2,
-        rkrGstNormalizedShingle3DiceMinMatchLength2,
-
-        rkrGstTokenDiceVariantMinMatchLength2,
-
-        rkrGst2GramDiceVariantMinMatchLength2,
-        rkrGst3GramDiceVariantMinMatchLength2,
-        rkrGst4GramDiceVariantMinMatchLength2,
-        rkrGst5GramDiceVariantMinMatchLength2,
-
-        rkrGstShingle2DiceVariantMinMatchLength2,
-        rkrGstShingle3DiceVariantMinMatchLength2,
-
-        rkrGstNormalizedTokenDiceVariantMinMatchLength2,
-
-        rkrGstNormalized2GramDiceVariantMinMatchLength2,
-        rkrGstNormalized3GramDiceVariantMinMatchLength2,
-        rkrGstNormalized4GramDiceVariantMinMatchLength2,
-        rkrGstNormalized5GramDiceVariantMinMatchLength2,
-
-        rkrGstNormalizedShingle2DiceVariantMinMatchLength2,
-        rkrGstNormalizedShingle3DiceVariantMinMatchLength2,
-
-        rkrGstTokenOverlapMinMatchLength2,
-
-        rkrGst2GramOverlapMinMatchLength2,
-        rkrGst3GramOverlapMinMatchLength2,
-        rkrGst4GramOverlapMinMatchLength2,
-        rkrGst5GramOverlapMinMatchLength2,
-
-        rkrGstShingle2OverlapMinMatchLength2,
-        rkrGstShingle3OverlapMinMatchLength2,
-
-        rkrGstNormalizedTokenOverlapMinMatchLength2,
-
-        rkrGstNormalized2GramOverlapMinMatchLength2,
-        rkrGstNormalized3GramOverlapMinMatchLength2,
-        rkrGstNormalized4GramOverlapMinMatchLength2,
-        rkrGstNormalized5GramOverlapMinMatchLength2,
-
-        rkrGstNormalizedShingle2OverlapMinMatchLength2,
-        rkrGstNormalizedShingle3OverlapMinMatchLength2,
-
-        rkrGstTokenJaccardMinMatchLength3,
-
-        rkrGst2GramJaccardMinMatchLength3,
-        rkrGst3GramJaccardMinMatchLength3,
-        rkrGst4GramJaccardMinMatchLength3,
-        rkrGst5GramJaccardMinMatchLength3,
-
-        rkrGstShingle2JaccardMinMatchLength3,
-        rkrGstShingle3JaccardMinMatchLength3,
-
-        rkrGstNormalizedTokenJaccardMinMatchLength3,
-
-        rkrGstNormalized2GramJaccardMinMatchLength3,
-        rkrGstNormalized3GramJaccardMinMatchLength3,
-        rkrGstNormalized4GramJaccardMinMatchLength3,
-        rkrGstNormalized5GramJaccardMinMatchLength3,
-
-        rkrGstNormalizedShingle2JaccardMinMatchLength3,
-        rkrGstNormalizedShingle3JaccardMinMatchLength3,
-
-        rkrGstTokenDiceMinMatchLength3,
-
-        rkrGst2GramDiceMinMatchLength3,
-        rkrGst3GramDiceMinMatchLength3,
-        rkrGst4GramDiceMinMatchLength3,
-        rkrGst5GramDiceMinMatchLength3,
-
-        rkrGstShingle2DiceMinMatchLength3,
-        rkrGstShingle3DiceMinMatchLength3,
-
-        rkrGstNormalizedTokenDiceMinMatchLength3,
-
-        rkrGstNormalized2GramDiceMinMatchLength3,
-        rkrGstNormalized3GramDiceMinMatchLength3,
-        rkrGstNormalized4GramDiceMinMatchLength3,
-        rkrGstNormalized5GramDiceMinMatchLength3,
-
-        rkrGstNormalizedShingle2DiceMinMatchLength3,
-        rkrGstNormalizedShingle3DiceMinMatchLength3,
-
-        rkrGstTokenDiceVariantMinMatchLength3,
-
-        rkrGst2GramDiceVariantMinMatchLength3,
-        rkrGst3GramDiceVariantMinMatchLength3,
-        rkrGst4GramDiceVariantMinMatchLength3,
-        rkrGst5GramDiceVariantMinMatchLength3,
-
-        rkrGstShingle2DiceVariantMinMatchLength3,
-        rkrGstShingle3DiceVariantMinMatchLength3,
-
-        rkrGstNormalizedTokenDiceVariantMinMatchLength3,
-
-        rkrGstNormalized2GramDiceVariantMinMatchLength3,
-        rkrGstNormalized3GramDiceVariantMinMatchLength3,
-        rkrGstNormalized4GramDiceVariantMinMatchLength3,
-        rkrGstNormalized5GramDiceVariantMinMatchLength3,
-
-        rkrGstNormalizedShingle2DiceVariantMinMatchLength3,
-        rkrGstNormalizedShingle3DiceVariantMinMatchLength3,
-
-        rkrGstTokenOverlapMinMatchLength3,
-
-        rkrGst2GramOverlapMinMatchLength3,
-        rkrGst3GramOverlapMinMatchLength3,
-        rkrGst4GramOverlapMinMatchLength3,
-        rkrGst5GramOverlapMinMatchLength3,
-
-        rkrGstShingle2OverlapMinMatchLength3,
-        rkrGstShingle3OverlapMinMatchLength3,
-        rkrGstNormalizedTokenOverlapMinMatchLength3,
-
-        rkrGstNormalized2GramOverlapMinMatchLength3,
-        rkrGstNormalized3GramOverlapMinMatchLength3,
-        rkrGstNormalized4GramOverlapMinMatchLength3,
-        rkrGstNormalized5GramOverlapMinMatchLength3,
-
-        rkrGstNormalizedShingle2OverlapMinMatchLength3,
-        rkrGstNormalizedShingle3OverlapMinMatchLength3,
-*/
         cosineNormalizedTokensBool,
         cosineNormalizedTokensTermFrequency,
         cosineNormalizedTokensNormalizedTermFrequency,
@@ -517,525 +264,344 @@ public class Metric {
         }
 
 
-    public static BiFunction<String, String, Double> getBiFunctionMetric(Type metric){
+    static BiFunction<String, String, Double> getBiFunctionMetric(Type metric){
         switch (metric){
 
             case levenshteinStandard:
-                return levenshteinStandard;
+                return levenshtein;
             case levenshteinNormalized:
                 return levenshteinNormalized;
 
             case damerauLevenshteinStandard:
-                return damerauLevenshteinStandard;
+                return damerauLevenshtein;
             case damerauLevenshteinNormalized:
                 return damerauLevenshteinNormalized;
 
             case optimalAlignmentStandard:
-                return optimalAlignmentStandard;
+                return optimalAlignment;
             case optimalAlignmentNormalized:
                 return optimalAlignmentNormalized;
             case optimalAlignment2GramFingerprint:
-                return optimalAlignment2GramFingerprint;
+                return twoGramFingerprintOptimalAlignment;
             case optimalAlignment3GramFingerprint:
-                return optimalAlignment3GramFingerprint;
+                return threeGramFingerprintOptimalAlignment;
             case optimalAlignment4GramFingerprint:
-                return optimalAlignment4GramFingerprint;
+                return fourGramFingerprintOptimalAlignment;
             case optimalAlignment5GramFingerprint:
-                return optimalAlignment5GramFingerprint;
+                return fiveGramFingerprintOptimalAlignment;
             case optimalAlignmentShingle2Fingerprint:
-                return optimalAlignmentShingle2Fingerprint;
+                return twoShingleFingerprintOptimalAlignment;
             case optimalAlignmentShingle3Fingerprint:
-                return optimalAlignmentShingle3Fingerprint;
+                return threeShingleFingerprintOptimalAlignment;
             case optimalAlignment2GramFingerprintNormalized:
-                return optimalAlignment2GramFingerprintNormalized;
+                return twoGramFingerprintOptimalAlignmentNormalized;
             case optimalAlignment3GramFingerprintNormalized:
-                return optimalAlignment3GramFingerprintNormalized;
+                return threeGramFingerprintOptimalAlignmentNormalized;
             case optimalAlignment4GramFingerprintNormalized:
-                return optimalAlignment4GramFingerprintNormalized;
+                return fourGramFingerprintOptimalAlignmentNormalized;
             case optimalAlignment5GramFingerprintNormalized:
-                return optimalAlignment5GramFingerprintNormalized;
+                return fiveGramFingerprintOptimalAlignmentNormalized;
             case optimalAlignmentShingle2FingerprintNormalized:
-                return optimalAlignmentShingle2FingerprintNormalized;
+                return twoShingleFingerprintOptimalAlignmentNormalized;
             case optimalAlignmentShingle3FingerprintNormalized:
-                return optimalAlignmentShingle3FingerprintNormalized;
+                return threeShingleFingerprintOptimalAlignmentNormalized;
 
             case longestCommonSubsequenceStandard:
-                return longestCommonSubsequenceStandard;
+                return longestCommonSubsequence;
 
             case longestCommonSubsequenceNormalized :
                 return longestCommonSubsequenceNormalized;
             case longestCommonSubsequence2GramFingerprint :
-                return longestCommonSubsequence2GramFingerprint;
+                return twoGramFingerprintLongestCommonSubsequence;
             case longestCommonSubsequence3GramFingerprint :
-                return longestCommonSubsequence3GramFingerprint;
+                return threeGramFingerprintLongestCommonSubsequence;
             case longestCommonSubsequence4GramFingerprint :
-                return longestCommonSubsequence4GramFingerprint;
+                return fourGramFingerprintLongestCommonSubsequence;
             case longestCommonSubsequence5GramFingerprint :
-                return longestCommonSubsequence5GramFingerprint;
+                return fiveGramFingerprintLongestCommonSubsequence;
             case longestCommonSubsequenceShingle2Fingerprint :
-                return longestCommonSubsequenceShingle2Fingerprint;
+                return twoShingleFingerprintLongestCommonSubsequence;
             case longestCommonSubsequenceShingle3Fingerprint :
-                return longestCommonSubsequenceShingle3Fingerprint;
+                return threeShingleFingerprintLongestCommonSubsequence;
             case longestCommonSubsequence2GramFingerprintNormalized :
-                return longestCommonSubsequence2GramFingerprintNormalized;
+                return twoGramFingerprintLongestCommonSubsequenceNormalized;
             case longestCommonSubsequence3GramFingerprintNormalized :
-                return longestCommonSubsequence3GramFingerprintNormalized;
+                return threeGramFingerprintLongestCommonSubsequenceNormalized;
             case longestCommonSubsequence4GramFingerprintNormalized :
-                return longestCommonSubsequence4GramFingerprintNormalized;
+                return fourGramFingerprintLongestCommonSubsequenceNormalized;
             case longestCommonSubsequence5GramFingerprintNormalized :
-                return longestCommonSubsequence5GramFingerprintNormalized;
+                return fiveGramFingerprintLongestCommonSubsequenceNormalized;
             case longestCommonSubsequenceShingle2FingerprintNormalized :
-                return longestCommonSubsequenceShingle2FingerprintNormalized;
+                return twoShingleFingerprintLongestCommonSubsequenceNormalized;
             case longestCommonSubsequenceShingle3FingerprintNormalized :
-                return longestCommonSubsequenceShingle3FingerprintNormalized;
+                return threeShingleFingerprintLongestCommonSubsequenceNormalized;
 
             case winnowingTokenJaccard : return winnowingTokenJaccard;
-            case winnowing2GramJaccard : return winnowing2GramJaccard;
-            case winnowing3GramJaccard : return winnowing3GramJaccard;
-            case winnowing4GramJaccard : return winnowing4GramJaccard;
-            case winnowing5GramJaccard : return winnowing5GramJaccard;
-            case winnowingShingle2Jaccard : return winnowingShingle2Jaccard;
-            case winnowingShingle3Jaccard : return winnowingShingle3Jaccard;
-            case winnowingNormalizedTokenJaccard : return winnowingNormalizedTokenJaccard;
-            case winnowingNormalized2GramJaccard : return winnowingNormalized2GramJaccard;
-            case winnowingNormalized3GramJaccard : return winnowingNormalized3GramJaccard;
-            case winnowingNormalized4GramJaccard : return winnowingNormalized4GramJaccard;
-            case winnowingNormalized5GramJaccard : return winnowingNormalized5GramJaccard;
-            case winnowingNormalizedShingle2Jaccard : return winnowingNormalizedShingle2Jaccard;
-            case winnowingNormalizedShingle3Jaccard : return winnowingNormalizedShingle3Jaccard;
+            case winnowing2GramJaccard : return winnowingTwoGramJaccard;
+            case winnowing3GramJaccard : return winnowingThreeGramJaccard;
+            case winnowing4GramJaccard : return winnowingFourGramJaccard;
+            case winnowing5GramJaccard : return winnowingFiveGramJaccard;
+            case winnowingShingle2Jaccard : return winnowingTwoShingleJaccard;
+            case winnowingShingle3Jaccard : return winnowingThreeShingleJaccard;
+            case winnowingNormalizedTokenJaccard : return winnowingTokenJaccardNormalized;
+            case winnowingNormalized2GramJaccard : return winnowingTwoGramJaccardNormalized;
+            case winnowingNormalized3GramJaccard : return winnowingThreeGramJaccardNormalized;
+            case winnowingNormalized4GramJaccard : return winnowingFourGramJaccardNormalized;
+            case winnowingNormalized5GramJaccard : return winnowingFiveGramJaccardNormalized;
+            case winnowingNormalizedShingle2Jaccard : return winnowingTwoShingleJaccardNormalized;
+            case winnowingNormalizedShingle3Jaccard : return winnowingThreeShingleJaccardNormalized;
 
             case winnowingTokenDice : return winnowingTokenDice;
-            case winnowing2GramDice : return winnowing2GramDice;
-            case winnowing3GramDice : return winnowing3GramDice;
-            case winnowing4GramDice : return winnowing4GramDice;
-            case winnowing5GramDice : return winnowing5GramDice;
-            case winnowingShingle2Dice : return winnowingShingle2Dice;
-            case winnowingShingle3Dice : return winnowingShingle3Dice;
+            case winnowing2GramDice : return winnowingTwoGramDice;
+            case winnowing3GramDice : return winnowingThreeGramDice;
+            case winnowing4GramDice : return winnowingFourGramDice;
+            case winnowing5GramDice : return winnowingFiveGramDice;
+            case winnowingShingle2Dice : return winnowingTwoShingleDice;
+            case winnowingShingle3Dice : return winnowingThreeShingleDice;
             case winnowingNormalizedTokenDice : return winnowingNormalizedTokenDice;
-            case winnowingNormalized2GramDice : return winnowingNormalized2GramDice;
-            case winnowingNormalized3GramDice : return winnowingNormalized3GramDice;
-            case winnowingNormalized4GramDice : return winnowingNormalized4GramDice;
-            case winnowingNormalized5GramDice : return winnowingNormalized5GramDice;
-            case winnowingNormalizedShingle2Dice : return winnowingNormalizedShingle2Dice;
-            case winnowingNormalizedShingle3Dice : return winnowingNormalizedShingle3Dice;
+            case winnowingNormalized2GramDice : return winnowingTwoGramDiceNormalized;
+            case winnowingNormalized3GramDice : return winnowingThreeGramDiceNormalized;
+            case winnowingNormalized4GramDice : return winnowingFourGramDiceNormalized;
+            case winnowingNormalized5GramDice : return winnowingFiveGramDiceNormalized;
+            case winnowingNormalizedShingle2Dice : return winnowingTwoShingleDiceNormalized;
+            case winnowingNormalizedShingle3Dice : return winnowingThreeShingleDiceNormalized;
 
             case winnowingTokenDiceVariant : return winnowingTokenDiceVariant;
-            case winnowing2GramDiceVariant : return winnowing2GramDiceVariant;
-            case winnowing3GramDiceVariant : return winnowing3GramDiceVariant;
-            case winnowing4GramDiceVariant : return winnowing4GramDiceVariant;
-            case winnowing5GramDiceVariant : return winnowing5GramDiceVariant;
-            case winnowingShingle2DiceVariant : return winnowingShingle2DiceVariant;
-            case winnowingShingle3DiceVariant : return winnowingShingle3DiceVariant;
-            case winnowingNormalizedTokenDiceVariant : return winnowingNormalizedTokenDiceVariant;
-            case winnowingNormalized2GramDiceVariant : return winnowingNormalized2GramDiceVariant;
-            case winnowingNormalized3GramDiceVariant : return winnowingNormalized3GramDiceVariant;
-            case winnowingNormalized4GramDiceVariant : return winnowingNormalized4GramDiceVariant;
-            case winnowingNormalized5GramDiceVariant : return winnowingNormalized5GramDiceVariant;
-            case winnowingNormalizedShingle2DiceVariant : return winnowingNormalizedShingle2DiceVariant;
-            case winnowingNormalizedShingle3DiceVariant : return winnowingNormalizedShingle3DiceVariant;
+            case winnowing2GramDiceVariant : return winnowingTwoGramDiceVariant;
+            case winnowing3GramDiceVariant : return winnowingThreeGramDiceVariant;
+            case winnowing4GramDiceVariant : return winnowingFourGramDiceVariant;
+            case winnowing5GramDiceVariant : return winnowingFiveGramDiceVariant;
+            case winnowingShingle2DiceVariant : return winnowingTwoShingleDiceVariant;
+            case winnowingShingle3DiceVariant : return winnowingThreeShingleDiceVariant;
+            case winnowingNormalizedTokenDiceVariant : return winnowingTokenDiceVariantNormalized;
+            case winnowingNormalized2GramDiceVariant : return winnowingTwoGramDiceVariantNormalized;
+            case winnowingNormalized3GramDiceVariant : return winnowingThreeGramDiceVariantNormalized;
+            case winnowingNormalized4GramDiceVariant : return winnowingFourGramDiceVariantNormalized;
+            case winnowingNormalized5GramDiceVariant : return winnowingFiveGramDiceVariantNormalized;
+            case winnowingNormalizedShingle2DiceVariant : return winnowingTwoShingleDiceVariantNormalized;
+            case winnowingNormalizedShingle3DiceVariant : return winnowingThreeShingleDiceVariantNormalized;
 
             case winnowingTokenOverlap : return winnowingTokenOverlap;
-            case winnowing2GramOverlap : return winnowing2GramOverlap;
-            case winnowing3GramOverlap : return winnowing3GramOverlap;
-            case winnowing4GramOverlap : return winnowing4GramOverlap;
-            case winnowing5GramOverlap : return winnowing5GramOverlap;
-            case winnowingShingle2Overlap : return winnowingShingle2Overlap;
-            case winnowingShingle3Overlap : return winnowingShingle3Overlap;
-            case winnowingNormalizedTokenOverlap : return winnowingNormalizedTokenOverlap;
-            case winnowingNormalized2GramOverlap : return winnowingNormalized2GramOverlap;
-            case winnowingNormalized3GramOverlap : return winnowingNormalized3GramOverlap;
-            case winnowingNormalized4GramOverlap : return winnowingNormalized4GramOverlap;
-            case winnowingNormalized5GramOverlap : return winnowingNormalized5GramOverlap;
-            case winnowingNormalizedShingle2Overlap : return winnowingNormalizedShingle2Overlap;
-            case winnowingNormalizedShingle3Overlap : return winnowingNormalizedShingle3Overlap;
-
-
-//            case rkrGstTokenJaccardMinMatchLength1 : return rkrGstTokenJaccardMinMatchLength1;
-//            case rkrGst2GramJaccardMinMatchLength1 : return rkrGst2GramJaccardMinMatchLength1;
-//            case rkrGst3GramJaccardMinMatchLength1 : return rkrGst3GramJaccardMinMatchLength1;
-//            case rkrGst4GramJaccardMinMatchLength1 : return rkrGst4GramJaccardMinMatchLength1;
-//            case rkrGst5GramJaccardMinMatchLength1 : return rkrGst5GramJaccardMinMatchLength1;
-//            case rkrGstShingle2JaccardMinMatchLength1 : return rkrGstShingle2JaccardMinMatchLength1;
-//            case rkrGstShingle3JaccardMinMatchLength1 : return rkrGstShingle3JaccardMinMatchLength1;
-//            case rkrGstNormalizedTokenJaccardMinMatchLength1 : return rkrGstNormalizedTokenJaccardMinMatchLength1;
-//            case rkrGstNormalized2GramJaccardMinMatchLength1 : return rkrGstNormalized2GramJaccardMinMatchLength1;
-//            case rkrGstNormalized3GramJaccardMinMatchLength1 : return rkrGstNormalized3GramJaccardMinMatchLength1;
-//            case rkrGstNormalized4GramJaccardMinMatchLength1 : return rkrGstNormalized4GramJaccardMinMatchLength1;
-//            case rkrGstNormalized5GramJaccardMinMatchLength1 : return rkrGstNormalized5GramJaccardMinMatchLength1;
-//            case rkrGstNormalizedShingle2JaccardMinMatchLength1 : return rkrGstNormalizedShingle2JaccardMinMatchLength1;
-//            case rkrGstNormalizedShingle3JaccardMinMatchLength1 : return rkrGstNormalizedShingle3JaccardMinMatchLength1;
-//
-//            case rkrGstTokenDiceMinMatchLength1 : return rkrGstTokenDiceMinMatchLength1;
-//            case rkrGst2GramDiceMinMatchLength1 : return rkrGst2GramDiceMinMatchLength1;
-//            case rkrGst3GramDiceMinMatchLength1 : return rkrGst3GramDiceMinMatchLength1;
-//            case rkrGst4GramDiceMinMatchLength1 : return rkrGst4GramDiceMinMatchLength1;
-//            case rkrGst5GramDiceMinMatchLength1 : return rkrGst5GramDiceMinMatchLength1;
-//            case rkrGstShingle2DiceMinMatchLength1 : return rkrGstShingle2DiceMinMatchLength1;
-//            case rkrGstShingle3DiceMinMatchLength1 : return rkrGstShingle3DiceMinMatchLength1;
-//            case rkrGstNormalizedTokenDiceMinMatchLength1 : return rkrGstNormalizedTokenDiceMinMatchLength1;
-//            case rkrGstNormalized2GramDiceMinMatchLength1 : return rkrGstNormalized2GramDiceMinMatchLength1;
-//            case rkrGstNormalized3GramDiceMinMatchLength1 : return rkrGstNormalized3GramDiceMinMatchLength1;
-//            case rkrGstNormalized4GramDiceMinMatchLength1 : return rkrGstNormalized4GramDiceMinMatchLength1;
-//            case rkrGstNormalized5GramDiceMinMatchLength1 : return rkrGstNormalized5GramDiceMinMatchLength1;
-//            case rkrGstNormalizedShingle2DiceMinMatchLength1 : return rkrGstNormalizedShingle2DiceMinMatchLength1;
-//            case rkrGstNormalizedShingle3DiceMinMatchLength1 : return rkrGstNormalizedShingle3DiceMinMatchLength1;
-//
-//            case rkrGstTokenDiceVariantMinMatchLength1 : return rkrGstTokenDiceVariantMinMatchLength1;
-//            case rkrGst2GramDiceVariantMinMatchLength1 : return rkrGst2GramDiceVariantMinMatchLength1;
-//            case rkrGst3GramDiceVariantMinMatchLength1 : return rkrGst3GramDiceVariantMinMatchLength1;
-//            case rkrGst4GramDiceVariantMinMatchLength1 : return rkrGst4GramDiceVariantMinMatchLength1;
-//            case rkrGst5GramDiceVariantMinMatchLength1 : return rkrGst5GramDiceVariantMinMatchLength1;
-//            case rkrGstShingle2DiceVariantMinMatchLength1 : return rkrGstShingle2DiceVariantMinMatchLength1;
-//            case rkrGstShingle3DiceVariantMinMatchLength1 : return rkrGstShingle3DiceVariantMinMatchLength1;
-//            case rkrGstNormalizedTokenDiceVariantMinMatchLength1 : return rkrGstNormalizedTokenDiceVariantMinMatchLength1;
-//            case rkrGstNormalized2GramDiceVariantMinMatchLength1 : return rkrGstNormalized2GramDiceVariantMinMatchLength1;
-//            case rkrGstNormalized3GramDiceVariantMinMatchLength1 : return rkrGstNormalized3GramDiceVariantMinMatchLength1;
-//            case rkrGstNormalized4GramDiceVariantMinMatchLength1 : return rkrGstNormalized4GramDiceVariantMinMatchLength1;
-//            case rkrGstNormalized5GramDiceVariantMinMatchLength1 : return rkrGstNormalized5GramDiceVariantMinMatchLength1;
-//            case rkrGstNormalizedShingle2DiceVariantMinMatchLength1 : return rkrGstNormalizedShingle2DiceVariantMinMatchLength1;
-//            case rkrGstNormalizedShingle3DiceVariantMinMatchLength1 : return rkrGstNormalizedShingle3DiceVariantMinMatchLength1;
-//
-//            case rkrGstTokenOverlapMinMatchLength1 : return rkrGstTokenOverlapMinMatchLength1;
-//            case rkrGst2GramOverlapMinMatchLength1 : return rkrGst2GramOverlapMinMatchLength1;
-//            case rkrGst3GramOverlapMinMatchLength1 : return rkrGst3GramOverlapMinMatchLength1;
-//            case rkrGst4GramOverlapMinMatchLength1 : return rkrGst4GramOverlapMinMatchLength1;
-//            case rkrGst5GramOverlapMinMatchLength1 : return rkrGst5GramOverlapMinMatchLength1;
-//            case rkrGstShingle2OverlapMinMatchLength1 : return rkrGstShingle2OverlapMinMatchLength1;
-//            case rkrGstShingle3OverlapMinMatchLength1 : return rkrGstShingle3OverlapMinMatchLength1;
-//            case rkrGstNormalizedTokenOverlapMinMatchLength1 : return rkrGstNormalizedTokenOverlapMinMatchLength1;
-//            case rkrGstNormalized2GramOverlapMinMatchLength1 : return rkrGstNormalized2GramOverlapMinMatchLength1;
-//            case rkrGstNormalized3GramOverlapMinMatchLength1 : return rkrGstNormalized3GramOverlapMinMatchLength1;
-//            case rkrGstNormalized4GramOverlapMinMatchLength1 : return rkrGstNormalized4GramOverlapMinMatchLength1;
-//            case rkrGstNormalized5GramOverlapMinMatchLength1 : return rkrGstNormalized5GramOverlapMinMatchLength1;
-//            case rkrGstNormalizedShingle2OverlapMinMatchLength1 : return rkrGstNormalizedShingle2OverlapMinMatchLength1;
-//            case rkrGstNormalizedShingle3OverlapMinMatchLength1 : return rkrGstNormalizedShingle3OverlapMinMatchLength1;
-//
-//            case rkrGstTokenJaccardMinMatchLength2 : return rkrGstTokenJaccardMinMatchLength2;
-//            case rkrGst2GramJaccardMinMatchLength2 : return rkrGst2GramJaccardMinMatchLength2;
-//            case rkrGst3GramJaccardMinMatchLength2 : return rkrGst3GramJaccardMinMatchLength2;
-//            case rkrGst4GramJaccardMinMatchLength2 : return rkrGst4GramJaccardMinMatchLength2;
-//            case rkrGst5GramJaccardMinMatchLength2 : return rkrGst5GramJaccardMinMatchLength2;
-//            case rkrGstShingle2JaccardMinMatchLength2 : return rkrGstShingle2JaccardMinMatchLength2;
-//            case rkrGstShingle3JaccardMinMatchLength2 : return rkrGstShingle3JaccardMinMatchLength2;
-//            case rkrGstNormalizedTokenJaccardMinMatchLength2 : return rkrGstNormalizedTokenJaccardMinMatchLength2;
-//            case rkrGstNormalized2GramJaccardMinMatchLength2 : return rkrGstNormalized2GramJaccardMinMatchLength2;
-//            case rkrGstNormalized3GramJaccardMinMatchLength2 : return rkrGstNormalized3GramJaccardMinMatchLength2;
-//            case rkrGstNormalized4GramJaccardMinMatchLength2 : return rkrGstNormalized4GramJaccardMinMatchLength2;
-//            case rkrGstNormalized5GramJaccardMinMatchLength2 : return rkrGstNormalized5GramJaccardMinMatchLength2;
-//            case rkrGstNormalizedShingle2JaccardMinMatchLength2 : return rkrGstNormalizedShingle2JaccardMinMatchLength2;
-//            case rkrGstNormalizedShingle3JaccardMinMatchLength2 : return rkrGstNormalizedShingle3JaccardMinMatchLength2;
-//
-//            case rkrGstTokenDiceMinMatchLength2 : return rkrGstTokenDiceMinMatchLength2;
-//            case rkrGst2GramDiceMinMatchLength2 : return rkrGst2GramDiceMinMatchLength2;
-//            case rkrGst3GramDiceMinMatchLength2 : return rkrGst3GramDiceMinMatchLength2;
-//            case rkrGst4GramDiceMinMatchLength2 : return rkrGst4GramDiceMinMatchLength2;
-//            case rkrGst5GramDiceMinMatchLength2 : return rkrGst5GramDiceMinMatchLength2;
-//            case rkrGstShingle2DiceMinMatchLength2 : return rkrGstShingle2DiceMinMatchLength2;
-//            case rkrGstShingle3DiceMinMatchLength2 : return rkrGstShingle3DiceMinMatchLength2;
-//            case rkrGstNormalizedTokenDiceMinMatchLength2 : return rkrGstNormalizedTokenDiceMinMatchLength2;
-//            case rkrGstNormalized2GramDiceMinMatchLength2 : return rkrGstNormalized2GramDiceMinMatchLength2;
-//            case rkrGstNormalized3GramDiceMinMatchLength2 : return rkrGstNormalized3GramDiceMinMatchLength2;
-//            case rkrGstNormalized4GramDiceMinMatchLength2 : return rkrGstNormalized4GramDiceMinMatchLength2;
-//            case rkrGstNormalized5GramDiceMinMatchLength2 : return rkrGstNormalized5GramDiceMinMatchLength2;
-//            case rkrGstNormalizedShingle2DiceMinMatchLength2 : return rkrGstNormalizedShingle2DiceMinMatchLength2;
-//            case rkrGstNormalizedShingle3DiceMinMatchLength2 : return rkrGstNormalizedShingle3DiceMinMatchLength2;
-//
-//            case rkrGstTokenDiceVariantMinMatchLength2 : return rkrGstTokenDiceVariantMinMatchLength2;
-//            case rkrGst2GramDiceVariantMinMatchLength2 : return rkrGst2GramDiceVariantMinMatchLength2;
-//            case rkrGst3GramDiceVariantMinMatchLength2 : return rkrGst3GramDiceVariantMinMatchLength2;
-//            case rkrGst4GramDiceVariantMinMatchLength2 : return rkrGst4GramDiceVariantMinMatchLength2;
-//            case rkrGst5GramDiceVariantMinMatchLength2 : return rkrGst5GramDiceVariantMinMatchLength2;
-//            case rkrGstShingle2DiceVariantMinMatchLength2 : return rkrGstShingle2DiceVariantMinMatchLength2;
-//            case rkrGstShingle3DiceVariantMinMatchLength2 : return rkrGstShingle3DiceVariantMinMatchLength2;
-//            case rkrGstNormalizedTokenDiceVariantMinMatchLength2 : return rkrGstNormalizedTokenDiceVariantMinMatchLength2;
-//            case rkrGstNormalized2GramDiceVariantMinMatchLength2 : return rkrGstNormalized2GramDiceVariantMinMatchLength2;
-//            case rkrGstNormalized3GramDiceVariantMinMatchLength2 : return rkrGstNormalized3GramDiceVariantMinMatchLength2;
-//            case rkrGstNormalized4GramDiceVariantMinMatchLength2 : return rkrGstNormalized4GramDiceVariantMinMatchLength2;
-//            case rkrGstNormalized5GramDiceVariantMinMatchLength2 : return rkrGstNormalized5GramDiceVariantMinMatchLength2;
-//            case rkrGstNormalizedShingle2DiceVariantMinMatchLength2 : return rkrGstNormalizedShingle2DiceVariantMinMatchLength2;
-//            case rkrGstNormalizedShingle3DiceVariantMinMatchLength2 : return rkrGstNormalizedShingle3DiceVariantMinMatchLength2;
-//
-//            case rkrGstTokenOverlapMinMatchLength2 : return rkrGstTokenOverlapMinMatchLength2;
-//            case rkrGst2GramOverlapMinMatchLength2 : return rkrGst2GramOverlapMinMatchLength2;
-//            case rkrGst3GramOverlapMinMatchLength2 : return rkrGst3GramOverlapMinMatchLength2;
-//            case rkrGst4GramOverlapMinMatchLength2 : return rkrGst4GramOverlapMinMatchLength2;
-//            case rkrGst5GramOverlapMinMatchLength2 : return rkrGst5GramOverlapMinMatchLength2;
-//            case rkrGstShingle2OverlapMinMatchLength2 : return rkrGstShingle2OverlapMinMatchLength2;
-//            case rkrGstShingle3OverlapMinMatchLength2 : return rkrGstShingle3OverlapMinMatchLength2;
-//            case rkrGstNormalizedTokenOverlapMinMatchLength2 : return rkrGstNormalizedTokenOverlapMinMatchLength2;
-//            case rkrGstNormalized2GramOverlapMinMatchLength2 : return rkrGstNormalized2GramOverlapMinMatchLength2;
-//            case rkrGstNormalized3GramOverlapMinMatchLength2 : return rkrGstNormalized3GramOverlapMinMatchLength2;
-//            case rkrGstNormalized4GramOverlapMinMatchLength2 : return rkrGstNormalized4GramOverlapMinMatchLength2;
-//            case rkrGstNormalized5GramOverlapMinMatchLength2 : return rkrGstNormalized5GramOverlapMinMatchLength2;
-//            case rkrGstNormalizedShingle2OverlapMinMatchLength2 : return rkrGstNormalizedShingle2OverlapMinMatchLength2;
-//            case rkrGstNormalizedShingle3OverlapMinMatchLength2 : return rkrGstNormalizedShingle3OverlapMinMatchLength2;
-//
-//            case rkrGstTokenJaccardMinMatchLength3 : return rkrGstTokenJaccardMinMatchLength3;
-//            case rkrGst2GramJaccardMinMatchLength3 : return rkrGst2GramJaccardMinMatchLength3;
-//            case rkrGst3GramJaccardMinMatchLength3 : return rkrGst3GramJaccardMinMatchLength3;
-//            case rkrGst4GramJaccardMinMatchLength3 : return rkrGst4GramJaccardMinMatchLength3;
-//            case rkrGst5GramJaccardMinMatchLength3 : return rkrGst5GramJaccardMinMatchLength3;
-//            case rkrGstShingle2JaccardMinMatchLength3 : return rkrGstShingle2JaccardMinMatchLength3;
-//            case rkrGstShingle3JaccardMinMatchLength3 : return rkrGstShingle3JaccardMinMatchLength3;
-//            case rkrGstNormalizedTokenJaccardMinMatchLength3 : return rkrGstNormalizedTokenJaccardMinMatchLength3;
-//            case rkrGstNormalized2GramJaccardMinMatchLength3 : return rkrGstNormalized2GramJaccardMinMatchLength3;
-//            case rkrGstNormalized3GramJaccardMinMatchLength3 : return rkrGstNormalized3GramJaccardMinMatchLength3;
-//            case rkrGstNormalized4GramJaccardMinMatchLength3 : return rkrGstNormalized4GramJaccardMinMatchLength3;
-//            case rkrGstNormalized5GramJaccardMinMatchLength3 : return rkrGstNormalized5GramJaccardMinMatchLength3;
-//            case rkrGstNormalizedShingle2JaccardMinMatchLength3 : return rkrGstNormalizedShingle2JaccardMinMatchLength3;
-//            case rkrGstNormalizedShingle3JaccardMinMatchLength3 : return rkrGstNormalizedShingle3JaccardMinMatchLength3;
-//
-//            case rkrGstTokenDiceMinMatchLength3 : return rkrGstTokenDiceMinMatchLength3;
-//            case rkrGst2GramDiceMinMatchLength3 : return rkrGst2GramDiceMinMatchLength3;
-//            case rkrGst3GramDiceMinMatchLength3 : return rkrGst3GramDiceMinMatchLength3;
-//            case rkrGst4GramDiceMinMatchLength3 : return rkrGst4GramDiceMinMatchLength3;
-//            case rkrGst5GramDiceMinMatchLength3 : return rkrGst5GramDiceMinMatchLength3;
-//            case rkrGstShingle2DiceMinMatchLength3 : return rkrGstShingle2DiceMinMatchLength3;
-//            case rkrGstShingle3DiceMinMatchLength3 : return rkrGstShingle3DiceMinMatchLength3;
-//            case rkrGstNormalizedTokenDiceMinMatchLength3 : return rkrGstNormalizedTokenDiceMinMatchLength3;
-//            case rkrGstNormalized2GramDiceMinMatchLength3 : return rkrGstNormalized2GramDiceMinMatchLength3;
-//            case rkrGstNormalized3GramDiceMinMatchLength3 : return rkrGstNormalized3GramDiceMinMatchLength3;
-//            case rkrGstNormalized4GramDiceMinMatchLength3 : return rkrGstNormalized4GramDiceMinMatchLength3;
-//            case rkrGstNormalized5GramDiceMinMatchLength3 : return rkrGstNormalized5GramDiceMinMatchLength3;
-//            case rkrGstNormalizedShingle2DiceMinMatchLength3 : return rkrGstNormalizedShingle2DiceMinMatchLength3;
-//            case rkrGstNormalizedShingle3DiceMinMatchLength3 : return rkrGstNormalizedShingle3DiceMinMatchLength3;
-//
-//            case rkrGstTokenDiceVariantMinMatchLength3 : return rkrGstTokenDiceVariantMinMatchLength3;
-//            case rkrGst2GramDiceVariantMinMatchLength3 : return rkrGst2GramDiceVariantMinMatchLength3;
-//            case rkrGst3GramDiceVariantMinMatchLength3 : return rkrGst3GramDiceVariantMinMatchLength3;
-//            case rkrGst4GramDiceVariantMinMatchLength3 : return rkrGst4GramDiceVariantMinMatchLength3;
-//            case rkrGst5GramDiceVariantMinMatchLength3 : return rkrGst5GramDiceVariantMinMatchLength3;
-//            case rkrGstShingle2DiceVariantMinMatchLength3 : return rkrGstShingle2DiceVariantMinMatchLength3;
-//            case rkrGstShingle3DiceVariantMinMatchLength3 : return rkrGstShingle3DiceVariantMinMatchLength3;
-//            case rkrGstNormalizedTokenDiceVariantMinMatchLength3 : return rkrGstNormalizedTokenDiceVariantMinMatchLength3;
-//            case rkrGstNormalized2GramDiceVariantMinMatchLength3 : return rkrGstNormalized2GramDiceVariantMinMatchLength3;
-//            case rkrGstNormalized3GramDiceVariantMinMatchLength3 : return rkrGstNormalized3GramDiceVariantMinMatchLength3;
-//            case rkrGstNormalized4GramDiceVariantMinMatchLength3 : return rkrGstNormalized4GramDiceVariantMinMatchLength3;
-//            case rkrGstNormalized5GramDiceVariantMinMatchLength3 : return rkrGstNormalized5GramDiceVariantMinMatchLength3;
-//            case rkrGstNormalizedShingle2DiceVariantMinMatchLength3 : return rkrGstNormalizedShingle2DiceVariantMinMatchLength3;
-//            case rkrGstNormalizedShingle3DiceVariantMinMatchLength3 : return rkrGstNormalizedShingle3DiceVariantMinMatchLength3;
-//
-//            case rkrGstTokenOverlapMinMatchLength3 : return rkrGstTokenOverlapMinMatchLength3;
-//            case rkrGst2GramOverlapMinMatchLength3 : return rkrGst2GramOverlapMinMatchLength3;
-//            case rkrGst3GramOverlapMinMatchLength3 : return rkrGst3GramOverlapMinMatchLength3;
-//            case rkrGst4GramOverlapMinMatchLength3 : return rkrGst4GramOverlapMinMatchLength3;
-//            case rkrGst5GramOverlapMinMatchLength3 : return rkrGst5GramOverlapMinMatchLength3;
-//            case rkrGstShingle2OverlapMinMatchLength3 : return rkrGstShingle2OverlapMinMatchLength3;
-//            case rkrGstShingle3OverlapMinMatchLength3 : return rkrGstShingle3OverlapMinMatchLength3;
-//            case rkrGstNormalizedTokenOverlapMinMatchLength3 : return rkrGstNormalizedTokenOverlapMinMatchLength3;
-//            case rkrGstNormalized2GramOverlapMinMatchLength3 : return rkrGstNormalized2GramOverlapMinMatchLength3;
-//            case rkrGstNormalized3GramOverlapMinMatchLength3 : return rkrGstNormalized3GramOverlapMinMatchLength3;
-//            case rkrGstNormalized4GramOverlapMinMatchLength3 : return rkrGstNormalized4GramOverlapMinMatchLength3;
-//            case rkrGstNormalized5GramOverlapMinMatchLength3 : return rkrGstNormalized5GramOverlapMinMatchLength3;
-//            case rkrGstNormalizedShingle2OverlapMinMatchLength3 : return rkrGstNormalizedShingle2OverlapMinMatchLength3;
-//            case rkrGstNormalizedShingle3OverlapMinMatchLength3 : return rkrGstNormalizedShingle3OverlapMinMatchLength3;
+            case winnowing2GramOverlap : return winnowingTwoGramOverlap;
+            case winnowing3GramOverlap : return winnowingThreeGramOverlap;
+            case winnowing4GramOverlap : return winnowingFourGramOverlap;
+            case winnowing5GramOverlap : return winnowingFiveGramOverlap;
+            case winnowingShingle2Overlap : return winnowingTwoShingleOverlap;
+            case winnowingShingle3Overlap : return winnowingThreeShingleOverlap;
+            case winnowingNormalizedTokenOverlap : return winnowingTokenOverlapNormalized;
+            case winnowingNormalized2GramOverlap : return winnowingTwoGramOverlapNormalized;
+            case winnowingNormalized3GramOverlap : return winnowingThreeGramOverlapNormalized;
+            case winnowingNormalized4GramOverlap : return winnowingFourGramOverlapNormalized;
+            case winnowingNormalized5GramOverlap : return winnowingFiveGramOverlapNormalized;
+            case winnowingNormalizedShingle2Overlap : return winnowingTwoShingleOverlapNormalized;
+            case winnowingNormalizedShingle3Overlap : return winnowingThreeShingleOverlapNormalized;
 
 
             case cosineNormalizedTokensBool :
-                return cosineNormalizedTokensBool;
+                return cosineTokenNormalizedBool;
             case cosineNormalizedTokensTermFrequency :
-                return cosineNormalizedTokensTermFrequency;
+                return cosineTokenNormalizedTermFrequency;
             case cosineNormalizedTokensNormalizedTermFrequency :
-                return cosineNormalizedTokensNormalizedTermFrequency;
+                return cosineTokenNormalizedNormalizedTermFrequency;
             case cosineNormalized2GramsBool :
-                return cosineNormalized2GramsBool;
+                return cosineTwoGramNormalizedBool;
             case cosineNormalized3GramsBool :
-                return cosineNormalized3GramsBool;
+                return cosineThreeGramNormalizedBool;
             case cosineNormalized4GramsBool :
-                return cosineNormalized4GramsBool;
+                return cosineFourGramNormalizedBool;
             case cosineNormalized5GramsBool :
-                return cosineNormalized5GramsBool;
+                return cosineFiveGramNormalizedBool;
             case cosineNormalized2GramsTermFrequency :
-                return cosineNormalized2GramsTermFrequency;
+                return cosineTwoGramNormalizedTermFrequency;
             case cosineNormalized3GramsTermFrequency :
-                return cosineNormalized3GramsTermFrequency;
+                return cosineThreeGramNormalizedTermFrequency;
             case cosineNormalized4GramsTermFrequency :
-                return cosineNormalized4GramsTermFrequency;
+                return cosineFourGramNormalizedTermFrequency;
             case cosineNormalized5GramsTermFrequency :
-                return cosineNormalized5GramsTermFrequency;
+                return cosineFiveGramNormalizedTermFrequency;
             case cosineNormalized2GramsNormalizedTermFrequency :
-                return cosineNormalized2GramsNormalizedTermFrequency;
+                return cosineTwoGramNormalizedNormalizedTermFrequency;
             case cosineNormalized3GramsNormalizedTermFrequency :
-                return cosineNormalized3GramsNormalizedTermFrequency;
+                return cosineThreeGramNormalizedNormalizedTermFrequency;
             case cosineNormalized4GramsNormalizedTermFrequency :
-                return cosineNormalized4GramsNormalizedTermFrequency;
+                return cosineFourGramNormalizedNormalizedTermFrequency;
             case cosineNormalized5GramsNormalizedTermFrequency :
-                return cosineNormalized5GramsNormalizedTermFrequency;
+                return cosineFiveGramNormalizedNormalizedTermFrequency;
             case cosineNormalizedShingle2Bool :
-                return cosineNormalizedShingle2Bool;
+                return cosineTwoShingleNormalizedBool;
             case cosineNormalizedShingle3Bool :
-                return cosineNormalizedShingle3Bool;
+                return cosineThreeShingleNormalizedBool;
             case cosineNormalizedShingle2TermFrequency :
-                return cosineNormalizedShingle2TermFrequency;
+                return cosineTwoShingleNormalizedTermFrequency;
             case cosineNormalizedShingle3TermFrequency :
-                return cosineNormalizedShingle3TermFrequency;
+                return cosineThreeShingleNormalizedTermFrequency;
             case cosineNormalizedShingle2NormalizedTermFrequency :
-                return cosineNormalizedShingle2NormalizedTermFrequency;
+                return cosineTwoShingleNormalizedNormalizedTermFrequency;
             case cosineNormalizedShingle3NormalizedTermFrequency :
-                return cosineNormalizedShingle3NormalizedTermFrequency;
+                return cosineThreeShingleNormalizedNormalizedTermFrequency;
 
             case manhattanNormalizedTokens :
-                return manhattanNormalizedTokens;
+                return manhattanTokenNormalized;
             case manhattanNormalized2Grams :
-                return manhattanNormalized2Grams;
+                return manhattanTwoGramNormalized;
             case manhattanNormalized3Grams :
-                return manhattanNormalized3Grams;
+                return manhattanThreeGramNormalized;
             case manhattanNormalized4Grams :
-                return manhattanNormalized4Grams;
+                return manhattanFourGramNormalized;
             case manhattanNormalized5Grams :
-                return manhattanNormalized5Grams;
+                return manhattanFiveGramNormalized;
             case manhattanNormalizedShingles2 :
-                return manhattanNormalizedShingles2;
+                return manhattanTwoShingleNormalized;
             case manhattanNormalizedShingles3 :
-                return manhattanNormalizedShingles3;
+                return manhattanThreeShingleNormalized;
 
             case jaccardTokens:
-                return jaccardTokens;
+                return tokenJaccard;
             case jaccardNormalizedTokens:
-                return jaccardNormalizedTokens;
+                return tokenJaccardNormalized;
             case jaccard2Grams:
-                return jaccard2Grams;
+                return twoGramJaccard;
             case jaccard3Grams:
-                return jaccard3Grams;
+                return threeGramJaccard;
             case jaccard4Grams:
-                return jaccard4Grams;
+                return fourGramJaccard;
             case jaccard5Grams:
-                return jaccard5Grams;
+                return fiveGramJaccard;
             case jaccardNormalized2Grams:
-                return jaccardNormalized2Grams;
+                return twoGramJaccardNormalized;
             case jaccardNormalized3Grams:
-                return jaccardNormalized3Grams;
+                return threeGramJaccardNormalized;
             case jaccardNormalized4Grams:
-                return jaccardNormalized4Grams;
+                return fourGramJaccardNormalized;
             case jaccardNormalized5Grams:
-                return jaccardNormalized5Grams;
+                return fiveGramJaccardNormalized;
             case jaccardNormalizedPadding2grams:
-                return jaccardNormalizedPadding2grams;
+                return twoGramJaccardNormalizedPadding;
             case jaccardNormalizedPadding3grams:
-                return jaccardNormalizedPadding3grams;
+                return threeGramJaccardNormalizedPadding;
             case jaccardNormalizedPadding4grams:
-                return jaccardNormalizedPadding4grams;
+                return fourGramJaccardNormalizedPadding;
             case jaccardNormalizedPadding5grams:
-                return jaccardNormalizedPadding5grams;
+                return fiveGramJaccardNormalizedPadding;
             case jaccardShingles2:
-                return jaccardShingles2;
+                return twoShingleJaccard;
             case jaccardShingles3:
-                return jaccardShingles3;
+                return threeShingleJaccard;
             case jaccardNormalizedShingles2:
-                return jaccardNormalizedShingles2;
+                return twoShingleJaccardNormalized;
             case jaccardNormalizedShingles3:
-                return jaccardNormalizedShingles3;
+                return threeShingleJaccardNormalized;
 
             case diceTokens:
-                return diceTokens;
+                return tokenDice;
             case diceNormalizedTokens:
-                return diceNormalizedTokens;
+                return tokenDiceNormalized;
             case dice2Grams:
-                return dice2Grams;
+                return twoGramDice;
             case dice3Grams:
-                return dice3Grams;
+                return threeGramDice;
             case dice4Grams:
-                return dice4Grams;
+                return fourGramDice;
             case dice5Grams:
-                return dice5Grams;
+                return fiveGramDice;
             case diceNormalized2Grams:
-                return diceNormalized2Grams;
+                return twoGramDiceNormalized;
             case diceNormalized3Grams:
-                return diceNormalized3Grams;
+                return threeGramDiceNormalized;
             case diceNormalized4Grams:
-                return diceNormalized4Grams;
+                return fourGramDiceNormalized;
             case diceNormalized5Grams:
-                return diceNormalized5Grams;
+                return fiveGramDiceNormalized;
             case diceNormalizedPadding2grams:
-                return diceNormalizedPadding2grams;
+                return twoGramDiceNormalizedPadding;
             case diceNormalizedPadding3grams:
-                return diceNormalizedPadding3grams;
+                return threeGramDiceNormalizedPadding;
             case diceNormalizedPadding4grams:
-                return diceNormalizedPadding4grams;
+                return fourGramDiceNormalizedPadding;
             case diceNormalizedPadding5grams:
-                return diceNormalizedPadding5grams;
+                return fiveGramDiceNormalizedPadding;
             case diceShingles2:
-                return diceShingles2;
+                return twoShingleDice;
             case diceShingles3:
-                return diceShingles3;
+                return threeShingleDice;
             case diceNormalizedShingles2:
-                return diceNormalizedShingles2;
+                return twoShingleDiceNormalized;
             case diceNormalizedShingles3:
-                return diceNormalizedShingles3;
+                return threeShingleDiceNormalized;
 
             case diceVariantTokens:
-                return diceVariantTokens;
+                return tokenDiceVariant;
             case diceVariantNormalizedTokens:
-                return diceVariantNormalizedTokens;
+                return tokenDiceVariantNormalized;
             case diceVariant2Grams:
-                return diceVariant2Grams;
+                return twoGramDiceVariant;
             case diceVariant3Grams:
-                return diceVariant3Grams;
+                return threeGramDiceVariant;
             case diceVariant4Grams:
-                return diceVariant4Grams;
+                return fourGramDiceVariant;
             case diceVariant5Grams:
-                return diceVariant5Grams;
+                return fiveGramDiceVariant;
             case diceVariantNormalized2Grams:
-                return diceVariantNormalized2Grams;
+                return twoGramDiceVariantNormalized;
             case diceVariantNormalized3Grams:
-                return diceVariantNormalized3Grams;
+                return threeGramDiceVariantNormalized;
             case diceVariantNormalized4Grams:
-                return diceVariantNormalized4Grams;
+                return fourGramDiceVariantNormalized;
             case diceVariantNormalized5Grams:
-                return diceVariantNormalized5Grams;
+                return fiveGramDiceVariantNormalized;
             case diceVariantNormalizedPadding2grams:
-                return diceVariantNormalizedPadding2grams;
+                return twoGramDiceVariantNormalizedPadding;
             case diceVariantNormalizedPadding3grams:
-                return diceVariantNormalizedPadding3grams;
+                return threeGramDiceVariantNormalizedPadding;
             case diceVariantNormalizedPadding4grams:
-                return diceVariantNormalizedPadding4grams;
+                return fourGramDiceVariantNormalizedPadding;
             case diceVariantNormalizedPadding5grams:
-                return diceVariantNormalizedPadding5grams;
+                return fiveGramDiceVariantNormalizedPadding;
             case diceVariantShingles2:
-                return diceVariantShingles2;
+                return twoShingleDiceVariant;
             case diceVariantShingles3:
-                return diceVariantShingles3;
+                return threeShingleDiceVariant;
             case diceVariantNormalizedShingles2:
-                return diceVariantNormalizedShingles2;
+                return twoShingleDiceVariantNormalized;
             case diceVariantNormalizedShingles3:
-                return diceVariantNormalizedShingles3;
+                return threeShingleDiceVariantNormalized;
 
             case overlapTokens:
-                return overlapTokens;
+                return tokenOverlap;
             case overlapNormalizedTokens:
-                return overlapNormalizedTokens;
+                return tokenOverlapNormalized;
             case overlap2Grams:
-                return overlap2Grams;
+                return twoGramOverlap;
             case overlap3Grams:
-                return overlap3Grams;
+                return threeGramOverlap;
             case overlap4Grams:
-                return overlap4Grams;
+                return fourGramOverlap;
             case overlap5Grams:
-                return overlap5Grams;
+                return fiveGramOverlap;
             case overlapNormalized2Grams:
-                return overlapNormalized2Grams;
+                return twoGramOverlapNormalized;
             case overlapNormalized3Grams:
-                return overlapNormalized3Grams;
+                return threeGramOverlapNormalized;
             case overlapNormalized4Grams:
-                return overlapNormalized4Grams;
+                return fourGramOverlapNormalized;
             case overlapNormalized5Grams:
-                return overlapNormalized5Grams;
+                return fiveGramOverlapNormalized;
             case overlapNormalizedPadding2grams:
-                return overlapNormalizedPadding2grams;
+                return twoGramOverlapNormalizedPadding;
             case overlapNormalizedPadding3grams:
-                return overlapNormalizedPadding3grams;
+                return threeGramOverlapNormalizedPadding;
             case overlapNormalizedPadding4grams:
-                return overlapNormalizedPadding4grams;
+                return fourGramOverlapNormalizedPadding;
             case overlapNormalizedPadding5grams:
-                return overlapNormalizedPadding5grams;
+                return fiveGramOverlapNormalizedPadding;
             case overlapShingles2:
-                return overlapShingles2;
+                return twoShingleOverlap;
             case overlapShingles3:
-                return overlapShingles3;
+                return threeShingleOverlap;
             case overlapNormalizedShingles2:
-                return overlapNormalizedShingles2;
+                return twoShingleOverlapNormalized;
             case overlapNormalizedShingles3:
-                return overlapNormalizedShingles3;
+                return threeShingleOverlapNormalized;
 
             default:
                 return null;
@@ -1044,439 +610,237 @@ public class Metric {
 
 
     // ****** Edit based *****
-    static BiFunction<String, String, Double> levenshteinStandard = (x, y) -> levenshtein(x,y);
-    public static BiFunction<String, String, Double> levenshteinNormalized = (x, y) -> levenshteinNormalized(x,y);
+    private static BiFunction<String, String, Double> levenshtein = Variants::levenshtein;
+    private static BiFunction<String, String, Double> levenshteinNormalized = Variants::levenshteinNormalized;
 
-    static BiFunction<String, String, Double> damerauLevenshteinStandard = (x, y) -> damerauLevenshtein(x,y);
-    static BiFunction<String, String, Double> damerauLevenshteinNormalized = (x, y) -> damerauLevenshteinNormalized(x,y);
+    private static BiFunction<String, String, Double> damerauLevenshtein = Variants::damerauLevenshtein;
+    private static BiFunction<String, String, Double> damerauLevenshteinNormalized = Variants::damerauLevenshteinNormalized;
 
-    static BiFunction<String, String, Double> optimalAlignmentStandard = (x, y) -> optimalAlignment(x,y);
-    static BiFunction<String, String, Double> optimalAlignmentNormalized = (x, y) -> optimalAlignmentNormalized(x,y);
+    private static BiFunction<String, String, Double> optimalAlignment = Variants::optimalAlignment;
+    private static BiFunction<String, String, Double> optimalAlignmentNormalized = Variants::optimalAlignmentNormalized;
 
-    static BiFunction<String, String, Double> optimalAlignment2GramFingerprint = (x, y) -> nGramFingerprintOptimalAlignment(x,y,2);
-    static BiFunction<String, String, Double> optimalAlignment3GramFingerprint = (x, y) -> nGramFingerprintOptimalAlignment(x,y,3);
-    static BiFunction<String, String, Double> optimalAlignment4GramFingerprint = (x, y) -> nGramFingerprintOptimalAlignment(x,y,4);
-    static BiFunction<String, String, Double> optimalAlignment5GramFingerprint = (x, y) -> nGramFingerprintOptimalAlignment(x,y,5);
-    static BiFunction<String, String, Double> optimalAlignmentShingle2Fingerprint = (x, y) -> shingleFingerprintOptimalAlignment(x,y,2);
-    static BiFunction<String, String, Double> optimalAlignmentShingle3Fingerprint = (x, y) -> shingleFingerprintOptimalAlignment(x,y,3);
-    static BiFunction<String, String, Double> optimalAlignment2GramFingerprintNormalized = (x, y) -> nGramFingerprintOptimalAlignmentNormalized(x,y,2);
-    static BiFunction<String, String, Double> optimalAlignment3GramFingerprintNormalized = (x, y) -> nGramFingerprintOptimalAlignmentNormalized(x,y,3);
-    static BiFunction<String, String, Double> optimalAlignment4GramFingerprintNormalized = (x, y) -> nGramFingerprintOptimalAlignmentNormalized(x,y,4);
-    static BiFunction<String, String, Double> optimalAlignment5GramFingerprintNormalized = (x, y) -> nGramFingerprintOptimalAlignmentNormalized(x,y,5);
-    static BiFunction<String, String, Double> optimalAlignmentShingle2FingerprintNormalized = (x, y) -> shingleFingerprintOptimalAlignmentNormalized(x,y,2);
-    static BiFunction<String, String, Double> optimalAlignmentShingle3FingerprintNormalized = (x, y) -> shingleFingerprintOptimalAlignmentNormalized(x,y,3);
+    private static BiFunction<String, String, Double> twoGramFingerprintOptimalAlignment = Variants::twoGramFingerprintOptimalAlignment;
+    private static BiFunction<String, String, Double> threeGramFingerprintOptimalAlignment = Variants::threeGramFingerprintOptimalAlignment;
+    private static BiFunction<String, String, Double> fourGramFingerprintOptimalAlignment = Variants::fourGramFingerprintOptimalAlignment;
+    private static BiFunction<String, String, Double> fiveGramFingerprintOptimalAlignment = Variants::fiveGramFingerprintOptimalAlignment;
+    private static BiFunction<String, String, Double> twoShingleFingerprintOptimalAlignment = Variants::twoShingleFingerprintOptimalAlignment;
+    private static BiFunction<String, String, Double> threeShingleFingerprintOptimalAlignment = Variants::threeShingleFingerprintOptimalAlignment;
+    private static BiFunction<String, String, Double> twoGramFingerprintOptimalAlignmentNormalized = Variants::twoGramFingerprintOptimalAlignmentNormalized;
+    private static BiFunction<String, String, Double> threeGramFingerprintOptimalAlignmentNormalized = Variants::threeGramFingerprintOptimalAlignmentNormalized;
+    private static BiFunction<String, String, Double> fourGramFingerprintOptimalAlignmentNormalized = Variants::fourGramFingerprintOptimalAlignmentNormalized;
+    private static BiFunction<String, String, Double> fiveGramFingerprintOptimalAlignmentNormalized = Variants::fiveGramFingerprintOptimalAlignmentNormalized;
+    private static BiFunction<String, String, Double> twoShingleFingerprintOptimalAlignmentNormalized = Variants::twoShingleFingerprintOptimalAlignmentNormalized;
+    private static BiFunction<String, String, Double> threeShingleFingerprintOptimalAlignmentNormalized = Variants::threeShingleFingerprintOptimalAlignmentNormalized;
 
-    static BiFunction<String, String, Double> longestCommonSubsequenceStandard = (x, y) -> longestCommonSubsequence(x,y);
-    static BiFunction<String, String, Double> longestCommonSubsequenceNormalized = (x, y) -> longestCommonSubsequenceNormalized(x,y);
-    static BiFunction<String, String, Double> longestCommonSubsequence2GramFingerprint = (x, y) -> nGramFingerprintLongestCommonSubsequence(x,y,2);
-    static BiFunction<String, String, Double> longestCommonSubsequence3GramFingerprint = (x, y) -> nGramFingerprintLongestCommonSubsequence(x,y,3);
-    static BiFunction<String, String, Double> longestCommonSubsequence4GramFingerprint = (x, y) -> nGramFingerprintLongestCommonSubsequence(x,y,4);
-    static BiFunction<String, String, Double> longestCommonSubsequence5GramFingerprint = (x, y) -> nGramFingerprintLongestCommonSubsequence(x,y,5);
-    static BiFunction<String, String, Double> longestCommonSubsequenceShingle2Fingerprint = (x, y) -> shingleFingerprintLongestCommonSubsequence(x,y,2);
-    static BiFunction<String, String, Double> longestCommonSubsequenceShingle3Fingerprint = (x, y) -> shingleFingerprintLongestCommonSubsequence(x,y,3);
+    private static BiFunction<String, String, Double> longestCommonSubsequence = Variants::longestCommonSubsequence;
+    private static BiFunction<String, String, Double> longestCommonSubsequenceNormalized = Variants::longestCommonSubsequenceNormalized;
+    private static BiFunction<String, String, Double> twoGramFingerprintLongestCommonSubsequence = Variants::twoGramFingerprintLongestCommonSubsequence;
+    private static BiFunction<String, String, Double> threeGramFingerprintLongestCommonSubsequence = Variants::threeGramFingerprintLongestCommonSubsequence;
+    private static BiFunction<String, String, Double> fourGramFingerprintLongestCommonSubsequence = Variants::fourGramFingerprintLongestCommonSubsequence;
+    private static BiFunction<String, String, Double> fiveGramFingerprintLongestCommonSubsequence = Variants::fiveGramFingerprintLongestCommonSubsequence;
+    private static BiFunction<String, String, Double> twoShingleFingerprintLongestCommonSubsequence = Variants::twoShingleFingerprintLongestCommonSubsequence;
+    private static BiFunction<String, String, Double> threeShingleFingerprintLongestCommonSubsequence = Variants::threeShingleFingerprintLongestCommonSubsequence;
 
-    static BiFunction<String, String, Double> longestCommonSubsequence2GramFingerprintNormalized = (x, y) -> nGramFingerprintLongestCommonSubsequenceNormalized(x,y,2);
-    static BiFunction<String, String, Double> longestCommonSubsequence3GramFingerprintNormalized = (x, y) -> nGramFingerprintLongestCommonSubsequenceNormalized(x,y,3);
-    static BiFunction<String, String, Double> longestCommonSubsequence4GramFingerprintNormalized = (x, y) -> nGramFingerprintLongestCommonSubsequenceNormalized(x,y,4);
-    static BiFunction<String, String, Double> longestCommonSubsequence5GramFingerprintNormalized = (x, y) -> nGramFingerprintLongestCommonSubsequenceNormalized(x,y,5);
-    static BiFunction<String, String, Double> longestCommonSubsequenceShingle2FingerprintNormalized = (x, y) -> shingleFingerprintLongestCommonSubsequenceNormalized(x,y,2);
-    static BiFunction<String, String, Double> longestCommonSubsequenceShingle3FingerprintNormalized = (x, y) -> shingleFingerprintLongestCommonSubsequenceNormalized(x,y,3);
+    private static BiFunction<String, String, Double> twoGramFingerprintLongestCommonSubsequenceNormalized = Variants::twoGramFingerprintLongestCommonSubsequenceNormalized;
+    private static BiFunction<String, String, Double> threeGramFingerprintLongestCommonSubsequenceNormalized = Variants::threeGramFingerprintLongestCommonSubsequenceNormalized;
+    private static BiFunction<String, String, Double> fourGramFingerprintLongestCommonSubsequenceNormalized = Variants::fourGramFingerprintLongestCommonSubsequenceNormalized;
+    private static BiFunction<String, String, Double> fiveGramFingerprintLongestCommonSubsequenceNormalized = Variants::fiveGramFingerprintLongestCommonSubsequenceNormalized;
+    private static BiFunction<String, String, Double> twoShingleFingerprintLongestCommonSubsequenceNormalized = Variants::twoShingleFingerprintLongestCommonSubsequenceNormalized;
+    private static BiFunction<String, String, Double> threeShingleFingerprintLongestCommonSubsequenceNormalized = Variants::threeShingleFingerprintLongestCommonSubsequenceNormalized;
 
     // ****** Fingerprint based
-    static BiFunction<String, String, Double> winnowingTokenJaccard = (x, y) -> winnowingTokenJaccard(x,y);
-    static BiFunction<String, String, Double> winnowing2GramJaccard = (x, y) -> winnowingNGramJaccard(x,y,2);
-    static BiFunction<String, String, Double> winnowing3GramJaccard = (x, y) -> winnowingNGramJaccard(x,y,3);
-    static BiFunction<String, String, Double> winnowing4GramJaccard = (x, y) -> winnowingNGramJaccard(x,y,4);
-    static BiFunction<String, String, Double> winnowing5GramJaccard = (x, y) -> winnowingNGramJaccard(x,y,5);
-    static BiFunction<String, String, Double> winnowingShingle2Jaccard = (x, y) -> winnowingShingleJaccard(x,y,2);
-    static BiFunction<String, String, Double> winnowingShingle3Jaccard = (x, y) -> winnowingShingleJaccard(x,y,3);
+    private static BiFunction<String, String, Double> winnowingTokenJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenJaccard;
+    private static BiFunction<String, String, Double> winnowingTwoGramJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramJaccard;
+    private static BiFunction<String, String, Double> winnowingThreeGramJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramJaccard;
+    private static BiFunction<String, String, Double> winnowingFourGramJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramJaccard;
+    private static BiFunction<String, String, Double> winnowingFiveGramJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramJaccard;
+    private static BiFunction<String, String, Double> winnowingTwoShingleJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleJaccard;
+    private static BiFunction<String, String, Double> winnowingThreeShingleJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleJaccard;
 
-    static BiFunction<String, String, Double> winnowingNormalizedTokenJaccard = (x, y) -> winnowingNormalizedTokenJaccard(x,y);
-    static BiFunction<String, String, Double> winnowingNormalized2GramJaccard = (x, y) -> winnowingNormalizedNGramJaccard(x,y,2);
-    static BiFunction<String, String, Double> winnowingNormalized3GramJaccard = (x, y) -> winnowingNormalizedNGramJaccard(x,y,3);
-    static BiFunction<String, String, Double> winnowingNormalized4GramJaccard = (x, y) -> winnowingNormalizedNGramJaccard(x,y,4);
-    static BiFunction<String, String, Double> winnowingNormalized5GramJaccard = (x, y) -> winnowingNormalizedNGramJaccard(x,y,5);
-    static BiFunction<String, String, Double> winnowingNormalizedShingle2Jaccard = (x, y) -> winnowingNormalizedShingleJaccard(x,y,2);
-    static BiFunction<String, String, Double> winnowingNormalizedShingle3Jaccard = (x, y) -> winnowingNormalizedShingleJaccard(x,y,3);
+    private static BiFunction<String, String, Double> winnowingTokenJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenJaccardNormalized;
+    private static BiFunction<String, String, Double> winnowingTwoGramJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramJaccardNormalized;
+    private static BiFunction<String, String, Double> winnowingThreeGramJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramJaccardNormalized;
+    private static BiFunction<String, String, Double> winnowingFourGramJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramJaccardNormalized;
+    private static BiFunction<String, String, Double> winnowingFiveGramJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramJaccardNormalized;
+    private static BiFunction<String, String, Double> winnowingTwoShingleJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleJaccardNormalized;
+    private static BiFunction<String, String, Double> winnowingThreeShingleJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleJaccardNormalized;
 
-    static BiFunction<String, String, Double> winnowingTokenDice = (x, y) -> winnowingTokenDice(x,y);
-    static BiFunction<String, String, Double> winnowing2GramDice = (x, y) -> winnowingNGramDice(x,y,2);
-    static BiFunction<String, String, Double> winnowing3GramDice = (x, y) -> winnowingNGramDice(x,y,3);
-    static BiFunction<String, String, Double> winnowing4GramDice = (x, y) -> winnowingNGramDice(x,y,4);
-    static BiFunction<String, String, Double> winnowing5GramDice = (x, y) -> winnowingNGramDice(x,y,5);
-    static BiFunction<String, String, Double> winnowingShingle2Dice = (x, y) -> winnowingShingleDice(x,y,2);
-    static BiFunction<String, String, Double> winnowingShingle3Dice = (x, y) -> winnowingShingleDice(x,y,3);
+    private static BiFunction<String, String, Double> winnowingTokenDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenDice;
+    private static BiFunction<String, String, Double> winnowingTwoGramDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramDice;
+    private static BiFunction<String, String, Double> winnowingThreeGramDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramDice;
+    private static BiFunction<String, String, Double> winnowingFourGramDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramDice;
+    private static BiFunction<String, String, Double> winnowingFiveGramDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramDice;
+    private static BiFunction<String, String, Double> winnowingTwoShingleDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleDice;
+    private static BiFunction<String, String, Double> winnowingThreeShingleDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleDice;
 
-    static BiFunction<String, String, Double> winnowingNormalizedTokenDice = (x, y) -> winnowingNormalizedTokenDice(x,y);
-    static BiFunction<String, String, Double> winnowingNormalized2GramDice = (x, y) -> winnowingNormalizedNGramDice(x,y,2);
-    static BiFunction<String, String, Double> winnowingNormalized3GramDice = (x, y) -> winnowingNormalizedNGramDice(x,y,3);
-    static BiFunction<String, String, Double> winnowingNormalized4GramDice = (x, y) -> winnowingNormalizedNGramDice(x,y,4);
-    static BiFunction<String, String, Double> winnowingNormalized5GramDice = (x, y) -> winnowingNormalizedNGramDice(x,y,5);
-    static BiFunction<String, String, Double> winnowingNormalizedShingle2Dice = (x, y) -> winnowingNormalizedShingleDice(x,y,2);
-    static BiFunction<String, String, Double> winnowingNormalizedShingle3Dice = (x, y) -> winnowingNormalizedShingleDice(x,y,3);
+    private static BiFunction<String, String, Double> winnowingNormalizedTokenDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenDiceNormalized;
+    private static BiFunction<String, String, Double> winnowingTwoGramDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramDiceNormalized;
+    private static BiFunction<String, String, Double> winnowingThreeGramDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramDiceNormalized;
+    private static BiFunction<String, String, Double> winnowingFourGramDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramDiceNormalized;
+    private static BiFunction<String, String, Double> winnowingFiveGramDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramDiceNormalized;
+    private static BiFunction<String, String, Double> winnowingTwoShingleDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleDiceNormalized;
+    private static BiFunction<String, String, Double> winnowingThreeShingleDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleDiceNormalized;
 
-    static BiFunction<String, String, Double> winnowingTokenDiceVariant = (x, y) -> winnowingTokenDiceVariant(x,y);
-    static BiFunction<String, String, Double> winnowing2GramDiceVariant = (x, y) -> winnowingNGramDiceVariant(x,y,2);
-    static BiFunction<String, String, Double> winnowing3GramDiceVariant = (x, y) -> winnowingNGramDiceVariant(x,y,3);
-    static BiFunction<String, String, Double> winnowing4GramDiceVariant = (x, y) -> winnowingNGramDiceVariant(x,y,4);
-    static BiFunction<String, String, Double> winnowing5GramDiceVariant = (x, y) -> winnowingNGramDiceVariant(x,y,5);
-    static BiFunction<String, String, Double> winnowingShingle2DiceVariant = (x, y) -> winnowingShingleDiceVariant(x,y,2);
-    static BiFunction<String, String, Double> winnowingShingle3DiceVariant = (x, y) -> winnowingShingleDiceVariant(x,y,3);
+    private static BiFunction<String, String, Double> winnowingTokenDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenDiceVariant;
+    private static BiFunction<String, String, Double> winnowingTwoGramDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramDiceVariant;
+    private static BiFunction<String, String, Double> winnowingThreeGramDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramDiceVariant;
+    private static BiFunction<String, String, Double> winnowingFourGramDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramDiceVariant;
+    private static BiFunction<String, String, Double> winnowingFiveGramDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramDiceVariant;
+    private static BiFunction<String, String, Double> winnowingTwoShingleDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleDiceVariant;
+    private static BiFunction<String, String, Double> winnowingThreeShingleDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleDiceVariant;
 
-    static BiFunction<String, String, Double> winnowingNormalizedTokenDiceVariant = (x, y) -> winnowingNormalizedTokenDiceVariant(x,y);
-    static BiFunction<String, String, Double> winnowingNormalized2GramDiceVariant = (x, y) -> winnowingNormalizedNGramDiceVariant(x,y,2);
-    static BiFunction<String, String, Double> winnowingNormalized3GramDiceVariant = (x, y) -> winnowingNormalizedNGramDiceVariant(x,y,3);
-    static BiFunction<String, String, Double> winnowingNormalized4GramDiceVariant = (x, y) -> winnowingNormalizedNGramDiceVariant(x,y,4);
-    static BiFunction<String, String, Double> winnowingNormalized5GramDiceVariant = (x, y) -> winnowingNormalizedNGramDiceVariant(x,y,5);
-    static BiFunction<String, String, Double> winnowingNormalizedShingle2DiceVariant = (x, y) -> winnowingNormalizedShingleDiceVariant(x,y,2);
-    static BiFunction<String, String, Double> winnowingNormalizedShingle3DiceVariant = (x, y) -> winnowingNormalizedShingleDiceVariant(x,y,3);
+    private static BiFunction<String, String, Double> winnowingTokenDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenDiceVariantNormalized;
+    private static BiFunction<String, String, Double> winnowingTwoGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramDiceVariantNormalized;
+    private static BiFunction<String, String, Double> winnowingThreeGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramDiceVariantNormalized;
+    private static BiFunction<String, String, Double> winnowingFourGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramDiceVariantNormalized;
+    private static BiFunction<String, String, Double> winnowingFiveGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramDiceVariantNormalized;
+    private static BiFunction<String, String, Double> winnowingTwoShingleDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleDiceVariantNormalized;
+    private static BiFunction<String, String, Double> winnowingThreeShingleDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleDiceVariantNormalized;
 
-    static BiFunction<String, String, Double> winnowingTokenOverlap = (x, y) -> winnowingTokenOverlap(x,y);
-    static BiFunction<String, String, Double> winnowing2GramOverlap = (x, y) -> winnowingNGramOverlap(x,y,2);
-    static BiFunction<String, String, Double> winnowing3GramOverlap = (x, y) -> winnowingNGramOverlap(x,y,3);
-    static BiFunction<String, String, Double> winnowing4GramOverlap = (x, y) -> winnowingNGramOverlap(x,y,4);
-    static BiFunction<String, String, Double> winnowing5GramOverlap = (x, y) -> winnowingNGramOverlap(x,y,5);
-    static BiFunction<String, String, Double> winnowingShingle2Overlap = (x, y) -> winnowingShingleOverlap(x,y,2);
-    static BiFunction<String, String, Double> winnowingShingle3Overlap = (x, y) -> winnowingShingleOverlap(x,y,3);
+    private static BiFunction<String, String, Double> winnowingTokenOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenOverlap;
+    private static BiFunction<String, String, Double> winnowingTwoGramOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramOverlap;
+    private static BiFunction<String, String, Double> winnowingThreeGramOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramOverlap;
+    private static BiFunction<String, String, Double> winnowingFourGramOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramOverlap;
+    private static BiFunction<String, String, Double> winnowingFiveGramOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramOverlap;
+    private static BiFunction<String, String, Double> winnowingTwoShingleOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleOverlap;
+    private static BiFunction<String, String, Double> winnowingThreeShingleOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleOverlap;
 
-    static BiFunction<String, String, Double> winnowingNormalizedTokenOverlap = (x, y) -> winnowingNormalizedTokenOverlap(x,y);
-    static BiFunction<String, String, Double> winnowingNormalized2GramOverlap = (x, y) -> winnowingNormalizedNGramOverlap(x,y,2);
-    static BiFunction<String, String, Double> winnowingNormalized3GramOverlap = (x, y) -> winnowingNormalizedNGramOverlap(x,y,3);
-    static BiFunction<String, String, Double> winnowingNormalized4GramOverlap = (x, y) -> winnowingNormalizedNGramOverlap(x,y,4);
-    static BiFunction<String, String, Double> winnowingNormalized5GramOverlap = (x, y) -> winnowingNormalizedNGramOverlap(x,y,5);
-    static BiFunction<String, String, Double> winnowingNormalizedShingle2Overlap = (x, y) -> winnowingNormalizedShingleOverlap(x,y,2);
-    static BiFunction<String, String, Double> winnowingNormalizedShingle3Overlap = (x, y) -> winnowingNormalizedShingleOverlap(x,y,3);
+    private static BiFunction<String, String, Double> winnowingTokenOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenOverlapNormalized;
+    private static BiFunction<String, String, Double> winnowingTwoGramOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramOverlapNormalized;
+    private static BiFunction<String, String, Double> winnowingThreeGramOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramOverlapNormalized;
+    private static BiFunction<String, String, Double> winnowingFourGramOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramOverlapNormalized;
+    private static BiFunction<String, String, Double> winnowingFiveGramOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramOverlapNormalized;
+    private static BiFunction<String, String, Double> winnowingTwoShingleOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleOverlapNormalized;
+    private static BiFunction<String, String, Double> winnowingThreeShingleOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleOverlapNormalized;
 
-
-//    static BiFunction<String, String, Double> rkrGstTokenJaccardMinMatchLength1 = (x, y) -> rkrGstTokenJaccard(x,y, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramJaccardMinMatchLength1 = (x, y) -> rkrGstNGramJaccard(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramJaccardMinMatchLength1 = (x, y) -> rkrGstNGramJaccard(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramJaccardMinMatchLength1 = (x, y) -> rkrGstNGramJaccard(x,y,4, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramJaccardMinMatchLength1 = (x, y) -> rkrGstNGramJaccard(x,y,5, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2JaccardMinMatchLength1 = (x, y) -> rkrGstShingleJaccard(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3JaccardMinMatchLength1 = (x, y) -> rkrGstShingleJaccard(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenJaccardMinMatchLength1 = (x, y) -> rkrGstNormalizedTokenJaccard(x,y,1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramJaccardMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramJaccardMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramJaccardMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,4, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramJaccardMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,5, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2JaccardMinMatchLength1 = (x, y) -> rkrGstNormalizedShingleJaccard(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3JaccardMinMatchLength1 = (x, y) -> rkrGstNormalizedShingleJaccard(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenDiceMinMatchLength1 = (x, y) -> rkrGstTokenDice(x,y, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramDiceMinMatchLength1 = (x, y) -> rkrGstNGramDice(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramDiceMinMatchLength1 = (x, y) -> rkrGstNGramDice(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramDiceMinMatchLength1 = (x, y) -> rkrGstNGramDice(x,y,4, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramDiceMinMatchLength1 = (x, y) -> rkrGstNGramDice(x,y,5, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2DiceMinMatchLength1 = (x, y) -> rkrGstShingleDice(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3DiceMinMatchLength1 = (x, y) -> rkrGstShingleDice(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenDiceMinMatchLength1 = (x, y) -> rkrGstNormalizedTokenDice(x,y, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramDiceMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramDice(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramDiceMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramDice(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramDiceMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramDice(x,y,4, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramDiceMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramDice(x,y,5, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2DiceMinMatchLength1 = (x, y) -> rkrGstNormalizedShingleDice(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3DiceMinMatchLength1 = (x, y) -> rkrGstNormalizedShingleDice(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenDiceVariantMinMatchLength1 = (x, y) -> rkrGstTokenDiceVariant(x,y, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramDiceVariantMinMatchLength1 = (x, y) -> rkrGstNGramDiceVariant(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramDiceVariantMinMatchLength1 = (x, y) -> rkrGstNGramDiceVariant(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramDiceVariantMinMatchLength1 = (x, y) -> rkrGstNGramDiceVariant(x,y,4, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramDiceVariantMinMatchLength1 = (x, y) -> rkrGstNGramDiceVariant(x,y,5, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2DiceVariantMinMatchLength1 = (x, y) -> rkrGstShingleDiceVariant(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3DiceVariantMinMatchLength1 = (x, y) -> rkrGstShingleDiceVariant(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenDiceVariantMinMatchLength1 = (x, y) -> rkrGstNormalizedTokenDiceVariant(x,y, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramDiceVariantMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramDiceVariantMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramDiceVariantMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,4, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramDiceVariantMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,5, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2DiceVariantMinMatchLength1 = (x, y) -> rkrGstNormalizedShingleDiceVariant(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3DiceVariantMinMatchLength1 = (x, y) -> rkrGstNormalizedShingleDiceVariant(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenOverlapMinMatchLength1 = (x, y) -> rkrGstTokenOverlap(x,y, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramOverlapMinMatchLength1 = (x, y) -> rkrGstNGramOverlap(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramOverlapMinMatchLength1 = (x, y) -> rkrGstNGramOverlap(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramOverlapMinMatchLength1 = (x, y) -> rkrGstNGramOverlap(x,y,4, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramOverlapMinMatchLength1 = (x, y) -> rkrGstNGramOverlap(x,y,5, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2OverlapMinMatchLength1 = (x, y) -> rkrGstShingleOverlap(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3OverlapMinMatchLength1 = (x, y) -> rkrGstShingleOverlap(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenOverlapMinMatchLength1 = (x, y) -> rkrGstNormalizedTokenOverlap(x,y, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramOverlapMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramOverlapMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramOverlapMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,4, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramOverlapMinMatchLength1 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,5, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2OverlapMinMatchLength1 = (x, y) -> rkrGstNormalizedShingleOverlap(x,y,2, 1, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3OverlapMinMatchLength1 = (x, y) -> rkrGstNormalizedShingleOverlap(x,y,3, 1, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstTokenJaccardMinMatchLength2 = (x, y) -> rkrGstTokenJaccard(x,y, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramJaccardMinMatchLength2 = (x, y) -> rkrGstNGramJaccard(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramJaccardMinMatchLength2 = (x, y) -> rkrGstNGramJaccard(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramJaccardMinMatchLength2 = (x, y) -> rkrGstNGramJaccard(x,y,4, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramJaccardMinMatchLength2 = (x, y) -> rkrGstNGramJaccard(x,y,5, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2JaccardMinMatchLength2 = (x, y) -> rkrGstShingleJaccard(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3JaccardMinMatchLength2 = (x, y) -> rkrGstShingleJaccard(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenJaccardMinMatchLength2 = (x, y) -> rkrGstNormalizedTokenJaccard(x,y,2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramJaccardMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramJaccardMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramJaccardMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,4, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramJaccardMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,5, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2JaccardMinMatchLength2 = (x, y) -> rkrGstNormalizedShingleJaccard(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3JaccardMinMatchLength2 = (x, y) -> rkrGstNormalizedShingleJaccard(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenDiceMinMatchLength2 = (x, y) -> rkrGstTokenDice(x,y, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramDiceMinMatchLength2 = (x, y) -> rkrGstNGramDice(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramDiceMinMatchLength2 = (x, y) -> rkrGstNGramDice(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramDiceMinMatchLength2 = (x, y) -> rkrGstNGramDice(x,y,4, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramDiceMinMatchLength2 = (x, y) -> rkrGstNGramDice(x,y,5, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2DiceMinMatchLength2 = (x, y) -> rkrGstShingleDice(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3DiceMinMatchLength2 = (x, y) -> rkrGstShingleDice(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenDiceMinMatchLength2 = (x, y) -> rkrGstNormalizedTokenDice(x,y, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramDiceMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramDice(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramDiceMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramDice(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramDiceMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramDice(x,y,4, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramDiceMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramDice(x,y,5, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2DiceMinMatchLength2 = (x, y) -> rkrGstNormalizedShingleDice(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3DiceMinMatchLength2 = (x, y) -> rkrGstNormalizedShingleDice(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenDiceVariantMinMatchLength2 = (x, y) -> rkrGstTokenDiceVariant(x,y, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramDiceVariantMinMatchLength2 = (x, y) -> rkrGstNGramDiceVariant(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramDiceVariantMinMatchLength2 = (x, y) -> rkrGstNGramDiceVariant(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramDiceVariantMinMatchLength2 = (x, y) -> rkrGstNGramDiceVariant(x,y,4, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramDiceVariantMinMatchLength2 = (x, y) -> rkrGstNGramDiceVariant(x,y,5, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2DiceVariantMinMatchLength2 = (x, y) -> rkrGstShingleDiceVariant(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3DiceVariantMinMatchLength2 = (x, y) -> rkrGstShingleDiceVariant(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenDiceVariantMinMatchLength2 = (x, y) -> rkrGstNormalizedTokenDiceVariant(x,y, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramDiceVariantMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramDiceVariantMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramDiceVariantMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,4, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramDiceVariantMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,5, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2DiceVariantMinMatchLength2 = (x, y) -> rkrGstNormalizedShingleDiceVariant(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3DiceVariantMinMatchLength2 = (x, y) -> rkrGstNormalizedShingleDiceVariant(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenOverlapMinMatchLength2 = (x, y) -> rkrGstTokenOverlap(x,y, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramOverlapMinMatchLength2 = (x, y) -> rkrGstNGramOverlap(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramOverlapMinMatchLength2 = (x, y) -> rkrGstNGramOverlap(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramOverlapMinMatchLength2 = (x, y) -> rkrGstNGramOverlap(x,y,4, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramOverlapMinMatchLength2 = (x, y) -> rkrGstNGramOverlap(x,y,5, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2OverlapMinMatchLength2 = (x, y) -> rkrGstShingleOverlap(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3OverlapMinMatchLength2 = (x, y) -> rkrGstShingleOverlap(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenOverlapMinMatchLength2 = (x, y) -> rkrGstNormalizedTokenOverlap(x,y, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramOverlapMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramOverlapMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramOverlapMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,4, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramOverlapMinMatchLength2 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,5, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2OverlapMinMatchLength2 = (x, y) -> rkrGstNormalizedShingleOverlap(x,y,2, 2, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3OverlapMinMatchLength2 = (x, y) -> rkrGstNormalizedShingleOverlap(x,y,3, 2, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenJaccardMinMatchLength3 = (x, y) -> rkrGstTokenJaccard(x,y, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramJaccardMinMatchLength3 = (x, y) -> rkrGstNGramJaccard(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramJaccardMinMatchLength3 = (x, y) -> rkrGstNGramJaccard(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramJaccardMinMatchLength3 = (x, y) -> rkrGstNGramJaccard(x,y,4, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramJaccardMinMatchLength3 = (x, y) -> rkrGstNGramJaccard(x,y,5, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2JaccardMinMatchLength3 = (x, y) -> rkrGstShingleJaccard(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3JaccardMinMatchLength3 = (x, y) -> rkrGstShingleJaccard(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenJaccardMinMatchLength3 = (x, y) -> rkrGstNormalizedTokenJaccard(x,y,3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramJaccardMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramJaccardMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramJaccardMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,4, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramJaccardMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramJaccard(x,y,5, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2JaccardMinMatchLength3 = (x, y) -> rkrGstNormalizedShingleJaccard(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3JaccardMinMatchLength3 = (x, y) -> rkrGstNormalizedShingleJaccard(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenDiceMinMatchLength3 = (x, y) -> rkrGstTokenDice(x,y, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramDiceMinMatchLength3 = (x, y) -> rkrGstNGramDice(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramDiceMinMatchLength3 = (x, y) -> rkrGstNGramDice(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramDiceMinMatchLength3 = (x, y) -> rkrGstNGramDice(x,y,4, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramDiceMinMatchLength3 = (x, y) -> rkrGstNGramDice(x,y,5, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2DiceMinMatchLength3 = (x, y) -> rkrGstShingleDice(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3DiceMinMatchLength3 = (x, y) -> rkrGstShingleDice(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenDiceMinMatchLength3 = (x, y) -> rkrGstNormalizedTokenDice(x,y, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramDiceMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramDice(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramDiceMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramDice(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramDiceMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramDice(x,y,4, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramDiceMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramDice(x,y,5, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2DiceMinMatchLength3 = (x, y) -> rkrGstNormalizedShingleDice(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3DiceMinMatchLength3 = (x, y) -> rkrGstNormalizedShingleDice(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenDiceVariantMinMatchLength3 = (x, y) -> rkrGstTokenDiceVariant(x,y, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramDiceVariantMinMatchLength3 = (x, y) -> rkrGstNGramDiceVariant(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramDiceVariantMinMatchLength3 = (x, y) -> rkrGstNGramDiceVariant(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramDiceVariantMinMatchLength3 = (x, y) -> rkrGstNGramDiceVariant(x,y,4, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramDiceVariantMinMatchLength3 = (x, y) -> rkrGstNGramDiceVariant(x,y,5, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2DiceVariantMinMatchLength3 = (x, y) -> rkrGstShingleDiceVariant(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3DiceVariantMinMatchLength3 = (x, y) -> rkrGstShingleDiceVariant(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenDiceVariantMinMatchLength3 = (x, y) -> rkrGstNormalizedTokenDiceVariant(x,y, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramDiceVariantMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramDiceVariantMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramDiceVariantMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,4, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramDiceVariantMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramDiceVariant(x,y,5, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2DiceVariantMinMatchLength3 = (x, y) -> rkrGstNormalizedShingleDiceVariant(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3DiceVariantMinMatchLength3 = (x, y) -> rkrGstNormalizedShingleDiceVariant(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//
-//
-//    static BiFunction<String, String, Double> rkrGstTokenOverlapMinMatchLength3 = (x, y) -> rkrGstTokenOverlap(x,y, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst2GramOverlapMinMatchLength3 = (x, y) -> rkrGstNGramOverlap(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst3GramOverlapMinMatchLength3 = (x, y) -> rkrGstNGramOverlap(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst4GramOverlapMinMatchLength3 = (x, y) -> rkrGstNGramOverlap(x,y,4, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGst5GramOverlapMinMatchLength3 = (x, y) -> rkrGstNGramOverlap(x,y,5, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle2OverlapMinMatchLength3 = (x, y) -> rkrGstShingleOverlap(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstShingle3OverlapMinMatchLength3 = (x, y) -> rkrGstShingleOverlap(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//
-//    static BiFunction<String, String, Double> rkrGstNormalizedTokenOverlapMinMatchLength3 = (x, y) -> rkrGstNormalizedTokenOverlap(x,y, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized2GramOverlapMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized3GramOverlapMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,3, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized4GramOverlapMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,4, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalized5GramOverlapMinMatchLength3 = (x, y) -> rkrGstNormalizedNGramOverlap(x,y,5, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle2OverlapMinMatchLength3 = (x, y) -> rkrGstNormalizedShingleOverlap(x,y,2, 3, INITIAL_SEARCH_SIZE);
-//    static BiFunction<String, String, Double> rkrGstNormalizedShingle3OverlapMinMatchLength3 = (x, y) -> rkrGstNormalizedShingleOverlap(x,y,3, 3, INITIAL_SEARCH_SIZE);
 
 
     // ****** Profile based
-    static BiFunction<String, String, Double> cosineNormalizedTokensBool = (x, y) -> tokensProfileCosineNormalized(x,y, Base.WeightingScheme.bool);
-    static BiFunction<String, String, Double> cosineNormalizedTokensTermFrequency = (x, y) -> tokensProfileCosineNormalized(x,y, Base.WeightingScheme.termFrequency);
-    static BiFunction<String, String, Double> cosineNormalizedTokensNormalizedTermFrequency = (x, y) -> tokensProfileCosineNormalized(x,y, Base.WeightingScheme.normalizedTermFrequency);
-    static BiFunction<String, String, Double> cosineNormalized2GramsBool = (x, y) -> nGramProfileCosineNormalized(x,y,2,Base.WeightingScheme.bool);
-    static BiFunction<String, String, Double> cosineNormalized3GramsBool = (x, y) -> nGramProfileCosineNormalized(x,y,3,Base.WeightingScheme.bool);
-    static BiFunction<String, String, Double> cosineNormalized4GramsBool = (x, y) -> nGramProfileCosineNormalized(x,y,4,Base.WeightingScheme.bool);
-    static BiFunction<String, String, Double> cosineNormalized5GramsBool = (x, y) -> nGramProfileCosineNormalized(x,y,5,Base.WeightingScheme.bool);
-    static BiFunction<String, String, Double> cosineNormalized2GramsTermFrequency = (x, y) -> nGramProfileCosineNormalized(x,y,2, Base.WeightingScheme.termFrequency);
-    static BiFunction<String, String, Double> cosineNormalized3GramsTermFrequency = (x, y) -> nGramProfileCosineNormalized(x,y,3, Base.WeightingScheme.termFrequency);
-    static BiFunction<String, String, Double> cosineNormalized4GramsTermFrequency = (x, y) -> nGramProfileCosineNormalized(x,y,4, Base.WeightingScheme.termFrequency);
-    static BiFunction<String, String, Double> cosineNormalized5GramsTermFrequency = (x, y) -> nGramProfileCosineNormalized(x,y,5, Base.WeightingScheme.termFrequency);
-    static BiFunction<String, String, Double> cosineNormalized2GramsNormalizedTermFrequency = (x, y) -> nGramProfileCosineNormalized(x,y,2, Base.WeightingScheme.normalizedTermFrequency);
-    static BiFunction<String, String, Double> cosineNormalized3GramsNormalizedTermFrequency = (x, y) -> nGramProfileCosineNormalized(x,y,3, Base.WeightingScheme.normalizedTermFrequency);
-    static BiFunction<String, String, Double> cosineNormalized4GramsNormalizedTermFrequency = (x, y) -> nGramProfileCosineNormalized(x,y,4, Base.WeightingScheme.normalizedTermFrequency);
-    static BiFunction<String, String, Double> cosineNormalized5GramsNormalizedTermFrequency = (x, y) -> nGramProfileCosineNormalized(x,y,5, Base.WeightingScheme.normalizedTermFrequency);
-    static BiFunction<String, String, Double> cosineNormalizedShingle2Bool = (x, y) -> shingleProfileCosineNormalized(x,y, 2, Base.WeightingScheme.bool);
-    static BiFunction<String, String, Double> cosineNormalizedShingle3Bool = (x, y) -> shingleProfileCosineNormalized(x,y, 3, Base.WeightingScheme.bool);
-    static BiFunction<String, String, Double> cosineNormalizedShingle2TermFrequency = (x, y) -> shingleProfileCosineNormalized(x,y, 2, Base.WeightingScheme.termFrequency);
-    static BiFunction<String, String, Double> cosineNormalizedShingle3TermFrequency = (x, y) -> shingleProfileCosineNormalized(x,y, 3, Base.WeightingScheme.termFrequency);
-    static BiFunction<String, String, Double> cosineNormalizedShingle2NormalizedTermFrequency = (x, y) -> shingleProfileCosineNormalized(x,y, 2, Base.WeightingScheme.normalizedTermFrequency);
-    static BiFunction<String, String, Double> cosineNormalizedShingle3NormalizedTermFrequency = (x, y) -> shingleProfileCosineNormalized(x,y, 3, Base.WeightingScheme.normalizedTermFrequency);
+    private static BiFunction<String, String, Double> cosineTokenNormalizedBool = de.unitrier.st.stringsimilarity.profile.Variants::cosineTokenNormalizedBool;
+    private static BiFunction<String, String, Double> cosineTokenNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineTokenNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineTokenNormalizedNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineTokenNormalizedNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineTwoGramNormalizedBool = de.unitrier.st.stringsimilarity.profile.Variants::cosineTwoGramNormalizedBool;
+    private static BiFunction<String, String, Double> cosineThreeGramNormalizedBool = de.unitrier.st.stringsimilarity.profile.Variants::cosineThreeGramNormalizedBool;
+    private static BiFunction<String, String, Double> cosineFourGramNormalizedBool = de.unitrier.st.stringsimilarity.profile.Variants::cosineFourGramNormalizedBool;
+    private static BiFunction<String, String, Double> cosineFiveGramNormalizedBool = de.unitrier.st.stringsimilarity.profile.Variants::cosineFiveGramNormalizedBool;
+    private static BiFunction<String, String, Double> cosineTwoGramNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineTwoGramNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineThreeGramNormalizedTermFrequency =  de.unitrier.st.stringsimilarity.profile.Variants::cosineThreeGramNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineFourGramNormalizedTermFrequency =  de.unitrier.st.stringsimilarity.profile.Variants::cosineFourGramNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineFiveGramNormalizedTermFrequency =  de.unitrier.st.stringsimilarity.profile.Variants::cosineFiveGramNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineTwoGramNormalizedNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineTwoGramNormalizedNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineThreeGramNormalizedNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineThreeGramNormalizedNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineFourGramNormalizedNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineFourGramNormalizedNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineFiveGramNormalizedNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineFiveGramNormalizedNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineTwoShingleNormalizedBool = de.unitrier.st.stringsimilarity.profile.Variants::cosineTwoShingleNormalizedBool;
+    private static BiFunction<String, String, Double> cosineThreeShingleNormalizedBool = de.unitrier.st.stringsimilarity.profile.Variants::cosineThreeShingleNormalizedBool;
+    private static BiFunction<String, String, Double> cosineTwoShingleNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineTwoShingleNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineThreeShingleNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineThreeShingleNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineTwoShingleNormalizedNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineTwoShingleNormalizedNormalizedTermFrequency;
+    private static BiFunction<String, String, Double> cosineThreeShingleNormalizedNormalizedTermFrequency = de.unitrier.st.stringsimilarity.profile.Variants::cosineThreeShingleNormalizedNormalizedTermFrequency;
 
-    static BiFunction<String, String, Double> manhattanNormalizedTokens = (x, y) -> tokenManhattanNormalized(x,y);
-    static BiFunction<String, String, Double> manhattanNormalized2Grams = (x, y) -> nGramManhattanNormalized(x,y,2);
-    static BiFunction<String, String, Double> manhattanNormalized3Grams = (x, y) -> nGramManhattanNormalized(x,y,3);
-    static BiFunction<String, String, Double> manhattanNormalized4Grams = (x, y) -> nGramManhattanNormalized(x,y,4);
-    static BiFunction<String, String, Double> manhattanNormalized5Grams = (x, y) -> nGramManhattanNormalized(x,y,5);
-    static BiFunction<String, String, Double> manhattanNormalizedShingles2 = (x, y) -> shingleManhattanNormalized(x,y,2);
-    static BiFunction<String, String, Double> manhattanNormalizedShingles3 = (x, y) -> shingleManhattanNormalized(x,y,3);
+    private static BiFunction<String, String, Double> manhattanTokenNormalized = de.unitrier.st.stringsimilarity.profile.Variants::manhattanTokenNormalized;
+    private static BiFunction<String, String, Double> manhattanTwoGramNormalized = de.unitrier.st.stringsimilarity.profile.Variants::manhattanTwoGramNormalized;
+    private static BiFunction<String, String, Double> manhattanThreeGramNormalized = de.unitrier.st.stringsimilarity.profile.Variants::manhattanThreeGramNormalized;
+    private static BiFunction<String, String, Double> manhattanFourGramNormalized = de.unitrier.st.stringsimilarity.profile.Variants::manhattanFourGramNormalized;
+    private static BiFunction<String, String, Double> manhattanFiveGramNormalized = de.unitrier.st.stringsimilarity.profile.Variants::manhattanFiveGramNormalized;
+    private static BiFunction<String, String, Double> manhattanTwoShingleNormalized = de.unitrier.st.stringsimilarity.profile.Variants::manhattanTwoShingleNormalized;
+    private static BiFunction<String, String, Double> manhattanThreeShingleNormalized = de.unitrier.st.stringsimilarity.profile.Variants::manhattanThreeShingleNormalized;
 
     // ****** Set based
-    static BiFunction<String, String, Double> jaccardTokens = (x, y) -> tokenJaccard(x,y);
-    static BiFunction<String, String, Double> jaccardNormalizedTokens = (x, y) -> tokenJaccardNormalized(x,y);
+    private static BiFunction<String, String, Double> tokenJaccard = de.unitrier.st.stringsimilarity.set.Variants::tokenJaccard;
+    private static BiFunction<String, String, Double> tokenJaccardNormalized = de.unitrier.st.stringsimilarity.set.Variants::tokenJaccardNormalized;
 
-    static BiFunction<String, String, Double> jaccard2Grams = (x, y) -> nGramJaccard(x,y,2);
-    static BiFunction<String, String, Double> jaccard3Grams = (x, y) -> nGramJaccard(x,y,3);
-    static BiFunction<String, String, Double> jaccard4Grams = (x, y) -> nGramJaccard(x,y,4);
-    static BiFunction<String, String, Double> jaccard5Grams = (x, y) -> nGramJaccard(x,y,5);
+    private static BiFunction<String, String, Double> twoGramJaccard = de.unitrier.st.stringsimilarity.set.Variants::twoGramJaccard;
+    private static BiFunction<String, String, Double> threeGramJaccard = de.unitrier.st.stringsimilarity.set.Variants::threeGramJaccard;
+    private static BiFunction<String, String, Double> fourGramJaccard = de.unitrier.st.stringsimilarity.set.Variants::fourGramJaccard;
+    private static BiFunction<String, String, Double> fiveGramJaccard = de.unitrier.st.stringsimilarity.set.Variants::fiveGramJaccard;
 
-    static BiFunction<String, String, Double> jaccardNormalized2Grams = (x, y) -> nGramJaccardNormalized(x,y,2);
-    static BiFunction<String, String, Double> jaccardNormalized3Grams = (x, y) -> nGramJaccardNormalized(x,y,3);
-    static BiFunction<String, String, Double> jaccardNormalized4Grams = (x, y) -> nGramJaccardNormalized(x,y,4);
-    static BiFunction<String, String, Double> jaccardNormalized5Grams = (x, y) -> nGramJaccardNormalized(x,y,5);
+    private static BiFunction<String, String, Double> twoGramJaccardNormalized = de.unitrier.st.stringsimilarity.set.Variants::twoGramJaccardNormalized;
+    private static BiFunction<String, String, Double> threeGramJaccardNormalized = de.unitrier.st.stringsimilarity.set.Variants::threeGramJaccardNormalized;
+    private static BiFunction<String, String, Double> fourGramJaccardNormalized = de.unitrier.st.stringsimilarity.set.Variants::fourGramJaccardNormalized;
+    private static BiFunction<String, String, Double> fiveGramJaccardNormalized = de.unitrier.st.stringsimilarity.set.Variants::fiveGramJaccardNormalized;
 
-    static BiFunction<String, String, Double> jaccardNormalizedPadding2grams = (x, y) -> nGramJaccardNormalizedPadding(x,y,2);
-    static BiFunction<String, String, Double> jaccardNormalizedPadding3grams = (x, y) -> nGramJaccardNormalizedPadding(x,y,3);
-    static BiFunction<String, String, Double> jaccardNormalizedPadding4grams = (x, y) -> nGramJaccardNormalizedPadding(x,y,4);
-    static BiFunction<String, String, Double> jaccardNormalizedPadding5grams = (x, y) -> nGramJaccardNormalizedPadding(x,y,5);
+    private static BiFunction<String, String, Double> twoGramJaccardNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::twoGramJaccardNormalizedPadding;
+    private static BiFunction<String, String, Double> threeGramJaccardNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::threeGramJaccardNormalizedPadding;
+    private static BiFunction<String, String, Double> fourGramJaccardNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::fourGramJaccardNormalizedPadding;
+    private static BiFunction<String, String, Double> fiveGramJaccardNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::fiveGramJaccardNormalizedPadding;
 
-    static BiFunction<String, String, Double> jaccardShingles2 = (x, y) -> shingleJaccard(x,y,2);
-    static BiFunction<String, String, Double> jaccardShingles3 = (x, y) -> shingleJaccard(x,y,3);
+    private static BiFunction<String, String, Double> twoShingleJaccard = de.unitrier.st.stringsimilarity.set.Variants::twoShingleJaccard;
+    private static BiFunction<String, String, Double> threeShingleJaccard = de.unitrier.st.stringsimilarity.set.Variants::threeShingleJaccard;
 
-    static BiFunction<String, String, Double> jaccardNormalizedShingles2 = (x, y) -> shingleJaccardNormalized(x,y,2);
-    static BiFunction<String, String, Double> jaccardNormalizedShingles3 = (x, y) -> shingleJaccardNormalized(x,y,3);
+    private static BiFunction<String, String, Double> twoShingleJaccardNormalized = de.unitrier.st.stringsimilarity.set.Variants::twoShingleJaccardNormalized;
+    private static BiFunction<String, String, Double> threeShingleJaccardNormalized = de.unitrier.st.stringsimilarity.set.Variants::threeShingleJaccardNormalized;
 
-    static BiFunction<String, String, Double> diceTokens = (x, y) -> tokenDice(x,y);
-    static BiFunction<String, String, Double> diceNormalizedTokens = (x, y) -> tokenDiceNormalized(x,y);
+    private static BiFunction<String, String, Double> tokenDice = de.unitrier.st.stringsimilarity.set.Variants::tokenDice;
+    private static BiFunction<String, String, Double> tokenDiceNormalized = de.unitrier.st.stringsimilarity.set.Variants::tokenDiceNormalized;
 
-    static BiFunction<String, String, Double> dice2Grams = (x, y) -> nGramDice(x,y,2);
-    static BiFunction<String, String, Double> dice3Grams = (x, y) -> nGramDice(x,y,3);
-    static BiFunction<String, String, Double> dice4Grams = (x, y) -> nGramDice(x,y,4);
-    static BiFunction<String, String, Double> dice5Grams = (x, y) -> nGramDice(x,y,5);
+    private static BiFunction<String, String, Double> twoGramDice = de.unitrier.st.stringsimilarity.set.Variants::twoGramDice;
+    private static BiFunction<String, String, Double> threeGramDice = de.unitrier.st.stringsimilarity.set.Variants::threeGramDice;
+    private static BiFunction<String, String, Double> fourGramDice = de.unitrier.st.stringsimilarity.set.Variants::fourGramDice;
+    private static BiFunction<String, String, Double> fiveGramDice = de.unitrier.st.stringsimilarity.set.Variants::fiveGramDice;
 
-    static BiFunction<String, String, Double> diceNormalized2Grams = (x, y) -> nGramDiceNormalized(x,y,2);
-    static BiFunction<String, String, Double> diceNormalized3Grams = (x, y) -> nGramDiceNormalized(x,y,3);
-    static BiFunction<String, String, Double> diceNormalized4Grams = (x, y) -> nGramDiceNormalized(x,y,4);
-    static BiFunction<String, String, Double> diceNormalized5Grams = (x, y) -> nGramDiceNormalized(x,y,5);
+    private static BiFunction<String, String, Double> twoGramDiceNormalized = de.unitrier.st.stringsimilarity.set.Variants::twoGramDiceNormalized;
+    private static BiFunction<String, String, Double> threeGramDiceNormalized = de.unitrier.st.stringsimilarity.set.Variants::threeGramDiceNormalized;
+    private static BiFunction<String, String, Double> fourGramDiceNormalized = de.unitrier.st.stringsimilarity.set.Variants::fourGramDiceNormalized;
+    private static BiFunction<String, String, Double> fiveGramDiceNormalized = de.unitrier.st.stringsimilarity.set.Variants::fiveGramDiceNormalized;
 
-    static BiFunction<String, String, Double> diceNormalizedPadding2grams = (x, y) -> nGramDiceNormalizedPadding(x,y,2);
-    static BiFunction<String, String, Double> diceNormalizedPadding3grams = (x, y) -> nGramDiceNormalizedPadding(x,y,3);
-    static BiFunction<String, String, Double> diceNormalizedPadding4grams = (x, y) -> nGramDiceNormalizedPadding(x,y,4);
-    static BiFunction<String, String, Double> diceNormalizedPadding5grams = (x, y) -> nGramDiceNormalizedPadding(x,y,5);
+    private static BiFunction<String, String, Double> twoGramDiceNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::twoGramDiceNormalizedPadding;
+    private static BiFunction<String, String, Double> threeGramDiceNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::threeGramDiceNormalizedPadding;
+    private static BiFunction<String, String, Double> fourGramDiceNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::fourGramDiceNormalizedPadding;
+    private static BiFunction<String, String, Double> fiveGramDiceNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::fiveGramDiceNormalizedPadding;
 
-    static BiFunction<String, String, Double> diceShingles2 = (x, y) -> shingleDice(x,y,2);
-    static BiFunction<String, String, Double> diceShingles3 = (x, y) -> shingleDice(x,y,3);
+    private static BiFunction<String, String, Double> twoShingleDice = de.unitrier.st.stringsimilarity.set.Variants::twoShingleDice;
+    private static BiFunction<String, String, Double> threeShingleDice = de.unitrier.st.stringsimilarity.set.Variants::threeShingleDice;
 
-    static BiFunction<String, String, Double> diceNormalizedShingles2 = (x, y) -> shingleDiceNormalized(x,y,2);
-    static BiFunction<String, String, Double> diceNormalizedShingles3 = (x, y) -> shingleDiceNormalized(x,y,3);
+    private static BiFunction<String, String, Double> twoShingleDiceNormalized = de.unitrier.st.stringsimilarity.set.Variants::twoShingleDiceNormalized;
+    private static BiFunction<String, String, Double> threeShingleDiceNormalized = de.unitrier.st.stringsimilarity.set.Variants::threeShingleDiceNormalized;
 
-    static BiFunction<String, String, Double> diceVariantTokens = (x, y) -> tokenDiceVariant(x,y);
-    static BiFunction<String, String, Double> diceVariantNormalizedTokens = (x, y) -> tokenDiceVariantNormalized(x,y);
+    private static BiFunction<String, String, Double> tokenDiceVariant = de.unitrier.st.stringsimilarity.set.Variants::tokenDiceVariant;
+    private static BiFunction<String, String, Double> tokenDiceVariantNormalized = de.unitrier.st.stringsimilarity.set.Variants::tokenDiceVariantNormalized;
 
-    static BiFunction<String, String, Double> diceVariant2Grams = (x, y) -> nGramDiceVariant(x,y,2);
-    static BiFunction<String, String, Double> diceVariant3Grams = (x, y) -> nGramDiceVariant(x,y,3);
-    static BiFunction<String, String, Double> diceVariant4Grams = (x, y) -> nGramDiceVariant(x,y,4);
-    static BiFunction<String, String, Double> diceVariant5Grams = (x, y) -> nGramDiceVariant(x,y,5);
+    private static BiFunction<String, String, Double> twoGramDiceVariant = de.unitrier.st.stringsimilarity.set.Variants::twoGramDiceVariant;
+    private static BiFunction<String, String, Double> threeGramDiceVariant = de.unitrier.st.stringsimilarity.set.Variants::threeGramDiceVariant;
+    private static BiFunction<String, String, Double> fourGramDiceVariant = de.unitrier.st.stringsimilarity.set.Variants::fourGramDiceVariant;
+    private static BiFunction<String, String, Double> fiveGramDiceVariant = de.unitrier.st.stringsimilarity.set.Variants::fiveGramDiceVariant;
 
-    static BiFunction<String, String, Double> diceVariantNormalized2Grams = (x, y) -> nGramDiceVariantNormalized(x,y,2);
-    static BiFunction<String, String, Double> diceVariantNormalized3Grams = (x, y) -> nGramDiceVariantNormalized(x,y,3);
-    static BiFunction<String, String, Double> diceVariantNormalized4Grams = (x, y) -> nGramDiceVariantNormalized(x,y,4);
-    static BiFunction<String, String, Double> diceVariantNormalized5Grams = (x, y) -> nGramDiceVariantNormalized(x,y,5);
+    private static BiFunction<String, String, Double> twoGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.set.Variants::twoGramDiceVariantNormalized;
+    private static BiFunction<String, String, Double> threeGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.set.Variants::threeGramDiceVariantNormalized;
+    private static BiFunction<String, String, Double> fourGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.set.Variants::fourGramDiceVariantNormalized;
+    private static BiFunction<String, String, Double> fiveGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.set.Variants::fiveGramDiceVariantNormalized;
 
-    static BiFunction<String, String, Double> diceVariantNormalizedPadding2grams = (x, y) -> nGramDiceVariantNormalizedPadding(x,y,2);
-    static BiFunction<String, String, Double> diceVariantNormalizedPadding3grams = (x, y) -> nGramDiceVariantNormalizedPadding(x,y,3);
-    static BiFunction<String, String, Double> diceVariantNormalizedPadding4grams = (x, y) -> nGramDiceVariantNormalizedPadding(x,y,4);
-    static BiFunction<String, String, Double> diceVariantNormalizedPadding5grams = (x, y) -> nGramDiceVariantNormalizedPadding(x,y,5);
+    private static BiFunction<String, String, Double> twoGramDiceVariantNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::twoGramDiceVariantNormalizedPadding;
+    private static BiFunction<String, String, Double> threeGramDiceVariantNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::threeGramDiceVariantNormalizedPadding;
+    private static BiFunction<String, String, Double> fourGramDiceVariantNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::fourGramDiceVariantNormalizedPadding;
+    private static BiFunction<String, String, Double> fiveGramDiceVariantNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::fiveGramDiceVariantNormalizedPadding;
 
-    static BiFunction<String, String, Double> diceVariantShingles2 = (x, y) -> shingleDiceVariant(x,y,2);
-    static BiFunction<String, String, Double> diceVariantShingles3 = (x, y) -> shingleDiceVariant(x,y,3);
+    private static BiFunction<String, String, Double> twoShingleDiceVariant = de.unitrier.st.stringsimilarity.set.Variants::twoShingleDiceVariant;
+    private static BiFunction<String, String, Double> threeShingleDiceVariant = de.unitrier.st.stringsimilarity.set.Variants::threeShingleDiceVariant;
 
-    static BiFunction<String, String, Double> diceVariantNormalizedShingles2 = (x, y) -> shingleDiceVariantNormalized(x,y,2);
-    static BiFunction<String, String, Double> diceVariantNormalizedShingles3 = (x, y) -> shingleDiceVariantNormalized(x,y,3);
+    private static BiFunction<String, String, Double> twoShingleDiceVariantNormalized = de.unitrier.st.stringsimilarity.set.Variants::twoShingleDiceVariantNormalized;
+    private static BiFunction<String, String, Double> threeShingleDiceVariantNormalized = de.unitrier.st.stringsimilarity.set.Variants::threeShingleDiceVariantNormalized;
 
-    static BiFunction<String, String, Double> overlapTokens = (x, y) -> tokenOverlap(x,y);
-    static BiFunction<String, String, Double> overlapNormalizedTokens = (x, y) -> tokenOverlapNormalized(x,y);
+    private static BiFunction<String, String, Double> tokenOverlap = de.unitrier.st.stringsimilarity.set.Variants::tokenOverlap;
+    private static BiFunction<String, String, Double> tokenOverlapNormalized = de.unitrier.st.stringsimilarity.set.Variants::tokenOverlapNormalized;
 
-    public static BiFunction<String, String, Double> overlap2Grams = (x, y) -> nGramOverlap(x,y,2);
-    static BiFunction<String, String, Double> overlap3Grams = (x, y) -> nGramOverlap(x,y,3);
-    static BiFunction<String, String, Double> overlap4Grams = (x, y) -> nGramOverlap(x,y,4);
-    static BiFunction<String, String, Double> overlap5Grams = (x, y) -> nGramOverlap(x,y,5);
+    private static BiFunction<String, String, Double> twoGramOverlap = de.unitrier.st.stringsimilarity.set.Variants::twoGramOverlap;
+    private static BiFunction<String, String, Double> threeGramOverlap = de.unitrier.st.stringsimilarity.set.Variants::threeGramOverlap;
+    private static BiFunction<String, String, Double> fourGramOverlap = de.unitrier.st.stringsimilarity.set.Variants::fourGramOverlap;
+    private static BiFunction<String, String, Double> fiveGramOverlap = de.unitrier.st.stringsimilarity.set.Variants::fiveGramOverlap;
 
-    static BiFunction<String, String, Double> overlapNormalized2Grams = (x, y) -> nGramOverlapNormalized(x,y,2);
-    static BiFunction<String, String, Double> overlapNormalized3Grams = (x, y) -> nGramOverlapNormalized(x,y,3);
-    public static BiFunction<String, String, Double> overlapNormalized4Grams = (x, y) -> nGramOverlapNormalized(x,y,4);
-    static BiFunction<String, String, Double> overlapNormalized5Grams = (x, y) -> nGramOverlapNormalized(x,y,5);
+    private static BiFunction<String, String, Double> twoGramOverlapNormalized = de.unitrier.st.stringsimilarity.set.Variants::twoGramOverlapNormalized;
+    private static BiFunction<String, String, Double> threeGramOverlapNormalized = de.unitrier.st.stringsimilarity.set.Variants::threeGramOverlapNormalized;
+    private static BiFunction<String, String, Double> fourGramOverlapNormalized = de.unitrier.st.stringsimilarity.set.Variants::fourGramOverlapNormalized;
+    private static BiFunction<String, String, Double> fiveGramOverlapNormalized = de.unitrier.st.stringsimilarity.set.Variants::fiveGramOverlapNormalized;
 
-    static BiFunction<String, String, Double> overlapNormalizedPadding2grams = (x, y) -> nGramOverlapNormalizedPadding(x,y,2);
-    static BiFunction<String, String, Double> overlapNormalizedPadding3grams = (x, y) -> nGramOverlapNormalizedPadding(x,y,3);
-    static BiFunction<String, String, Double> overlapNormalizedPadding4grams = (x, y) -> nGramOverlapNormalizedPadding(x,y,4);
-    static BiFunction<String, String, Double> overlapNormalizedPadding5grams = (x, y) -> nGramOverlapNormalizedPadding(x,y,5);
+    private static BiFunction<String, String, Double> twoGramOverlapNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::twoGramOverlapNormalizedPadding;
+    private static BiFunction<String, String, Double> threeGramOverlapNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::threeGramOverlapNormalizedPadding;
+    private static BiFunction<String, String, Double> fourGramOverlapNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::fourGramOverlapNormalizedPadding;
+    private static BiFunction<String, String, Double> fiveGramOverlapNormalizedPadding = de.unitrier.st.stringsimilarity.set.Variants::fiveGramOverlapNormalizedPadding;
 
-    static BiFunction<String, String, Double> overlapShingles2 = (x, y) -> shingleOverlap(x,y,2);
-    static BiFunction<String, String, Double> overlapShingles3 = (x, y) -> shingleOverlap(x,y,3);
+    private static BiFunction<String, String, Double> twoShingleOverlap = de.unitrier.st.stringsimilarity.set.Variants::twoShingleOverlap;
+    private static BiFunction<String, String, Double> threeShingleOverlap = de.unitrier.st.stringsimilarity.set.Variants::threeShingleOverlap;
 
-    static BiFunction<String, String, Double> overlapNormalizedShingles2 = (x, y) -> shingleOverlapNormalized(x,y,2);
-    static BiFunction<String, String, Double> overlapNormalizedShingles3 = (x, y) -> shingleOverlapNormalized(x,y,3);
+    private static BiFunction<String, String, Double> twoShingleOverlapNormalized = de.unitrier.st.stringsimilarity.set.Variants::twoShingleOverlapNormalized;
+    private static BiFunction<String, String, Double> threeShingleOverlapNormalized = de.unitrier.st.stringsimilarity.set.Variants::threeShingleOverlapNormalized;
 
 }
