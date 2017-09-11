@@ -271,8 +271,7 @@ public class GroundTruthCreator extends JFrame{
                                 paintBorderOfBlock(tmpBlockPair.labelLeftBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion, false);
                                 paintBorderOfBlock(tmpBlockPair.labelRightBlock, tmpBlockPair.clickedBlockIsInstanceOfTextBlockVersion, false);
 
-                                if(lastClickedBlock != null)
-                                    paintBorderOfBlock(lastClickedBlock, lastClickedBlockIsInstanceOfTextBlockVersion, false);
+                                // if(lastClickedBlock != null) paintBorderOfBlock(lastClickedBlock, lastClickedBlockIsInstanceOfTextBlockVersion, false);
 
                                 borderCurrentBlock[0] = tmpBlockPair.labelRightBlock.getBorder();
                                 unmarkLastClickedBlock();
@@ -455,6 +454,14 @@ public class GroundTruthCreator extends JFrame{
 
         String string1 = postVersionList.get(leftVersion).getPostBlocks().get(leftBlockPosition).getContent();
         String string2 = postVersionList.get(rightVersion).getPostBlocks().get(rightBlockPosition).getContent();
+
+        if(string1.trim().equals(string2.trim())){
+            return "<html><head></head><body>" +
+                    commonmarkMarkUp(
+                            string2
+                    )
+                    + "</body></html>";
+        }
 
         String uniqueLineDiffSeparator_left_start = "§§§§§§1";
         String uniqueLineDiffSeparator_right_start = "§§§§§§2";
