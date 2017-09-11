@@ -92,8 +92,8 @@ public class GroundTruthCreator extends JFrame{
     /***** Constructor *****/
     GroundTruthCreator(PostVersionList postVersionList, int initialWidth, int initialHeight, Point initialLocation){
         this.setTitle("Ground Truth Creator");
-
         this.postVersionList = postVersionList;
+
         WIDTH = initialWidth;
         HEIGHT = initialHeight;
         LOCATION = initialLocation;
@@ -282,7 +282,7 @@ public class GroundTruthCreator extends JFrame{
                                 tmpBlockPair.labelRightBlock.setText(
                                         "<html><head></head><body>" +
                                         commonmarkMarkUp(
-                                            postVersionList.get(currentInternVersion).getPostBlocks().get(tmpBlockPair.rightBlockPosition).getContent()
+                                            postVersionList.get(Math.max(currentInternVersion, currentLeftVersion+1)).getPostBlocks().get(tmpBlockPair.rightBlockPosition).getContent()
                                         )
                                         + "</body></html>"
                                 );
