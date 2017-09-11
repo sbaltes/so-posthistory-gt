@@ -853,7 +853,7 @@ public class GroundTruthCreator extends JFrame{
                         String contentRight = postVersionList.get(i+1).getPostBlocks().get(k).getContent();
                         if(postVersionList.get(i).getPostBlocks().get(j) instanceof TextBlockVersion
                                 == postVersionList.get(i+1).getPostBlocks().get(k) instanceof TextBlockVersion
-                                && contentRight.equals(contentLeft)){
+                                && (contentRight.trim().equals(contentLeft.trim()))){
                             numberOfBlocksWithEqualContent++;
                             positionOfRightBlockWithEqualContent = k;
                             if(numberOfBlocksWithEqualContent>1){
