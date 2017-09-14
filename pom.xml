@@ -9,13 +9,22 @@
     <url>https://github.com/sbaltes/so-posthistory-gt</url>
 
     <repositories>
-        <repository>
-            <id>soposthistory</id>
-            <url>file://${basedir}/../so-posthistory-extractor/target/</url>
-        </repository>
+        <!-- see also https://stackoverflow.com/a/14013645 -->
         <repository>
             <id>stringsimilarity</id>
-            <url>file://${basedir}/../string-similarity/target/</url>
+            <url>https://raw.github.com/sotorrent/string-similarity/releases/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>soposthistoryextractor</id>
+            <url>https://raw.github.com/sotorrent/so-posthistory-extractor/releases/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
         </repository>
     </repositories>
 
