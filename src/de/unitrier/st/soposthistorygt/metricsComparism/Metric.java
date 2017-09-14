@@ -293,120 +293,45 @@ class Metric {
                 return optimalAlignment;
             case optimalAlignmentNormalized:
                 return optimalAlignmentNormalized;
-            case optimalAlignment2GramFingerprint:
-                return twoGramFingerprintOptimalAlignment;
-            case optimalAlignment3GramFingerprint:
-                return threeGramFingerprintOptimalAlignment;
-            case optimalAlignment4GramFingerprint:
-                return fourGramFingerprintOptimalAlignment;
-            case optimalAlignment5GramFingerprint:
-                return fiveGramFingerprintOptimalAlignment;
-            case optimalAlignmentShingle2Fingerprint:
-                return twoShingleFingerprintOptimalAlignment;
-            case optimalAlignmentShingle3Fingerprint:
-                return threeShingleFingerprintOptimalAlignment;
-            case optimalAlignment2GramFingerprintNormalized:
-                return twoGramFingerprintOptimalAlignmentNormalized;
-            case optimalAlignment3GramFingerprintNormalized:
-                return threeGramFingerprintOptimalAlignmentNormalized;
-            case optimalAlignment4GramFingerprintNormalized:
-                return fourGramFingerprintOptimalAlignmentNormalized;
-            case optimalAlignment5GramFingerprintNormalized:
-                return fiveGramFingerprintOptimalAlignmentNormalized;
-            case optimalAlignmentShingle2FingerprintNormalized:
-                return twoShingleFingerprintOptimalAlignmentNormalized;
-            case optimalAlignmentShingle3FingerprintNormalized:
-                return threeShingleFingerprintOptimalAlignmentNormalized;
 
             case longestCommonSubsequenceStandard:
                 return longestCommonSubsequence;
 
             case longestCommonSubsequenceNormalized :
                 return longestCommonSubsequenceNormalized;
-            case longestCommonSubsequence2GramFingerprint :
-                return twoGramFingerprintLongestCommonSubsequence;
-            case longestCommonSubsequence3GramFingerprint :
-                return threeGramFingerprintLongestCommonSubsequence;
-            case longestCommonSubsequence4GramFingerprint :
-                return fourGramFingerprintLongestCommonSubsequence;
-            case longestCommonSubsequence5GramFingerprint :
-                return fiveGramFingerprintLongestCommonSubsequence;
-            case longestCommonSubsequenceShingle2Fingerprint :
-                return twoShingleFingerprintLongestCommonSubsequence;
-            case longestCommonSubsequenceShingle3Fingerprint :
-                return threeShingleFingerprintLongestCommonSubsequence;
-            case longestCommonSubsequence2GramFingerprintNormalized :
-                return twoGramFingerprintLongestCommonSubsequenceNormalized;
-            case longestCommonSubsequence3GramFingerprintNormalized :
-                return threeGramFingerprintLongestCommonSubsequenceNormalized;
-            case longestCommonSubsequence4GramFingerprintNormalized :
-                return fourGramFingerprintLongestCommonSubsequenceNormalized;
-            case longestCommonSubsequence5GramFingerprintNormalized :
-                return fiveGramFingerprintLongestCommonSubsequenceNormalized;
-            case longestCommonSubsequenceShingle2FingerprintNormalized :
-                return twoShingleFingerprintLongestCommonSubsequenceNormalized;
-            case longestCommonSubsequenceShingle3FingerprintNormalized :
-                return threeShingleFingerprintLongestCommonSubsequenceNormalized;
 
-            case winnowingTokenJaccard : return winnowingTokenJaccard;
             case winnowing2GramJaccard : return winnowingTwoGramJaccard;
             case winnowing3GramJaccard : return winnowingThreeGramJaccard;
             case winnowing4GramJaccard : return winnowingFourGramJaccard;
             case winnowing5GramJaccard : return winnowingFiveGramJaccard;
-            case winnowingShingle2Jaccard : return winnowingTwoShingleJaccard;
-            case winnowingShingle3Jaccard : return winnowingThreeShingleJaccard;
-            case winnowingNormalizedTokenJaccard : return winnowingTokenJaccardNormalized;
             case winnowingNormalized2GramJaccard : return winnowingTwoGramJaccardNormalized;
             case winnowingNormalized3GramJaccard : return winnowingThreeGramJaccardNormalized;
             case winnowingNormalized4GramJaccard : return winnowingFourGramJaccardNormalized;
             case winnowingNormalized5GramJaccard : return winnowingFiveGramJaccardNormalized;
-            case winnowingNormalizedShingle2Jaccard : return winnowingTwoShingleJaccardNormalized;
-            case winnowingNormalizedShingle3Jaccard : return winnowingThreeShingleJaccardNormalized;
-
-            case winnowingTokenDice : return winnowingTokenDice;
             case winnowing2GramDice : return winnowingTwoGramDice;
             case winnowing3GramDice : return winnowingThreeGramDice;
             case winnowing4GramDice : return winnowingFourGramDice;
             case winnowing5GramDice : return winnowingFiveGramDice;
-            case winnowingShingle2Dice : return winnowingTwoShingleDice;
-            case winnowingShingle3Dice : return winnowingThreeShingleDice;
-            case winnowingNormalizedTokenDice : return winnowingNormalizedTokenDice;
             case winnowingNormalized2GramDice : return winnowingTwoGramDiceNormalized;
             case winnowingNormalized3GramDice : return winnowingThreeGramDiceNormalized;
             case winnowingNormalized4GramDice : return winnowingFourGramDiceNormalized;
             case winnowingNormalized5GramDice : return winnowingFiveGramDiceNormalized;
-            case winnowingNormalizedShingle2Dice : return winnowingTwoShingleDiceNormalized;
-            case winnowingNormalizedShingle3Dice : return winnowingThreeShingleDiceNormalized;
-
-            case winnowingTokenDiceVariant : return winnowingTokenDiceVariant;
             case winnowing2GramDiceVariant : return winnowingTwoGramDiceVariant;
             case winnowing3GramDiceVariant : return winnowingThreeGramDiceVariant;
             case winnowing4GramDiceVariant : return winnowingFourGramDiceVariant;
             case winnowing5GramDiceVariant : return winnowingFiveGramDiceVariant;
-            case winnowingShingle2DiceVariant : return winnowingTwoShingleDiceVariant;
-            case winnowingShingle3DiceVariant : return winnowingThreeShingleDiceVariant;
-            case winnowingNormalizedTokenDiceVariant : return winnowingTokenDiceVariantNormalized;
             case winnowingNormalized2GramDiceVariant : return winnowingTwoGramDiceVariantNormalized;
             case winnowingNormalized3GramDiceVariant : return winnowingThreeGramDiceVariantNormalized;
             case winnowingNormalized4GramDiceVariant : return winnowingFourGramDiceVariantNormalized;
             case winnowingNormalized5GramDiceVariant : return winnowingFiveGramDiceVariantNormalized;
-            case winnowingNormalizedShingle2DiceVariant : return winnowingTwoShingleDiceVariantNormalized;
-            case winnowingNormalizedShingle3DiceVariant : return winnowingThreeShingleDiceVariantNormalized;
-
-            case winnowingTokenOverlap : return winnowingTokenOverlap;
             case winnowing2GramOverlap : return winnowingTwoGramOverlap;
             case winnowing3GramOverlap : return winnowingThreeGramOverlap;
             case winnowing4GramOverlap : return winnowingFourGramOverlap;
             case winnowing5GramOverlap : return winnowingFiveGramOverlap;
-            case winnowingShingle2Overlap : return winnowingTwoShingleOverlap;
-            case winnowingShingle3Overlap : return winnowingThreeShingleOverlap;
-            case winnowingNormalizedTokenOverlap : return winnowingTokenOverlapNormalized;
             case winnowingNormalized2GramOverlap : return winnowingTwoGramOverlapNormalized;
             case winnowingNormalized3GramOverlap : return winnowingThreeGramOverlapNormalized;
             case winnowingNormalized4GramOverlap : return winnowingFourGramOverlapNormalized;
             case winnowingNormalized5GramOverlap : return winnowingFiveGramOverlapNormalized;
-            case winnowingNormalizedShingle2Overlap : return winnowingTwoShingleOverlapNormalized;
-            case winnowingNormalizedShingle3Overlap : return winnowingThreeShingleOverlapNormalized;
 
 
             case cosineNormalizedTokensBool :
@@ -640,100 +565,48 @@ class Metric {
     private static BiFunction<String, String, Double> optimalAlignment = Variants::optimalAlignment;
     private static BiFunction<String, String, Double> optimalAlignmentNormalized = Variants::optimalAlignmentNormalized;
 
-    private static BiFunction<String, String, Double> twoGramFingerprintOptimalAlignment = Variants::twoGramFingerprintOptimalAlignment;
-    private static BiFunction<String, String, Double> threeGramFingerprintOptimalAlignment = Variants::threeGramFingerprintOptimalAlignment;
-    private static BiFunction<String, String, Double> fourGramFingerprintOptimalAlignment = Variants::fourGramFingerprintOptimalAlignment;
-    private static BiFunction<String, String, Double> fiveGramFingerprintOptimalAlignment = Variants::fiveGramFingerprintOptimalAlignment;
-    private static BiFunction<String, String, Double> twoShingleFingerprintOptimalAlignment = Variants::twoShingleFingerprintOptimalAlignment;
-    private static BiFunction<String, String, Double> threeShingleFingerprintOptimalAlignment = Variants::threeShingleFingerprintOptimalAlignment;
-    private static BiFunction<String, String, Double> twoGramFingerprintOptimalAlignmentNormalized = Variants::twoGramFingerprintOptimalAlignmentNormalized;
-    private static BiFunction<String, String, Double> threeGramFingerprintOptimalAlignmentNormalized = Variants::threeGramFingerprintOptimalAlignmentNormalized;
-    private static BiFunction<String, String, Double> fourGramFingerprintOptimalAlignmentNormalized = Variants::fourGramFingerprintOptimalAlignmentNormalized;
-    private static BiFunction<String, String, Double> fiveGramFingerprintOptimalAlignmentNormalized = Variants::fiveGramFingerprintOptimalAlignmentNormalized;
-    private static BiFunction<String, String, Double> twoShingleFingerprintOptimalAlignmentNormalized = Variants::twoShingleFingerprintOptimalAlignmentNormalized;
-    private static BiFunction<String, String, Double> threeShingleFingerprintOptimalAlignmentNormalized = Variants::threeShingleFingerprintOptimalAlignmentNormalized;
-
     private static BiFunction<String, String, Double> longestCommonSubsequence = Variants::longestCommonSubsequence;
     private static BiFunction<String, String, Double> longestCommonSubsequenceNormalized = Variants::longestCommonSubsequenceNormalized;
-    private static BiFunction<String, String, Double> twoGramFingerprintLongestCommonSubsequence = Variants::twoGramFingerprintLongestCommonSubsequence;
-    private static BiFunction<String, String, Double> threeGramFingerprintLongestCommonSubsequence = Variants::threeGramFingerprintLongestCommonSubsequence;
-    private static BiFunction<String, String, Double> fourGramFingerprintLongestCommonSubsequence = Variants::fourGramFingerprintLongestCommonSubsequence;
-    private static BiFunction<String, String, Double> fiveGramFingerprintLongestCommonSubsequence = Variants::fiveGramFingerprintLongestCommonSubsequence;
-    private static BiFunction<String, String, Double> twoShingleFingerprintLongestCommonSubsequence = Variants::twoShingleFingerprintLongestCommonSubsequence;
-    private static BiFunction<String, String, Double> threeShingleFingerprintLongestCommonSubsequence = Variants::threeShingleFingerprintLongestCommonSubsequence;
 
-    private static BiFunction<String, String, Double> twoGramFingerprintLongestCommonSubsequenceNormalized = Variants::twoGramFingerprintLongestCommonSubsequenceNormalized;
-    private static BiFunction<String, String, Double> threeGramFingerprintLongestCommonSubsequenceNormalized = Variants::threeGramFingerprintLongestCommonSubsequenceNormalized;
-    private static BiFunction<String, String, Double> fourGramFingerprintLongestCommonSubsequenceNormalized = Variants::fourGramFingerprintLongestCommonSubsequenceNormalized;
-    private static BiFunction<String, String, Double> fiveGramFingerprintLongestCommonSubsequenceNormalized = Variants::fiveGramFingerprintLongestCommonSubsequenceNormalized;
-    private static BiFunction<String, String, Double> twoShingleFingerprintLongestCommonSubsequenceNormalized = Variants::twoShingleFingerprintLongestCommonSubsequenceNormalized;
-    private static BiFunction<String, String, Double> threeShingleFingerprintLongestCommonSubsequenceNormalized = Variants::threeShingleFingerprintLongestCommonSubsequenceNormalized;
-
-    // ****** Fingerprint based
-    private static BiFunction<String, String, Double> winnowingTokenJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenJaccard;
     private static BiFunction<String, String, Double> winnowingTwoGramJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramJaccard;
     private static BiFunction<String, String, Double> winnowingThreeGramJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramJaccard;
     private static BiFunction<String, String, Double> winnowingFourGramJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramJaccard;
     private static BiFunction<String, String, Double> winnowingFiveGramJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramJaccard;
-    private static BiFunction<String, String, Double> winnowingTwoShingleJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleJaccard;
-    private static BiFunction<String, String, Double> winnowingThreeShingleJaccard = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleJaccard;
 
-    private static BiFunction<String, String, Double> winnowingTokenJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenJaccardNormalized;
     private static BiFunction<String, String, Double> winnowingTwoGramJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramJaccardNormalized;
     private static BiFunction<String, String, Double> winnowingThreeGramJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramJaccardNormalized;
     private static BiFunction<String, String, Double> winnowingFourGramJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramJaccardNormalized;
     private static BiFunction<String, String, Double> winnowingFiveGramJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramJaccardNormalized;
-    private static BiFunction<String, String, Double> winnowingTwoShingleJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleJaccardNormalized;
-    private static BiFunction<String, String, Double> winnowingThreeShingleJaccardNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleJaccardNormalized;
 
-    private static BiFunction<String, String, Double> winnowingTokenDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenDice;
     private static BiFunction<String, String, Double> winnowingTwoGramDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramDice;
     private static BiFunction<String, String, Double> winnowingThreeGramDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramDice;
     private static BiFunction<String, String, Double> winnowingFourGramDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramDice;
     private static BiFunction<String, String, Double> winnowingFiveGramDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramDice;
-    private static BiFunction<String, String, Double> winnowingTwoShingleDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleDice;
-    private static BiFunction<String, String, Double> winnowingThreeShingleDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleDice;
 
-    private static BiFunction<String, String, Double> winnowingNormalizedTokenDice = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenDiceNormalized;
     private static BiFunction<String, String, Double> winnowingTwoGramDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramDiceNormalized;
     private static BiFunction<String, String, Double> winnowingThreeGramDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramDiceNormalized;
     private static BiFunction<String, String, Double> winnowingFourGramDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramDiceNormalized;
     private static BiFunction<String, String, Double> winnowingFiveGramDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramDiceNormalized;
-    private static BiFunction<String, String, Double> winnowingTwoShingleDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleDiceNormalized;
-    private static BiFunction<String, String, Double> winnowingThreeShingleDiceNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleDiceNormalized;
 
-    private static BiFunction<String, String, Double> winnowingTokenDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenDiceVariant;
     private static BiFunction<String, String, Double> winnowingTwoGramDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramDiceVariant;
     private static BiFunction<String, String, Double> winnowingThreeGramDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramDiceVariant;
     private static BiFunction<String, String, Double> winnowingFourGramDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramDiceVariant;
     private static BiFunction<String, String, Double> winnowingFiveGramDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramDiceVariant;
-    private static BiFunction<String, String, Double> winnowingTwoShingleDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleDiceVariant;
-    private static BiFunction<String, String, Double> winnowingThreeShingleDiceVariant = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleDiceVariant;
 
-    private static BiFunction<String, String, Double> winnowingTokenDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenDiceVariantNormalized;
     private static BiFunction<String, String, Double> winnowingTwoGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramDiceVariantNormalized;
     private static BiFunction<String, String, Double> winnowingThreeGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramDiceVariantNormalized;
     private static BiFunction<String, String, Double> winnowingFourGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramDiceVariantNormalized;
     private static BiFunction<String, String, Double> winnowingFiveGramDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramDiceVariantNormalized;
-    private static BiFunction<String, String, Double> winnowingTwoShingleDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleDiceVariantNormalized;
-    private static BiFunction<String, String, Double> winnowingThreeShingleDiceVariantNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleDiceVariantNormalized;
 
-    private static BiFunction<String, String, Double> winnowingTokenOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenOverlap;
     private static BiFunction<String, String, Double> winnowingTwoGramOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramOverlap;
     private static BiFunction<String, String, Double> winnowingThreeGramOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramOverlap;
     private static BiFunction<String, String, Double> winnowingFourGramOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramOverlap;
     private static BiFunction<String, String, Double> winnowingFiveGramOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramOverlap;
-    private static BiFunction<String, String, Double> winnowingTwoShingleOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleOverlap;
-    private static BiFunction<String, String, Double> winnowingThreeShingleOverlap = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleOverlap;
 
-    private static BiFunction<String, String, Double> winnowingTokenOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTokenOverlapNormalized;
     private static BiFunction<String, String, Double> winnowingTwoGramOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoGramOverlapNormalized;
     private static BiFunction<String, String, Double> winnowingThreeGramOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeGramOverlapNormalized;
     private static BiFunction<String, String, Double> winnowingFourGramOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFourGramOverlapNormalized;
     private static BiFunction<String, String, Double> winnowingFiveGramOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingFiveGramOverlapNormalized;
-    private static BiFunction<String, String, Double> winnowingTwoShingleOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingTwoShingleOverlapNormalized;
-    private static BiFunction<String, String, Double> winnowingThreeShingleOverlapNormalized = de.unitrier.st.stringsimilarity.fingerprint.Variants::winnowingThreeShingleOverlapNormalized;
-
 
 
     // ****** Profile based
