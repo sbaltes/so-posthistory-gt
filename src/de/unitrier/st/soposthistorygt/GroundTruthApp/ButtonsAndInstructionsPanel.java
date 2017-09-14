@@ -2,7 +2,6 @@ package de.unitrier.st.soposthistorygt.GroundTruthApp;
 
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
-import de.unitrier.st.soposthistorygt.metricsComparism.GroundTruthExtractionOfCSVs;
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
 import de.unitrier.st.soposthistorygt.util.BlockLifeSpanSnapshot;
 import de.unitrier.st.soposthistorygt.util.GTLogger;
@@ -466,7 +465,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
 
                 Path pathToCSV = FileSystems.getDefault().getPath("postVersionLists", completedCSV[0].getName());
-                List<String> lines = GroundTruthExtractionOfCSVs.parseLines(pathToCSV.toString());
+                List<String> lines = Toolkit.parseLines(pathToCSV.toString());
 
                 lines.sort((o1, o2) -> {
                     StringTokenizer tokens_o1 = new StringTokenizer(o1, "; ");
