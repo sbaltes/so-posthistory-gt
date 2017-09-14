@@ -6,16 +6,16 @@ import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 
 import java.util.List;
-import java.util.Vector;
+import java.util.LinkedList;
 
-public class BlockLifeSpan extends Vector<BlockLifeSpanSnapshot> {
+public class BlockLifeSpan extends LinkedList<BlockLifeSpanSnapshot> {
 
     public enum Type{ codeblock, textblock }
 
     private Type type;
 
 
-    public static int getNumberOfSnapshots(Vector<BlockLifeSpan> blockLifeSpans){
+    public static int getNumberOfSnapshots(LinkedList<BlockLifeSpan> blockLifeSpans){
         int numberOfSnapshots = 0;
 
         for (BlockLifeSpan blockLifeSpan : blockLifeSpans) {
@@ -25,7 +25,7 @@ public class BlockLifeSpan extends Vector<BlockLifeSpanSnapshot> {
         return numberOfSnapshots;
     }
     
-    public static String printVectorOfLifeSpans(Vector<BlockLifeSpan> blockLifeSpans){
+    public static String printLinkedListOfLifeSpans(LinkedList<BlockLifeSpan> blockLifeSpans){
 
         StringBuilder sb = new StringBuilder();
 
@@ -44,7 +44,7 @@ public class BlockLifeSpan extends Vector<BlockLifeSpanSnapshot> {
     // ****** extract LifeSpans
     public static List<BlockLifeSpan> getLifeSpansOfAllBlocks(PostVersionList postVersions, Type type){ // TODO: optimize getLifeSpansOfAllBlocks to O(n*m) for n versions and m blocks
 
-        List<BlockLifeSpan> listOfBlockLifeSpans = new Vector<>();
+        List<BlockLifeSpan> listOfBlockLifeSpans = new LinkedList<>();
 
         for(int i=0; i<postVersions.size(); i++){
             for(int j=0; j<postVersions.get(i).getPostBlocks().size(); j++){
@@ -72,9 +72,9 @@ public class BlockLifeSpan extends Vector<BlockLifeSpanSnapshot> {
 
                 boolean chainExists = false;
                 for(int k=0; k<listOfBlockLifeSpans.size(); k++){
-                    if((listOfBlockLifeSpans.get(k).lastElement().getVersion() == i)
+                    if((listOfBlockLifeSpans.get(k).getLast().getVersion() == i)
                             && (tmpPostBlock.getPred() != null)
-                            && (tmpPostBlock.getPred().getLocalId() == listOfBlockLifeSpans.get(k).lastElement().getLocalId())){
+                            && (tmpPostBlock.getPred().getLocalId() == listOfBlockLifeSpans.get(k).getLast().getLocalId())){
                         chainExists = true;
                         listOfBlockLifeSpans.get(k).add(tmpLifeSnapshot);
                         break;

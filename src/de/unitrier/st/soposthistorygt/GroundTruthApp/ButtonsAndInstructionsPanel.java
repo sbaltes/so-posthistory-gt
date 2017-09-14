@@ -42,7 +42,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
     private JButton buttonRemoveComment = new JButton("remove comment");
     private JScrollPane savedCommentsScrollPane;
     private JLabel labelSavedComments = new JLabel("");
-    static Vector<String> comments = new Vector<>();
+    static LinkedList<String> comments = new LinkedList<>();
 
     private static final Color tooltipColor = new Color(255, 255, 150);
 
@@ -234,7 +234,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                     GroundTruthCreator.HEIGHT,
                     GroundTruthCreator.LOCATION);
 
-            comments.removeAllElements();
+            comments.clear();
 
             setEnablingOfNextAndBackButton();
 
@@ -306,7 +306,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                     }
                 });
 
-                Vector<Integer> postVersionListCandidatesThatNeedToBeDone = new Vector<>();
+                LinkedList<Integer> postVersionListCandidatesThatNeedToBeDone = new LinkedList<>();
                 for (File tmpCsvFile : allPostVersionListsInFolder) {
                     int tmpPostId_postVersionLists = Integer.parseInt(tmpCsvFile.toString().substring(17, tmpCsvFile.toString().length() - 4));
                     boolean fileIsAlreadyCompleted = false;
@@ -329,7 +329,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
                 Collections.shuffle(postVersionListCandidatesThatNeedToBeDone);
 
-                loadPost(postVersionListCandidatesThatNeedToBeDone.firstElement());
+                loadPost(postVersionListCandidatesThatNeedToBeDone.getFirst());
             }
         });
 
@@ -620,7 +620,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
 
                         boolean leftSnapshotfoundInAChain = false;
                         for(int k = 0; k<groundTruthCreator.blockLifeSpansExtractedFromClicks.size(); k++){
-                            if(groundTruthCreator.blockLifeSpansExtractedFromClicks.get(k).lastElement().equals(leftBlockLifeSpanSnapshot)){
+                            if(groundTruthCreator.blockLifeSpansExtractedFromClicks.get(k).getLast().equals(leftBlockLifeSpanSnapshot)){
                                 groundTruthCreator.blockLifeSpansExtractedFromClicks.get(k).add(rightBlockLifeSpanSnapshot);
                                 leftSnapshotfoundInAChain = true;
                                 break;
@@ -698,13 +698,13 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 savedCommentsScrollPane.repaint();
 
                 // TODO: How to combine those three comparings in one row?
-                groundTruthCreator.blockLifeSpansExtractedFromClicks.sort(Comparator.comparingInt(o -> o.firstElement().getLocalId()));
-                groundTruthCreator.blockLifeSpansExtractedFromClicks.sort(Comparator.comparingInt(o -> o.firstElement().getVersion()));
+                groundTruthCreator.blockLifeSpansExtractedFromClicks.sort(Comparator.comparingInt(o -> o.getFirst().getLocalId()));
+                groundTruthCreator.blockLifeSpansExtractedFromClicks.sort(Comparator.comparingInt(o -> o.getFirst().getVersion()));
                 //groundTruthCreator.blockLifeSpansExtractedFromClicks.sort(Comparator.comparingInt(o -> o.getType() == BlockLifeSpan.Type.textblock ? 0 : 1));
 
                 groundTruthCreator.writeFileOfPostVersionList();
                 groundTruthCreator.postVersionList = null;
-                comments.removeAllElements();
+                comments.clear();
                 groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
 
 

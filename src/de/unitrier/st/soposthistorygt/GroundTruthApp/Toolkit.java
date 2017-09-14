@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.LinkedList;
 
 public class Toolkit {
 
-    static boolean blockIsAlreadyInPairWithEdge_atPositionLeft(Vector<Vector<BlockPair>> allCreatedBlockPairsByClicks, int currentLeftVersion, int blockPositionToBeChecked){
+    static boolean blockIsAlreadyInPairWithEdge_atPositionLeft(LinkedList<LinkedList<BlockPair>> allCreatedBlockPairsByClicks, int currentLeftVersion, int blockPositionToBeChecked){
         if(currentLeftVersion >= allCreatedBlockPairsByClicks.size())
             return false;
 
@@ -20,7 +20,7 @@ public class Toolkit {
         return false;
     }
 
-    static boolean blockIsAlreadyInPairWithEdge_atPositionRight(Vector<Vector<BlockPair>> allCreatedBlockPairsByClicks, int currentLeftVersion, int blockPositionToBeChecked){
+    static boolean blockIsAlreadyInPairWithEdge_atPositionRight(LinkedList<LinkedList<BlockPair>> allCreatedBlockPairsByClicks, int currentLeftVersion, int blockPositionToBeChecked){
         if(currentLeftVersion >= allCreatedBlockPairsByClicks.size())
             return false;
 
@@ -32,7 +32,7 @@ public class Toolkit {
         return false;
     }
 
-    static Integer getPositionOfLeftBlockRelatedToRightBlockOfSameBlockPair(Vector<Vector<BlockPair>> allCreatedBlockPairsByClicks, int currentLeftVersion, int blockPositionOfRightBlock){
+    static Integer getPositionOfLeftBlockRelatedToRightBlockOfSameBlockPair(LinkedList<LinkedList<BlockPair>> allCreatedBlockPairsByClicks, int currentLeftVersion, int blockPositionOfRightBlock){
         if(currentLeftVersion >= allCreatedBlockPairsByClicks.size())
             return null;
 
@@ -44,7 +44,7 @@ public class Toolkit {
         return null;
     }
 
-    static Vector<String> parseLines(String pathToExportedCSV){
+    static LinkedList<String> parseLines(String pathToExportedCSV){
 
         BufferedReader bufferedReader = null;
         try {
@@ -53,7 +53,7 @@ public class Toolkit {
             System.err.println("Failed to read file with path '" + pathToExportedCSV + "'.");
             System.exit(0);
         }
-        Vector<String> lines = new Vector<>();
+        LinkedList<String> lines = new LinkedList<>();
 
         String line;
         try {
