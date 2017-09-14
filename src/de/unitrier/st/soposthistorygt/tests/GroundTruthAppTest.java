@@ -187,10 +187,16 @@ class GroundTruthAppTest {
     public void testSetIfParsable() throws IOException {
 
         Vector<String> pathToAllDirectories = new Vector<>();
-        pathToAllDirectories.add(System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_17-06_sample_100_1_files\\PostId_VersionCount_SO_17-06_sample_100_1_files\\PostId_VersionCount_SO_17-06_sample_100_1_files");
-        pathToAllDirectories.add(System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_17-06_sample_100_1_files\\PostId_VersionCount_SO_17-06_sample_100_1_files\\PostId_VersionCount_SO_17-06_sample_100_1_files");
-        pathToAllDirectories.add(System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_Java_17-06_sample_100_1_files\\PostId_VersionCount_SO_Java_17-06_sample_100_1");
-        pathToAllDirectories.add(System.getProperty("user.dir") + "\\data\\PostId_VersionCount_SO_Java_17-06_sample_100_2_files\\PostId_VersionCount_SO_Java_17-06_sample_100_2");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_1\\files");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_2\\files");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_3\\files");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_4\\files");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_5\\files");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_6\\files");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_7\\files");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_8\\files");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_9\\files");
+        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_10\\files");
 
 
         for (String path : pathToAllDirectories) {
@@ -203,6 +209,7 @@ class GroundTruthAppTest {
                     PostVersionList tmpPostVersionList = new PostVersionList();
                     int postId = Integer.valueOf(postHistory.getName().substring(0, postHistory.getName().length() - 4));
                     tmpPostVersionList.readFromCSV(path + "\\", postId, 2);
+                    tmpPostVersionList.processVersionHistory();
 
                     AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
                     normalizeURLsInTextBlocksOfAllVersions(tmpPostVersionList, anchorTextAndUrlHandler);
@@ -211,6 +218,8 @@ class GroundTruthAppTest {
                     System.out.println("Failed to parse " + postHistory.getPath());
                 }
             }
+
+            System.out.println("Finished: " + path);
         }
     }
 }
