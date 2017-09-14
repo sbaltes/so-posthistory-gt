@@ -2,17 +2,6 @@ package de.unitrier.st.soposthistorygt.tests;
 
 // TODO: Lorik: create new (or copy old) classes for URL matching and normalization
 
-import de.unitrier.st.soposthistory.version.PostVersionList;
-import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlHandler;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Vector;
-
-import static de.unitrier.st.soposthistorygt.GroundTruthApp.GroundTruthCreator.normalizeURLsInTextBlocksOfAllVersions;
-import static de.unitrier.st.soposthistorygt.metricsComparism.PostVersionsListManagement.pattern_groundTruth;
-
 class GroundTruthAppTest {
 
     private String inputText1 = "You can force Android to hide the virtual keyboard using the [InputMethodManager][1], calling [`hideSoftInputFromWindow`][2], passing in the token of the window containing your focused view.\n" +
@@ -58,7 +47,7 @@ class GroundTruthAppTest {
     /*
     @Test
     public void testGetURLsReferencedWithAnchors(){
-        Vector<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs = anchorTextAndUrlHandler.parseAndExtractAnchorsReferencesURLsInSquareAndRoundBrackets(inputText3_allInOneLine);
+        LinkedList<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs = anchorTextAndUrlHandler.parseAndExtractAnchorsReferencesURLsInSquareAndRoundBrackets(inputText3_allInOneLine);
         for (AnchorTextAndUrlPair anchorRefURLpair : allAnchorsRefsAndURLpairs) {
             System.out.println(anchorRefURLpair);
         }
@@ -66,7 +55,7 @@ class GroundTruthAppTest {
 
     @Test
     public void testDeleteAllAnchorsReferencesURLsOf(){
-        Vector<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs = anchorTextAndUrlHandler.parseAndExtractAnchorsReferencesURLsInSquareAndRoundBrackets(inputText3_allInOneLine);
+        LinkedList<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs = anchorTextAndUrlHandler.parseAndExtractAnchorsReferencesURLsInSquareAndRoundBrackets(inputText3_allInOneLine);
         System.out.println(inputText3_allInOneLine);
         String markdown = anchorTextAndUrlHandler.deleteAllAnchorsReferencesURLsOf(inputText3_allInOneLine, allAnchorsRefsAndURLpairs);
         System.out.println(markdown);
@@ -74,15 +63,15 @@ class GroundTruthAppTest {
 
     @Test
     public void testGetAllAnchorsRefsAndURLpairs(){ // Test passed
-        Vector<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs_allInOneLine = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText3_allInOneLine);
-        Vector<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs_separatLines = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
+        LinkedList<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs_allInOneLine = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText3_allInOneLine);
+        LinkedList<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs_separatLines = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
 
         assertEquals(allAnchorsRefsAndURLpairs_allInOneLine, allAnchorsRefsAndURLpairs_separatLines);
     }
 
     @Test
     public void testAnchorTextNormalizer(){ // test passes
-        Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
+        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
 
         String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLs(inputText2_separatLines, anchorTextAndUrlPairs);
         String notNormalizedInput3 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLs(inputText3_allInOneLine, anchorTextAndUrlPairs);
@@ -110,7 +99,7 @@ class GroundTruthAppTest {
 /*
     @Test
     public void testMarkupNormalizedAnchorsAndUrlsWithHTML(){
-        Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
+        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
         String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLs(inputText2_separatLines, anchorTextAndUrlPairs);
         //String markedUpNormalizedInput2 = anchorTextAndUrlHandler.markupNormalizedAnchorsAndUrlsWithHTML(normalizedInput2, anchorTextAndUrlPairs);
 
@@ -138,7 +127,7 @@ class GroundTruthAppTest {
 //    @Test
 //    void testMarkupNormalizedAnchorsAndUrlsForDatabases(){
 //
-//        Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
+//        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
 //        String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForDatabase(inputText2_separatLines, anchorTextAndUrlPairs);
 //
 //        System.out.println(inputText2_separatLines);
@@ -154,7 +143,7 @@ class GroundTruthAppTest {
 //                "\n" +
 //                "  [1]: http://msdn.microsoft.com/en-us/library/system.threading.manualresetevent.aspx \"\"MSDN Reference\"\"";
 //
-//        Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(input);
+//        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(input);
 //        String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForDatabase(input, anchorTextAndUrlPairs);
 //
 //        System.out.println(normalizedInput2);
@@ -170,7 +159,7 @@ class GroundTruthAppTest {
 //                "  [1]: http://msdn.microsoft.com/en-us/library/system.threading.manualresetevent.aspx \"\"MSDN Reference\"\"\n" +
 //                "  [2]: http://msdn.microsoft.com/en-us/library/system.threading.autoresetevent.aspx\n";
 //
-//        Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(input);
+//        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(input);
 //        String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForDatabase(input, anchorTextAndUrlPairs);
 //
 //        System.out.println(" ############################################ ");
@@ -181,47 +170,6 @@ class GroundTruthAppTest {
 //        System.out.println(normalizedInput2);
 //        System.out.println(" ############################################ ");
 //    }
-
-
-    @Test
-    public void testSetIfParsable() throws IOException {
-
-        Vector<String> pathToAllDirectories = new Vector<>();
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_1\\files");
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_2\\files");
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_3\\files");
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_4\\files");
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_5\\files");
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_6\\files");
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_7\\files");
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_8\\files");
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_9\\files");
-        pathToAllDirectories.add("C:\\Users\\Lorik\\Desktop\\5. Semester\\Master-Arbeit\\PostVersionLists\\PostId_VersionCount_SO_17-06_sample_10000_10\\files");
-
-
-        for (String path : pathToAllDirectories) {
-            File file = new File(path);
-            File[] allPostHistoriesInFolder = file.listFiles((dir, name) -> name.matches(pattern_groundTruth.pattern())); // https://stackoverflow.com/questions/4852531/find-files-in-a-folder-using-java
-
-            assert allPostHistoriesInFolder != null;
-            for (File postHistory : allPostHistoriesInFolder) {
-                try {
-                    PostVersionList tmpPostVersionList = new PostVersionList();
-                    int postId = Integer.valueOf(postHistory.getName().substring(0, postHistory.getName().length() - 4));
-                    tmpPostVersionList.readFromCSV(path + "\\", postId, 2);
-                    tmpPostVersionList.processVersionHistory();
-
-                    AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
-                    normalizeURLsInTextBlocksOfAllVersions(tmpPostVersionList, anchorTextAndUrlHandler);
-                } catch (Exception e) {
-
-                    System.out.println("Failed to parse " + postHistory.getPath());
-                }
-            }
-
-            System.out.println("Finished: " + path);
-        }
-    }
 }
 
 

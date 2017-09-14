@@ -1,14 +1,14 @@
 package de.unitrier.st.soposthistorygt.util.anchorsURLs;
 
 import java.util.Objects;
-import java.util.Vector;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AnchorTextAndUrlHandler {
 
-    public Vector<AnchorTextAndUrlPair> extractAllAnchorsRefsAndURLpairs(String markdown){
-        Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs = new Vector<>();
+    public LinkedList<AnchorTextAndUrlPair> extractAllAnchorsRefsAndURLpairs(String markdown){
+        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = new LinkedList<>();
 
         for(int i=0; i< AnchorTextAndUrlPair.AnchorRefUrlType.values().length; i++){
             AnchorTextAndUrlPair.AnchorRefUrlType tmpType = AnchorTextAndUrlPair.AnchorRefUrlType.values()[i];
@@ -26,7 +26,7 @@ public class AnchorTextAndUrlHandler {
         return anchorTextAndUrlPairs;
     }
 
-    private void mergeMarkdownLinkReferences(Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs) {
+    private void mergeMarkdownLinkReferences(LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs) {
 
         // merge if possible
         for (AnchorTextAndUrlPair pairA : anchorTextAndUrlPairs) {
@@ -71,7 +71,7 @@ public class AnchorTextAndUrlHandler {
         }
     }
 
-    private void integrateMatchToAnchorTextAndUrlPairs(Matcher matcher, AnchorTextAndUrlPair.AnchorRefUrlType type, Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs){
+    private void integrateMatchToAnchorTextAndUrlPairs(Matcher matcher, AnchorTextAndUrlPair.AnchorRefUrlType type, LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs){
 
         switch (type){
 
@@ -136,7 +136,7 @@ public class AnchorTextAndUrlHandler {
                                 type
                         )
                 );
-                anchorTextAndUrlPairs.lastElement().fullMatch = fullMatch;
+                anchorTextAndUrlPairs.getLast().fullMatch = fullMatch;
 
                 break;
 
@@ -162,7 +162,7 @@ public class AnchorTextAndUrlHandler {
                                 type
                         )
                 );
-                anchorTextAndUrlPairs.lastElement().fullMatch2 = matcher.group();
+                anchorTextAndUrlPairs.getLast().fullMatch2 = matcher.group();
 
                 break;
 
@@ -189,7 +189,7 @@ public class AnchorTextAndUrlHandler {
     }
 
 
-    public String normalizeAnchorsRefsAndURLsForApp(String markdownText, Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs){
+    public String normalizeAnchorsRefsAndURLsForApp(String markdownText, LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs){
 
         for (AnchorTextAndUrlPair anchorTextAndUrlPair : anchorTextAndUrlPairs) {
 

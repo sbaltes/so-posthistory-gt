@@ -24,9 +24,9 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -72,9 +72,9 @@ public class GroundTruthCreator extends JFrame{
 
     private AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
 
-    Vector<Vector<BlockPair>> allCreatedBlockPairsByClicks = new Vector<>();
-    Vector<Vector<BlockPair>> allAutomaticSetBlockPairs = new Vector<>();
-    Vector<BlockLifeSpan> blockLifeSpansExtractedFromClicks = new Vector<>();
+    LinkedList<LinkedList<BlockPair>> allCreatedBlockPairsByClicks = new LinkedList<>();
+    LinkedList<LinkedList<BlockPair>> allAutomaticSetBlockPairs = new LinkedList<>();
+    LinkedList<BlockLifeSpan> blockLifeSpansExtractedFromClicks = new LinkedList<>();
 
     Robot bot = null;
 
@@ -106,8 +106,8 @@ public class GroundTruthCreator extends JFrame{
 
         if(postVersionList != null){
             for(int i=0; i<postVersionList.size(); i++){
-                allCreatedBlockPairsByClicks.add(new Vector<>());
-                allAutomaticSetBlockPairs.add(new Vector<>());
+                allCreatedBlockPairsByClicks.add(new LinkedList<>());
+                allAutomaticSetBlockPairs.add(new LinkedList<>());
             }
         }
 
@@ -434,7 +434,7 @@ public class GroundTruthCreator extends JFrame{
 
         for (PostVersion postVersion : postVersionList) {
             String textBlocksConcatenated = postVersion.getMergedTextBlockContent();
-            Vector<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(textBlocksConcatenated);
+            LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(textBlocksConcatenated);
 
             for(TextBlockVersion textBlock : postVersion.getTextBlocks()){
                 String markdownText = textBlock.getContent();
@@ -737,9 +737,9 @@ public class GroundTruthCreator extends JFrame{
     // TODO for Sebastian: Is this ok? Saving each post version list in a separate file instead of saving them in one single file
     void writeFileOfPostVersionList(){
         try {
-            File file = new File(path + "/completed_" + blockLifeSpansExtractedFromClicks.firstElement().firstElement().getPostId() + ".csv");
+            File file = new File(path + "/completed_" + blockLifeSpansExtractedFromClicks.getFirst().getFirst().getPostId() + ".csv");
             if(file.exists())
-                logger.log(Level.INFO, "File already exists. File with id=" + blockLifeSpansExtractedFromClicks.firstElement().firstElement().getPostId() + " will be overwritten.");
+                logger.log(Level.INFO, "File already exists. File with id=" + blockLifeSpansExtractedFromClicks.getFirst().getFirst().getPostId() + " will be overwritten.");
 
             PrintWriter pw = new PrintWriter(file);
             pw.write(exportBlockLinksToCSV());
@@ -792,7 +792,7 @@ public class GroundTruthCreator extends JFrame{
     private String exportBlockLinksToCSV(){
         StringBuilder output = new StringBuilder("PostId; PostHistoryId; PostBlockTypeId; LocalId; PredLocalId; SuccLocalId; Comment" + "\n");
 
-        Vector<String> comments = buttonsAtTopPanel.comments;
+        LinkedList<String> comments = buttonsAtTopPanel.comments;
 
         for (String commentLine : comments) {
             StringTokenizer tokens = new StringTokenizer(commentLine, "|");
@@ -826,7 +826,7 @@ public class GroundTruthCreator extends JFrame{
 
         for (BlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
             for (int j = 0; j < blockLifeSpan.size(); j++) {
-                output.append("\"").append(blockLifeSpan.firstElement().getPostId()).append("\"").append("; ");
+                output.append("\"").append(blockLifeSpan.getFirst().getPostId()).append("\"").append("; ");
                 output.append("\"").append(blockLifeSpan.get(j).getPostHistoryId()).append("\"").append("; ");
                 output.append("\"").append(blockLifeSpan.getType() == BlockLifeSpan.Type.textblock ? 1 : 2).append("\"").append("; ");
                 output.append("\"").append(blockLifeSpan.get(j).getLocalId()).append("\"").append("; ");
