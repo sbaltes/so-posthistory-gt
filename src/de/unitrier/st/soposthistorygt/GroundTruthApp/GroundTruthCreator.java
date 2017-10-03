@@ -854,6 +854,20 @@ public class GroundTruthCreator extends JFrame{
                 for(int j=0; j<postVersionList.get(i).getPostBlocks().size(); j++){
 
                     String contentLeft = postVersionList.get(i).getPostBlocks().get(j).getContent();
+                    boolean skip = false;
+
+                    for(int k=0; k<postVersionList.get(i).getPostBlocks().size(); k++){
+                        if(k == j)
+                            continue;
+
+                        String anotherContentLeft = postVersionList.get(i).getPostBlocks().get(k).getContent();
+                        if(contentLeft.equals(anotherContentLeft))
+                            skip = true;
+                    }
+
+                    if(skip)
+                        continue;
+
                     int positionOfRightBlockWithEqualContent = -1;
                     int numberOfBlocksWithEqualContent = 0;
                     for(int k=0; k<postVersionList.get(i+1).getPostBlocks().size(); k++){
