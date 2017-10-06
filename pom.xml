@@ -40,13 +40,13 @@
         <dependency>
             <groupId>de.unitrier.st.soposthistory</groupId>
             <artifactId>so-posthistory-extractor</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
         </dependency>
         <!-- local dependency -->
         <dependency>
             <groupId>de.unitrier.st</groupId>
             <artifactId>string-similarity</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.3</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.atlassian.commonmark/commonmark -->
         <dependency>
