@@ -5,7 +5,7 @@
     <name>SOPostHistoryGroundTruth</name>
     <groupId>de.unitrier.st.soposthistory</groupId>
     <artifactId>so-posthistory-gt</artifactId>
-    <version>0.1.11</version>
+    <version>0.1.12</version>
     <url>https://github.com/sbaltes/so-posthistory-gt</url>
 
     <distributionManagement>
@@ -19,7 +19,7 @@
         <!-- see also https://stackoverflow.com/a/14013645 -->
         <repository>
             <id>stringsimilarity</id>
-            <url>https://raw.github.com/sotorrent/string-similarity/releases/</url>
+            <url>https://raw.github.com/sotorrent/string-similarity/master/releases/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -27,7 +27,7 @@
         </repository>
         <repository>
             <id>soposthistoryextractor</id>
-            <url>https://raw.github.com/sotorrent/so-posthistory-extractor/releases/</url>
+            <url>https://raw.github.com/sotorrent/so-posthistory-extractor/master/releases/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -36,13 +36,13 @@
     </repositories>
 
     <dependencies>
-        <!-- local dependency -->
+        <!-- https://github.com/sotorrent/so-posthistory-extractor/tree/master/releases/ -->
         <dependency>
             <groupId>de.unitrier.st.soposthistory</groupId>
             <artifactId>so-posthistory-extractor</artifactId>
-            <version>1.4.2</version>
+            <version>1.4.3</version>
         </dependency>
-        <!-- local dependency -->
+        <!-- https://github.com/sotorrent/string-similarity/tree/master/releases/ -->
         <dependency>
             <groupId>de.unitrier.st</groupId>
             <artifactId>string-similarity</artifactId>
@@ -121,6 +121,7 @@
 
     <build>
         <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>src/de/unitrier/st/soposthistorygt/tests</testSourceDirectory>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -165,9 +166,49 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- http://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <dependencies>
+                    <!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-surefire-provider -->
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>1.0.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.7</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
