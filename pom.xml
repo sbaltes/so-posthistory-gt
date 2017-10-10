@@ -6,7 +6,7 @@
     <groupId>de.unitrier.st.soposthistory</groupId>
     <artifactId>so-posthistory-gt</artifactId>
     <version>0.1.12</version>
-    <url>https://github.com/sbaltes/so-posthistory-gt</url>
+    <url>https://github.com/sotorrent/so-posthistory-gt</url>
 
     <distributionManagement>
         <repository>
