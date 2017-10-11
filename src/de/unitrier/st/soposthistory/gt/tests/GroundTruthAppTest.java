@@ -1,4 +1,4 @@
-package de.unitrier.st.soposthistorygt.tests;
+package de.unitrier.st.soposthistory.gt.tests;
 
 // TODO: Lorik: create new (or copy old) classes for URL matching and normalization
 

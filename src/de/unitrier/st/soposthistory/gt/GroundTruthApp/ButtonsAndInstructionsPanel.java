@@ -1,10 +1,10 @@
-package de.unitrier.st.soposthistorygt.GroundTruthApp;
+package de.unitrier.st.soposthistory.gt.GroundTruthApp;
 
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
+import de.unitrier.st.soposthistory.gt.util.BlockLifeSpan;
+import de.unitrier.st.soposthistory.gt.util.BlockLifeSpanSnapshot;
+import de.unitrier.st.soposthistory.gt.util.GTLogger;
 import de.unitrier.st.soposthistory.version.PostVersionList;
-import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
-import de.unitrier.st.soposthistorygt.util.BlockLifeSpanSnapshot;
-import de.unitrier.st.soposthistorygt.util.GTLogger;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;

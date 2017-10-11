@@ -1,4 +1,4 @@
-package de.unitrier.st.soposthistorygt.util;
+package de.unitrier.st.soposthistory.gt.util;
 
 import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
 import de.unitrier.st.soposthistory.blocks.PostBlockVersion;

@@ -1,4 +1,4 @@
-package de.unitrier.st.soposthistorygt.util.anchorsURLs;
+package de.unitrier.st.soposthistory.gt.util.anchorsURLs;
 
 import java.util.Objects;
 import java.util.LinkedList;

@@ -1,4 +1,4 @@
-package de.unitrier.st.soposthistorygt.researchPracticumResults;
+package de.unitrier.st.soposthistory.gt.researchPracticumResults;
 /*
 import de.unitrier.st.soposthistory.version.PostVersionList;
 

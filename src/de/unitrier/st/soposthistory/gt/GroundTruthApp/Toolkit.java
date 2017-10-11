@@ -1,4 +1,4 @@
-package de.unitrier.st.soposthistorygt.GroundTruthApp;
+package de.unitrier.st.soposthistory.gt.GroundTruthApp;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

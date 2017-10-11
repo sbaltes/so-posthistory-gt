@@ -5,7 +5,7 @@
     <name>SOPostHistoryGroundTruth</name>
     <groupId>de.unitrier.st.soposthistory</groupId>
     <artifactId>so-posthistory-gt</artifactId>
-    <version>0.1.12</version>
+    <version>0.2.0</version>
     <url>https://github.com/sotorrent/so-posthistory-gt</url>
 
     <distributionManagement>
@@ -121,7 +121,7 @@
 
     <build>
         <sourceDirectory>src</sourceDirectory>
-        <testSourceDirectory>src/de/unitrier/st/soposthistorygt/tests</testSourceDirectory>
+        <testSourceDirectory>src/de/unitrier/st/soposthistory/gt/tests</testSourceDirectory>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -137,7 +137,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.unitrier.st.soposthistorygt.GroundTruthApp.MainGroundTruthCreator</mainClass>
+                            <mainClass>de.unitrier.st.soposthistory.gt.GroundTruthApp.MainGroundTruthCreator</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -148,7 +148,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.unitrier.st.soposthistorygt.GroundTruthApp.MainGroundTruthCreator</mainClass>
+                            <mainClass>de.unitrier.st.soposthistory.gt.GroundTruthApp.MainGroundTruthCreator</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

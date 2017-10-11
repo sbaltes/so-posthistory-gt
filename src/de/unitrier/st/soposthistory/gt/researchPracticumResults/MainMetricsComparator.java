@@ -1,4 +1,4 @@
-package de.unitrier.st.soposthistorygt.researchPracticumResults;
+package de.unitrier.st.soposthistory.gt.researchPracticumResults;
 /*
 import org.apache.commons.lang3.time.StopWatch;
 

@@ -1,4 +1,4 @@
-package de.unitrier.st.soposthistorygt.util;
+package de.unitrier.st.soposthistory.gt.util;
 
 import java.util.logging.Logger;
 

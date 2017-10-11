@@ -1,16 +1,16 @@
-package de.unitrier.st.soposthistorygt.GroundTruthApp;
+package de.unitrier.st.soposthistory.gt.GroundTruthApp;
 
 import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
 import de.unitrier.st.soposthistory.blocks.PostBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistory.diffs.LineDiff;
 import de.unitrier.st.soposthistory.diffs.diff_match_patch;
+import de.unitrier.st.soposthistory.gt.util.BlockLifeSpan;
+import de.unitrier.st.soposthistory.gt.util.BlockLifeSpanSnapshot;
+import de.unitrier.st.soposthistory.gt.util.anchorsURLs.AnchorTextAndUrlHandler;
+import de.unitrier.st.soposthistory.gt.util.anchorsURLs.AnchorTextAndUrlPair;
 import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
-import de.unitrier.st.soposthistorygt.util.BlockLifeSpan;
-import de.unitrier.st.soposthistorygt.util.BlockLifeSpanSnapshot;
-import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlHandler;
-import de.unitrier.st.soposthistorygt.util.anchorsURLs.AnchorTextAndUrlPair;
 import net.miginfocom.swing.MigLayout;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
