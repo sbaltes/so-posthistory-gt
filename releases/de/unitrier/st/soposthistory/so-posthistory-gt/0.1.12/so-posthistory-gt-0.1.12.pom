@@ -137,7 +137,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.unitrier.st.soposthistorygt.GroundTruthApp.MainGroundTruthCreator</mainClass>
+                            <mainClass>de.unitrier.st.soposthistory.gt.GroundTruthApp.MainGroundTruthCreator</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -148,7 +148,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.unitrier.st.soposthistorygt.GroundTruthApp.MainGroundTruthCreator</mainClass>
+                            <mainClass>de.unitrier.st.soposthistory.gt.GroundTruthApp.MainGroundTruthCreator</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
