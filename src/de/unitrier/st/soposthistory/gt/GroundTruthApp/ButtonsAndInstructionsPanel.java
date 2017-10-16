@@ -697,10 +697,15 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 savedCommentsScrollPane.validate();
                 savedCommentsScrollPane.repaint();
 
-                // TODO: How to combine those three comparings in one row?
-                groundTruthCreator.blockLifeSpansExtractedFromClicks.sort(Comparator.comparingInt(o -> o.getFirst().getLocalId()));
-                groundTruthCreator.blockLifeSpansExtractedFromClicks.sort(Comparator.comparingInt(o -> o.getFirst().getVersion()));
-                //groundTruthCreator.blockLifeSpansExtractedFromClicks.sort(Comparator.comparingInt(o -> o.getType() == BlockLifeSpan.Type.textblock ? 0 : 1));
+                groundTruthCreator.blockLifeSpansExtractedFromClicks.sort((BlockLifeSpan b1, BlockLifeSpan b2) -> {
+                    if (b1.getFirst().getVersion() < b2.getFirst().getVersion()) {
+                        return -1;
+                    } else if (b1.getFirst().getVersion() > b2.getFirst().getVersion()) {
+                        return 1;
+                    } else {
+                        return Integer.compare(b1.getFirst().getLocalId(), b2.getFirst().getLocalId());
+                    }
+                });
 
                 groundTruthCreator.writeFileOfPostVersionList();
                 groundTruthCreator.postVersionList = null;

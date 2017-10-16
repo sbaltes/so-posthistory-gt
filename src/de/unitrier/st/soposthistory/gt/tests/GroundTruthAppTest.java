@@ -1,6 +1,15 @@
 package de.unitrier.st.soposthistory.gt.tests;
 
-// TODO: Lorik: create new (or copy old) classes for URL matching and normalization
+// TODO: Lorik: revise test cases
+
+import de.unitrier.st.soposthistory.gt.util.anchorsURLs.AnchorTextAndUrlHandler;
+import de.unitrier.st.soposthistory.gt.util.anchorsURLs.AnchorTextAndUrlPair;
+import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 class GroundTruthAppTest {
 
@@ -42,41 +51,24 @@ class GroundTruthAppTest {
             "[web]: https://stackoverflow.com/ \"Stack Overflow\" "+
             "<a href=\"http://example.com\" title=\"example\">example</a> + Have you ever seen <http://uni-trier.de>?";
 
-    //AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
-
-    /*
-    @Test
-    public void testGetURLsReferencedWithAnchors(){
-        LinkedList<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs = anchorTextAndUrlHandler.parseAndExtractAnchorsReferencesURLsInSquareAndRoundBrackets(inputText3_allInOneLine);
-        for (AnchorTextAndUrlPair anchorRefURLpair : allAnchorsRefsAndURLpairs) {
-            System.out.println(anchorRefURLpair);
-        }
-    }
-
-    @Test
-    public void testDeleteAllAnchorsReferencesURLsOf(){
-        LinkedList<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs = anchorTextAndUrlHandler.parseAndExtractAnchorsReferencesURLsInSquareAndRoundBrackets(inputText3_allInOneLine);
-        System.out.println(inputText3_allInOneLine);
-        String markdown = anchorTextAndUrlHandler.deleteAllAnchorsReferencesURLsOf(inputText3_allInOneLine, allAnchorsRefsAndURLpairs);
-        System.out.println(markdown);
-    }
+    AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
 
     @Test
     public void testGetAllAnchorsRefsAndURLpairs(){ // Test passed
         LinkedList<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs_allInOneLine = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText3_allInOneLine);
         LinkedList<AnchorTextAndUrlPair> allAnchorsRefsAndURLpairs_separatLines = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
 
-        assertEquals(allAnchorsRefsAndURLpairs_allInOneLine, allAnchorsRefsAndURLpairs_separatLines);
+        assertThat(allAnchorsRefsAndURLpairs_allInOneLine, is(allAnchorsRefsAndURLpairs_separatLines));
     }
 
     @Test
-    public void testAnchorTextNormalizer(){ // test passes
+    public void testAnchorTextNormalizer() { // test passes
         LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
 
-        String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLs(inputText2_separatLines, anchorTextAndUrlPairs);
-        String notNormalizedInput3 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLs(inputText3_allInOneLine, anchorTextAndUrlPairs);
+        String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForApp(inputText2_separatLines, anchorTextAndUrlPairs);
+        String notNormalizedInput3 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForApp(inputText3_allInOneLine, anchorTextAndUrlPairs);
 
-        assertEquals(notNormalizedInput3, normalizedInput2);
+        assertThat(notNormalizedInput3, is(normalizedInput2));
 
         /*
         Failes here:
@@ -94,82 +86,8 @@ class GroundTruthAppTest {
 
 
         Handling this causes more overhead. TODO : should we handle this?
-         */
-
-/*
-    @Test
-    public void testMarkupNormalizedAnchorsAndUrlsWithHTML(){
-        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
-        String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLs(inputText2_separatLines, anchorTextAndUrlPairs);
-        //String markedUpNormalizedInput2 = anchorTextAndUrlHandler.markupNormalizedAnchorsAndUrlsWithHTML(normalizedInput2, anchorTextAndUrlPairs);
-
-        System.out.println("input");
-        System.out.println(inputText2_separatLines);
-        System.out.println("normalized input: ");
-        System.out.println(normalizedInput2);
-        System.out.println(" ---------------------------------------------------------- ");
-        System.out.println("marked up normalized input: ");
-        //System.out.println(markedUpNormalizedInput2);
+        */
     }
-
-    @Test
-    public void showReasonOfNormalizationBeforeExtractingURLs(){
-        GroundTruth groundTruth = new GroundTruth();
-        groundTruth.init();
-
-        for(int i=0; i<groundTruth.p_9855338.getFirst().getTextBlocks().size(); i++){
-            System.out.println(groundTruth.p_9855338.getFirst().getTextBlocks().get(i).getContent());
-        }
-    }
-}
-*/
-
-//    @Test
-//    void testMarkupNormalizedAnchorsAndUrlsForDatabases(){
-//
-//        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(inputText2_separatLines);
-//        String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForDatabase(inputText2_separatLines, anchorTextAndUrlPairs);
-//
-//        System.out.println(inputText2_separatLines);
-//        System.out.println(" - ------------------------------------------------------- - ");
-//        System.out.println(normalizedInput2);
-//    }
-//
-//    @Test
-//    void testMarkupNormalizedAnchorsAndUrlsWithHTML_referenceWithTextBehindUrl(){
-//
-//        String input = "Consider using a [ManualResetEvent][1] to block the main thread at the end of its processing, and call Reset() on it once the timer's processing has finished.  If this is something that needs to run constantly, consider moving this into a service process instead of a console app.\n" +
-//                "\n" +
-//                "\n" +
-//                "  [1]: http://msdn.microsoft.com/en-us/library/system.threading.manualresetevent.aspx \"\"MSDN Reference\"\"";
-//
-//        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(input);
-//        String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForDatabase(input, anchorTextAndUrlPairs);
-//
-//        System.out.println(normalizedInput2);
-//    }
-//
-//    @Test
-//    void testMarkupNormalizedAnchorsAndUrlsWithHTML_referenceWithTextBehindUrl2(){
-//
-//        String input = "Consider using a [ManualResetEvent][1] to block the main thread at the end of its processing, and call Reset() on it once the timer's processing has finished.  If this is something that needs to run constantly, consider moving this into a service process instead of a console app.\n" +
-//                "\n" +
-//                "You can use something like Console.WriteLine() to block the main thread, so other background threads (like timer threads) will still work. You may also use an [AutoResetEvent][2] to block the execution, then (when you need to) you can call Set() method on that AutoResetEvent object to release the main thread. Also ensure that your reference to Timer object doesn't go out of scope and garbage collected.\n" +
-//                "\n" +
-//                "  [1]: http://msdn.microsoft.com/en-us/library/system.threading.manualresetevent.aspx \"\"MSDN Reference\"\"\n" +
-//                "  [2]: http://msdn.microsoft.com/en-us/library/system.threading.autoresetevent.aspx\n";
-//
-//        LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(input);
-//        String normalizedInput2 = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForDatabase(input, anchorTextAndUrlPairs);
-//
-//        System.out.println(" ############################################ ");
-//        System.out.println("before:\n");
-//        System.out.println(input);
-//        System.out.println(" -------------------------------------------- ");
-//        System.out.println("after:\n");
-//        System.out.println(normalizedInput2);
-//        System.out.println(" ############################################ ");
-//    }
 }
 
 

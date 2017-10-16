@@ -3,7 +3,6 @@ package de.unitrier.st.soposthistory.gt.util.anchorsURLs;
 import java.util.regex.Pattern;
 
 public class MarkdownLinkInline {
-    // TODO: adapt for include second matching group for title/label
 
     // Source: https://stackoverflow.com/editing-help#code
     // Example 1: Here's an inline link to [Google](http://www.google.com/).
