@@ -13,7 +13,8 @@ public class AnchorTextAndUrlPair {
 
 
     public enum AnchorRefUrlType{               // https://stackoverflow.com/editing-help#code
-        // spanClassWithAnchorTextAndDirectURL, // Here's a <span class="hi">[poorly-named link](http://www.google.com/ "Google")</span>. // TODO for Sebastian: ignore this case because it never appeared yet?
+        // ignore the following case because it is not present in SO dump 2016-12-16
+        // spanClassWithAnchorTextAndDirectURL, // Here's a <span class="hi">[poorly-named link](http://www.google.com/ "Google")</span>.
         type_markdownLinkBareTags,              // Have you ever seen <http://example.com>?
         type_anchorLink,                        // <a href="http://example.com" title="example">example</a>
         type_markdownLinkInline,                // e.g. Here's an inline link to [Google](http://www.google.com/).

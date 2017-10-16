@@ -3,7 +3,6 @@ package de.unitrier.st.soposthistory.gt.util.anchorsURLs;
 import java.util.regex.Pattern;
 
 public class MarkdownLinkReference {
-    // TODO: adapt for include second matching group for title/label
 
     // Source: https://stackoverflow.com/editing-help#code
     // Example 1: Here's a reference-style link to [Google][1].   ...     and later   ...     [1]: http://www.google.com/

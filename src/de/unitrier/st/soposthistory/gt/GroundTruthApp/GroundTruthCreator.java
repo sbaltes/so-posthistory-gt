@@ -674,7 +674,7 @@ public class GroundTruthCreator extends JFrame{
 
         this.addComponentListener(new ComponentAdapter() { // https://stackoverflow.com/questions/2303305/window-resize-event
             @Override
-            public void componentResized(ComponentEvent e) { // TODO: This works but not so well. Is there a foolproof solution for this?
+            public void componentResized(ComponentEvent e) { // TODO: Connections are not redrawn on resize
                 super.componentResized(e);
                 paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion);
                 GroundTruthCreator.WIDTH = e.getComponent().getWidth();
@@ -733,8 +733,6 @@ public class GroundTruthCreator extends JFrame{
         scrollPaneIncludingMainPanel.addMouseWheelListener(e -> paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion));
     }
 
-    // TODO: write a script which reads all saved files and compares them with metrics
-    // TODO for Sebastian: Is this ok? Saving each post version list in a separate file instead of saving them in one single file
     void writeFileOfPostVersionList(){
         try {
             File file = new File(path + "/completed_" + blockLifeSpansExtractedFromClicks.getFirst().getFirst().getPostId() + ".csv");
