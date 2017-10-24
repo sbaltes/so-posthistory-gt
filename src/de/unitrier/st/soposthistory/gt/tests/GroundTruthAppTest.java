@@ -13,6 +13,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 class GroundTruthAppTest {
 
+    // TODO: these test cases still fail...
+
     private String inputText1 = "You can force Android to hide the virtual keyboard using the [InputMethodManager][1], calling [`hideSoftInputFromWindow`][2], passing in the token of the window containing your focused view.\n" +
             "\n" +
             "    // Check if no view has focus:\n" +
