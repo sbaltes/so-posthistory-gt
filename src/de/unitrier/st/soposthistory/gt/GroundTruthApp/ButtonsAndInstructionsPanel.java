@@ -1,9 +1,9 @@
 package de.unitrier.st.soposthistory.gt.GroundTruthApp;
 
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
-import de.unitrier.st.soposthistory.gt.util.BlockLifeSpan;
-import de.unitrier.st.soposthistory.gt.util.BlockLifeSpanSnapshot;
 import de.unitrier.st.soposthistory.gt.util.GTLogger;
+import de.unitrier.st.soposthistory.util.BlockLifeSpan;
+import de.unitrier.st.soposthistory.util.BlockLifeSpanSnapshot;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 import net.miginfocom.swing.MigLayout;
 

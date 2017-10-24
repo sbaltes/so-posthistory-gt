@@ -5,10 +5,9 @@ import de.unitrier.st.soposthistory.blocks.PostBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistory.diffs.LineDiff;
 import de.unitrier.st.soposthistory.diffs.diff_match_patch;
-import de.unitrier.st.soposthistory.gt.util.BlockLifeSpan;
-import de.unitrier.st.soposthistory.gt.util.BlockLifeSpanSnapshot;
-import de.unitrier.st.soposthistory.gt.util.anchorsURLs.AnchorTextAndUrlHandler;
-import de.unitrier.st.soposthistory.gt.util.anchorsURLs.AnchorTextAndUrlPair;
+import de.unitrier.st.soposthistory.urls.AnchorTextAndUrlHandler;
+import de.unitrier.st.soposthistory.util.BlockLifeSpan;
+import de.unitrier.st.soposthistory.util.BlockLifeSpanSnapshot;
 import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 import net.miginfocom.swing.MigLayout;
@@ -32,6 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.unitrier.st.soposthistory.history.PostHistoryIterator.logger;
+import static de.unitrier.st.soposthistory.urls.AnchorTextAndUrlHandler.normalizeURLsInTextBlocksOfAllVersions;
 
 
 public class GroundTruthCreator extends JFrame{
@@ -427,28 +427,6 @@ public class GroundTruthCreator extends JFrame{
             }
         }
     }
-
-    public static void normalizeURLsInTextBlocksOfAllVersions(PostVersionList postVersionList, AnchorTextAndUrlHandler anchorTextAndUrlHandler){
-        if(postVersionList == null)
-            return;
-
-        for (PostVersion postVersion : postVersionList) {
-            String textBlocksConcatenated = postVersion.getMergedTextBlockContent();
-            LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(textBlocksConcatenated);
-
-            for(TextBlockVersion textBlock : postVersion.getTextBlocks()){
-                String markdownText = textBlock.getContent();
-                markdownText = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForApp(markdownText, anchorTextAndUrlPairs);
-
-                if (markdownText.trim().isEmpty()){ // https://stackoverflow.com/a/3745432
-                    postVersion.getPostBlocks().remove(textBlock);
-                }else{
-                    textBlock.setContent(markdownText);
-                }
-            }
-        }
-    }
-
 
     private String getDiffsOfClickedBlocks(int leftVersion, int leftBlockPosition, int rightVersion, int rightBlockPosition, boolean blockIsInstanceOfTextBlockVersion){
 
