@@ -7,12 +7,10 @@ import de.unitrier.st.soposthistory.diffs.LineDiff;
 import de.unitrier.st.soposthistory.diffs.diff_match_patch;
 import de.unitrier.st.soposthistory.util.PostBlockLifeSpan;
 import de.unitrier.st.soposthistory.util.PostBlockLifeSpanVersion;
-import de.unitrier.st.soposthistory.urls.*;
 import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 import net.miginfocom.swing.MigLayout;
 import org.commonmark.node.Node;
-import org.commonmark.node.Text;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
@@ -125,10 +123,6 @@ public class GroundTruthCreator extends JFrame{
         mainPanel.add(navigatorAtBottomLabel, BorderLayout.SOUTH);
 
         mainPanel.setBackground(Color.BLACK);
-
-        // removeEmptyTextAndCodeBlocks(postVersionList);
-        // mergeConsecutiveBlocksOfSameType();
-
 
         setListenersToFrameAndPanel();
 
