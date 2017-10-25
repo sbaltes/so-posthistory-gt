@@ -124,7 +124,7 @@ public class GroundTruthCreator extends JFrame{
 
         mainPanel.setBackground(Color.BLACK);
 
-        Link.normalizeLinks(postVersionList);
+        postVersionList.normalizeLinks();
         // removeEmptyTextAndCodeBlocks(postVersionList);
         // mergeConsecutiveBlocksOfSameType();
 
