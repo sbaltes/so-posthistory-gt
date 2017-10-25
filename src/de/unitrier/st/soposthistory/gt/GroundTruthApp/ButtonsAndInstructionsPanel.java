@@ -1,9 +1,11 @@
 package de.unitrier.st.soposthistory.gt.GroundTruthApp;
 
+import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
-import de.unitrier.st.soposthistory.gt.util.BlockLifeSpan;
-import de.unitrier.st.soposthistory.gt.util.BlockLifeSpanSnapshot;
+import de.unitrier.st.soposthistory.util.PostBlockLifeSpan;
+import de.unitrier.st.soposthistory.util.PostBlockLifeSpanVersion;
 import de.unitrier.st.soposthistory.gt.util.GTLogger;
+import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 import net.miginfocom.swing.MigLayout;
 
@@ -604,19 +606,31 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 for(int i = 0; i<groundTruthCreator.allCreatedBlockPairsByClicks.size(); i++){
                     for(int j = 0; j<groundTruthCreator.allCreatedBlockPairsByClicks.get(i).size(); j++){
 
-                        BlockLifeSpanSnapshot leftBlockLifeSpanSnapshot
-                                = new BlockLifeSpanSnapshot(
-                                groundTruthCreator.postVersionList.get(i).getPostId(),
-                                groundTruthCreator.postVersionList.get(i).getPostHistoryId(),
-                                i+1,
-                                groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).leftBlockPosition+1);
+                        int postBlockTypeId = groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).clickedBlockIsInstanceOfTextBlockVersion ? TextBlockVersion.postBlockTypeId : CodeBlockVersion.postBlockTypeId;
 
-                        BlockLifeSpanSnapshot rightBlockLifeSpanSnapshot
-                                = new BlockLifeSpanSnapshot(
-                                groundTruthCreator.postVersionList.get(i).getPostId(),
-                                groundTruthCreator.postVersionList.get(i+1).getPostHistoryId(),
-                                i+2,
-                                groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).rightBlockPosition+1);
+                        PostVersion leftPostVersion = groundTruthCreator.postVersionList.get(i);
+                        int leftVersion = i+1;
+                        int leftLocalId = groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).leftBlockPosition+1;
+
+                        PostVersion rightPostVersion = groundTruthCreator.postVersionList.get(i+1);
+                        int rightVersion = i+2;
+                        int rightLocalId = groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).rightBlockPosition+1;
+
+                        PostBlockLifeSpanVersion leftBlockLifeSpanSnapshot = new PostBlockLifeSpanVersion(
+                                leftPostVersion.getPostId(),
+                                leftPostVersion.getPostHistoryId(),
+                                postBlockTypeId,
+                                leftVersion,
+                                leftLocalId
+                        );
+
+                        PostBlockLifeSpanVersion rightBlockLifeSpanSnapshot = new PostBlockLifeSpanVersion(
+                                rightPostVersion.getPostId(),
+                                rightPostVersion.getPostHistoryId(),
+                                postBlockTypeId,
+                                rightVersion,
+                                rightLocalId
+                        );
 
                         boolean leftSnapshotfoundInAChain = false;
                         for(int k = 0; k<groundTruthCreator.blockLifeSpansExtractedFromClicks.size(); k++){
@@ -628,7 +642,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                         }
 
                         if(!leftSnapshotfoundInAChain){
-                            BlockLifeSpan newBlockLifeSpan = new BlockLifeSpan(groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).clickedBlockIsInstanceOfTextBlockVersion ? BlockLifeSpan.Type.textblock : BlockLifeSpan.Type.codeblock);
+                            PostBlockLifeSpan newBlockLifeSpan = new PostBlockLifeSpan(leftPostVersion.getPostId(), postBlockTypeId);
                             newBlockLifeSpan.add(leftBlockLifeSpanSnapshot);
                             newBlockLifeSpan.add(rightBlockLifeSpanSnapshot);
                             groundTruthCreator.blockLifeSpansExtractedFromClicks.add(newBlockLifeSpan);
@@ -642,10 +656,14 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 //if(groundTruthCreator.postVersionList != null)
                 for(int i=0; i<groundTruthCreator.postVersionList.size(); i++){
                     for(int j=0; j<groundTruthCreator.postVersionList.get(i).getPostBlocks().size(); j++){
-                        BlockLifeSpanSnapshot tmpBlockLifeSpanSnapshot
-                                = new BlockLifeSpanSnapshot(
+                        int postId = groundTruthCreator.postVersionList.get(i).getPostBlocks().get(j).getPostId();
+                        int postBlockTypeId = groundTruthCreator.postVersionList.get(i).getPostBlocks().get(j) instanceof TextBlockVersion ? TextBlockVersion.postBlockTypeId : CodeBlockVersion.postBlockTypeId;
+
+                        PostBlockLifeSpanVersion tmpBlockLifeSpanSnapshot
+                                = new PostBlockLifeSpanVersion(
                                 groundTruthCreator.postVersionList.get(i).getPostId(),
                                 groundTruthCreator.postVersionList.get(i).getPostHistoryId(),
+                                postBlockTypeId,
                                 i+1,
                                 j+1
                         );
@@ -663,9 +681,10 @@ class ButtonsAndInstructionsPanel extends JPanel {
                         }
 
                         if(!tmpBlockLifeSpanSnapshotHasBeenFound){
-                            BlockLifeSpan tmpBlockLifeSpan
-                                    = new BlockLifeSpan(
-                                    groundTruthCreator.postVersionList.get(i).getPostBlocks().get(j) instanceof TextBlockVersion ? BlockLifeSpan.Type.textblock : BlockLifeSpan.Type.codeblock
+                            PostBlockLifeSpan tmpBlockLifeSpan
+                                    = new PostBlockLifeSpan(
+                                    postId,
+                                    postBlockTypeId
                             );
                             tmpBlockLifeSpan.add(tmpBlockLifeSpanSnapshot);
                             groundTruthCreator.blockLifeSpansExtractedFromClicks.add(tmpBlockLifeSpan);
@@ -697,7 +716,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 savedCommentsScrollPane.validate();
                 savedCommentsScrollPane.repaint();
 
-                groundTruthCreator.blockLifeSpansExtractedFromClicks.sort((BlockLifeSpan b1, BlockLifeSpan b2) -> {
+                groundTruthCreator.blockLifeSpansExtractedFromClicks.sort((PostBlockLifeSpan b1, PostBlockLifeSpan b2) -> {
                     if (b1.getFirst().getVersion() < b2.getFirst().getVersion()) {
                         return -1;
                     } else if (b1.getFirst().getVersion() > b2.getFirst().getVersion()) {

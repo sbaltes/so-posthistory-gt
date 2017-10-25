@@ -5,14 +5,14 @@ import de.unitrier.st.soposthistory.blocks.PostBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistory.diffs.LineDiff;
 import de.unitrier.st.soposthistory.diffs.diff_match_patch;
-import de.unitrier.st.soposthistory.gt.util.BlockLifeSpan;
-import de.unitrier.st.soposthistory.gt.util.BlockLifeSpanSnapshot;
-import de.unitrier.st.soposthistory.gt.util.anchorsURLs.AnchorTextAndUrlHandler;
-import de.unitrier.st.soposthistory.gt.util.anchorsURLs.AnchorTextAndUrlPair;
+import de.unitrier.st.soposthistory.util.PostBlockLifeSpan;
+import de.unitrier.st.soposthistory.util.PostBlockLifeSpanVersion;
+import de.unitrier.st.soposthistory.urls.*;
 import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 import net.miginfocom.swing.MigLayout;
 import org.commonmark.node.Node;
+import org.commonmark.node.Text;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
@@ -70,11 +70,9 @@ public class GroundTruthCreator extends JFrame{
     enum LinkConnectionDisplayModes {edges, films}
     static LinkConnectionDisplayModes linkConnectionDisplayMode = LinkConnectionDisplayModes.films;
 
-    private AnchorTextAndUrlHandler anchorTextAndUrlHandler = new AnchorTextAndUrlHandler();
-
     LinkedList<LinkedList<BlockPair>> allCreatedBlockPairsByClicks = new LinkedList<>();
     LinkedList<LinkedList<BlockPair>> allAutomaticSetBlockPairs = new LinkedList<>();
-    LinkedList<BlockLifeSpan> blockLifeSpansExtractedFromClicks = new LinkedList<>();
+    LinkedList<PostBlockLifeSpan> blockLifeSpansExtractedFromClicks = new LinkedList<>();
 
     Robot bot = null;
 
@@ -126,7 +124,7 @@ public class GroundTruthCreator extends JFrame{
 
         mainPanel.setBackground(Color.BLACK);
 
-        normalizeURLsInTextBlocksOfAllVersions(postVersionList, anchorTextAndUrlHandler);
+        Link.normalizeLinks(postVersionList);
         // removeEmptyTextAndCodeBlocks(postVersionList);
         // mergeConsecutiveBlocksOfSameType();
 
@@ -344,8 +342,8 @@ public class GroundTruthCreator extends JFrame{
                             unmarkLastClickedBlock();
 
                         }else if(lastClickedBlockIsInstanceOfTextBlockVersion != clickedBlockIsInstanceOfTextBlockVersion){
-                            String blockType_currentBlock = String.valueOf((clickedBlockIsInstanceOfTextBlockVersion) ? BlockLifeSpan.Type.textblock : BlockLifeSpan.Type.codeblock);
-                            String blockType_lastClickedBlock = String.valueOf((lastClickedBlockIsInstanceOfTextBlockVersion) ? BlockLifeSpan.Type.textblock : BlockLifeSpan.Type.codeblock);
+                            String blockType_currentBlock = String.valueOf((clickedBlockIsInstanceOfTextBlockVersion) ? TextBlockVersion.postBlockTypeId : CodeBlockVersion.postBlockTypeId);
+                            String blockType_lastClickedBlock = String.valueOf((lastClickedBlockIsInstanceOfTextBlockVersion) ? TextBlockVersion.postBlockTypeId : CodeBlockVersion.postBlockTypeId);
                             logger.log(
                                     Level.WARNING,
                                     "User tried to link a block of type " + blockType_currentBlock + " in version " + (currentInternVersion+1) + " at position " + (finalCurrentBlockPosition+1)
@@ -427,28 +425,6 @@ public class GroundTruthCreator extends JFrame{
             }
         }
     }
-
-    public static void normalizeURLsInTextBlocksOfAllVersions(PostVersionList postVersionList, AnchorTextAndUrlHandler anchorTextAndUrlHandler){
-        if(postVersionList == null)
-            return;
-
-        for (PostVersion postVersion : postVersionList) {
-            String textBlocksConcatenated = postVersion.getMergedTextBlockContent();
-            LinkedList<AnchorTextAndUrlPair> anchorTextAndUrlPairs = anchorTextAndUrlHandler.extractAllAnchorsRefsAndURLpairs(textBlocksConcatenated);
-
-            for(TextBlockVersion textBlock : postVersion.getTextBlocks()){
-                String markdownText = textBlock.getContent();
-                markdownText = anchorTextAndUrlHandler.normalizeAnchorsRefsAndURLsForApp(markdownText, anchorTextAndUrlPairs);
-
-                if (markdownText.trim().isEmpty()){ // https://stackoverflow.com/a/3745432
-                    postVersion.getPostBlocks().remove(textBlock);
-                }else{
-                    textBlock.setContent(markdownText);
-                }
-            }
-        }
-    }
-
 
     private String getDiffsOfClickedBlocks(int leftVersion, int leftBlockPosition, int rightVersion, int rightBlockPosition, boolean blockIsInstanceOfTextBlockVersion){
 
@@ -762,11 +738,11 @@ public class GroundTruthCreator extends JFrame{
 
         output.append("Format: (Version, Position)" + "\n");
 
-        for (BlockLifeSpan blockLifeSpansCreatedByClick : blockLifeSpansExtractedFromClicks) {
-            if (blockLifeSpansCreatedByClick.getType() == BlockLifeSpan.Type.textblock) {
+        for (PostBlockLifeSpan blockLifeSpansCreatedByClick : blockLifeSpansExtractedFromClicks) {
+            if (blockLifeSpansCreatedByClick.getPostBlockTypeId() == TextBlockVersion.postBlockTypeId) {
                 numberOfSnapshots_text += blockLifeSpansCreatedByClick.size();
                 numberOfBlockLifeSpans_text++;
-            } else if (blockLifeSpansCreatedByClick.getType() == BlockLifeSpan.Type.codeblock) {
+            } else if (blockLifeSpansCreatedByClick.getPostBlockTypeId() == CodeBlockVersion.postBlockTypeId) {
                 numberOfSnapshots_code += blockLifeSpansCreatedByClick.size();
                 numberOfBlockLifeSpans_code++;
             }
@@ -799,8 +775,8 @@ public class GroundTruthCreator extends JFrame{
             int tmpPosition = Integer.parseInt(tokens.nextToken().replaceAll("\\s", "").replace("pos:", ""));
             String tmpComment = tokens.nextToken().replace("</font>", "").replaceAll("<font.*>", "");
 
-            for (BlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
-                for (BlockLifeSpanSnapshot blockLifeSpanSnapshot : blockLifeSpan) {
+            for (PostBlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
+                for (PostBlockLifeSpanVersion blockLifeSpanSnapshot : blockLifeSpan) {
                     if (blockLifeSpanSnapshot.getVersion() == tmpVersion && blockLifeSpanSnapshot.getLocalId() == tmpPosition) {
                         if(blockLifeSpanSnapshot.getComment().isEmpty())
                             blockLifeSpanSnapshot.setComment(tmpComment);
@@ -811,7 +787,7 @@ public class GroundTruthCreator extends JFrame{
             }
         }
 
-        for (BlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
+        for (PostBlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
             for (int j = 0; j < blockLifeSpan.size(); j++) {
 
                 if (j > 0)
@@ -822,11 +798,11 @@ public class GroundTruthCreator extends JFrame{
             }
         }
 
-        for (BlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
+        for (PostBlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
             for (int j = 0; j < blockLifeSpan.size(); j++) {
                 output.append("\"").append(blockLifeSpan.getFirst().getPostId()).append("\"").append("; ");
                 output.append("\"").append(blockLifeSpan.get(j).getPostHistoryId()).append("\"").append("; ");
-                output.append("\"").append(blockLifeSpan.getType() == BlockLifeSpan.Type.textblock ? 1 : 2).append("\"").append("; ");
+                output.append("\"").append(blockLifeSpan.getPostBlockTypeId()).append("\"").append("; ");
                 output.append("\"").append(blockLifeSpan.get(j).getLocalId()).append("\"").append("; ");
                 output.append("\"").append(blockLifeSpan.get(j).getPredLocalId()).append("\"").append("; ");
                 output.append("\"").append(blockLifeSpan.get(j).getSuccLocalId()).append("\"").append("; ");
