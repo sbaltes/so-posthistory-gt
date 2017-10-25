@@ -107,6 +107,8 @@ public class GroundTruthCreator extends JFrame{
                 allCreatedBlockPairsByClicks.add(new LinkedList<>());
                 allAutomaticSetBlockPairs.add(new LinkedList<>());
             }
+
+            postVersionList.normalizeLinks();
         }
 
         this.setSize(new Dimension(initialWidth, initialHeight));
@@ -124,7 +126,6 @@ public class GroundTruthCreator extends JFrame{
 
         mainPanel.setBackground(Color.BLACK);
 
-        postVersionList.normalizeLinks();
         // removeEmptyTextAndCodeBlocks(postVersionList);
         // mergeConsecutiveBlocksOfSameType();
 
