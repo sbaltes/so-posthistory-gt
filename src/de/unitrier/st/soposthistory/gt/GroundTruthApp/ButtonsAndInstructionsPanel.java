@@ -227,8 +227,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.dispose();
             System.gc();
 
-            groundTruthCreator.postVersionList = new PostVersionList();
-            groundTruthCreator.postVersionList.readFromCSV(GroundTruthCreator.path + "/", postId, 2);
+            groundTruthCreator.postVersionList = PostVersionList.readFromCSV(GroundTruthCreator.path + "/", postId, 2);
 
             groundTruthCreator = new GroundTruthCreator(
                     groundTruthCreator.postVersionList,
@@ -693,7 +692,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 }
 
 
-                groundTruthCreator.postVersionList = new PostVersionList();
+                // groundTruthCreator.postVersionList = new PostVersionList();
 
                 groundTruthCreator.versionLeftPanel.removeAll();
                 groundTruthCreator.versionRightPanel.removeAll();

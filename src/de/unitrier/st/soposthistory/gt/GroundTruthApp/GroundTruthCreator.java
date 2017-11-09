@@ -759,7 +759,7 @@ public class GroundTruthCreator extends JFrame{
     }
 
     private String exportBlockLinksToCSV(){
-        StringBuilder output = new StringBuilder("PostId; PostHistoryId; PostBlockTypeId; LocalId; PredLocalId; SuccLocalId; Comment" + "\n");
+        StringBuilder output = new StringBuilder("PostId;PostHistoryId;PostBlockTypeId;LocalId;PredLocalId;SuccLocalId;Comment" + "\n");
 
         LinkedList<String> comments = buttonsAtTopPanel.comments;
 
@@ -795,13 +795,13 @@ public class GroundTruthCreator extends JFrame{
 
         for (PostBlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
             for (int j = 0; j < blockLifeSpan.size(); j++) {
-                output.append("\"").append(blockLifeSpan.getFirst().getPostId()).append("\"").append("; ");
-                output.append("\"").append(blockLifeSpan.get(j).getPostHistoryId()).append("\"").append("; ");
-                output.append("\"").append(blockLifeSpan.getPostBlockTypeId()).append("\"").append("; ");
-                output.append("\"").append(blockLifeSpan.get(j).getLocalId()).append("\"").append("; ");
-                output.append("\"").append(blockLifeSpan.get(j).getPredLocalId()).append("\"").append("; ");
-                output.append("\"").append(blockLifeSpan.get(j).getSuccLocalId()).append("\"").append("; ");
-                output.append("\"").append(blockLifeSpan.get(j).getComment()).append("\"").append("; ");
+                output.append("\"").append(blockLifeSpan.getFirst().getPostId()).append("\"").append(";");
+                output.append("\"").append(blockLifeSpan.get(j).getPostHistoryId()).append("\"").append(";");
+                output.append("\"").append(blockLifeSpan.getPostBlockTypeId()).append("\"").append(";");
+                output.append("\"").append(blockLifeSpan.get(j).getLocalId()).append("\"").append(";");
+                output.append("\"").append(blockLifeSpan.get(j).getPredLocalId()).append("\"").append(";");
+                output.append("\"").append(blockLifeSpan.get(j).getSuccLocalId()).append("\"").append(";");
+                output.append("\"").append(blockLifeSpan.get(j).getComment()).append("\"").append(";");
                 output.append("\n");
             }
         }

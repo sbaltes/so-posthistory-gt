@@ -37,7 +37,7 @@
         <dependency>
             <groupId>de.unitrier.st.soposthistory</groupId>
             <artifactId>so-posthistory-extractor</artifactId>
-            <version>1.6.1</version>
+            <version>1.6.3</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.atlassian.commonmark/commonmark -->
         <dependency>
