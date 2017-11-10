@@ -10,6 +10,9 @@ import de.unitrier.st.soposthistory.gt.PostBlockLifeSpanVersion;
 import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.QuoteMode;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -19,9 +22,9 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
@@ -57,7 +60,7 @@ public class GroundTruthCreator extends JFrame{
     /***** Intern variables *****/
     int currentLeftVersion = 0;
 
-    final static String path = "postVersionLists";
+    final static Path path = Paths.get("postVersionLists");
 
     private int lastClickedInternVersion = -1;
     private int lastClickedPositionOfABlock = -1;
@@ -713,23 +716,6 @@ public class GroundTruthCreator extends JFrame{
         scrollPaneIncludingMainPanel.addMouseWheelListener(e -> paintAllConnectionsBetweenClickedBlocksOfCurrentTwoVersions(currentLeftVersion));
     }
 
-    void writeFileOfPostVersionList(){
-        try {
-            File file = new File(path + "/completed_" + blockLifeSpansExtractedFromClicks.getFirst().getFirst().getPostId() + ".csv");
-            if(file.exists())
-                logger.log(Level.INFO, "File already exists. File with id=" + blockLifeSpansExtractedFromClicks.getFirst().getFirst().getPostId() + " will be overwritten.");
-
-            PrintWriter pw = new PrintWriter(file);
-            pw.write(exportBlockLinksToCSV());
-
-            pw.flush();
-            pw.close();
-
-        } catch (FileNotFoundException e) {
-            logger.log(Level.WARNING, "Failed to create or to write file " + path);
-        }
-    }
-
     private String printBlockLifeSpans(){
 
         StringBuilder output = new StringBuilder();
@@ -767,8 +753,7 @@ public class GroundTruthCreator extends JFrame{
         return output.toString();
     }
 
-    private String exportBlockLinksToCSV(){
-        StringBuilder output = new StringBuilder("PostId;PostHistoryId;PostBlockTypeId;LocalId;PredLocalId;SuccLocalId;Comment" + "\n");
+    void exportBlockLinksToCSV(Path outputPath){
 
         LinkedList<String> comments = buttonsAtTopPanel.comments;
 
@@ -802,20 +787,36 @@ public class GroundTruthCreator extends JFrame{
             }
         }
 
-        for (PostBlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
-            for (int j = 0; j < blockLifeSpan.size(); j++) {
-                output.append("\"").append(blockLifeSpan.getFirst().getPostId()).append("\"").append(";");
-                output.append("\"").append(blockLifeSpan.get(j).getPostHistoryId()).append("\"").append(";");
-                output.append("\"").append(blockLifeSpan.getPostBlockTypeId()).append("\"").append(";");
-                output.append("\"").append(blockLifeSpan.get(j).getLocalId()).append("\"").append(";");
-                output.append("\"").append(blockLifeSpan.get(j).getPredLocalId()).append("\"").append(";");
-                output.append("\"").append(blockLifeSpan.get(j).getSuccLocalId()).append("\"").append(";");
-                output.append("\"").append(blockLifeSpan.get(j).getComment()).append("\"").append(";");
-                output.append("\n");
+        try (CSVPrinter csvPrinter = new CSVPrinter(new FileWriter(outputPath.toString()), CSVFormat.DEFAULT
+                .withHeader("PostId", "PostHistoryId", "PostBlockTypeId", "LocalId", "PredLocalId", "SuccLocalId", "Comment")
+                .withDelimiter(';')
+                .withQuote('"')
+                .withQuoteMode(QuoteMode.MINIMAL) // TODO: Adjust with right quote mode
+                .withEscape('\\')
+                .withNullString("null"))) {
+
+            for (PostBlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
+
+                for (PostBlockLifeSpanVersion postBlockLifeSpan : blockLifeSpan) {
+                    csvPrinter.printRecord(
+                            blockLifeSpan.getFirst().getPostId(),
+                            postBlockLifeSpan.getPostHistoryId(),
+                            blockLifeSpan.getPostBlockTypeId(),
+                            postBlockLifeSpan.getLocalId(),
+                            postBlockLifeSpan.getPredLocalId(),
+                            postBlockLifeSpan.getSuccLocalId(),
+                            postBlockLifeSpan.getComment()
+                    );
+                }
             }
+
+            csvPrinter.flush();
+            csvPrinter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return output.toString();
     }
 
     private String commonmarkMarkUp(String markdownText){   // https://github.com/atlassian/commonmark-java

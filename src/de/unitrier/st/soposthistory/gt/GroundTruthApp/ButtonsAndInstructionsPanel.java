@@ -228,7 +228,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.dispose();
             System.gc();
 
-            groundTruthCreator.postVersionList = PostVersionList.readFromCSV(Paths.get(GroundTruthCreator.path), postId, 2);
+            groundTruthCreator.postVersionList = PostVersionList.readFromCSV(GroundTruthCreator.path, postId, 2);
 
             groundTruthCreator = new GroundTruthCreator(
                     groundTruthCreator.postVersionList,
@@ -294,7 +294,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
 
-                File file = new File(GroundTruthCreator.path);
+                File file = new File(GroundTruthCreator.path.toString());
 
                 File[] allPostVersionListsInFolder = file.listFiles(new FilenameFilter() {   //https://stackoverflow.com/questions/4852531/find-files-in-a-folder-using-java
                     public boolean accept(File dir, String name) {
@@ -448,7 +448,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 File[] postVersionList = null;
                 File[] completedCSV = null;
                 try {
-                    file = new File(GroundTruthCreator.path);
+                    file = new File(GroundTruthCreator.path.toString());
                     postVersionList = file.listFiles((dir, name) -> name.matches(finalRequestedPostId + "\\.csv"));  // //https://stackoverflow.com/questions/4852531/find-files-in-a-folder-using-java
                     completedCSV = file.listFiles((dir, name) -> name.matches("completed_" + finalRequestedPostId + "\\.csv")); // //https://stackoverflow.com/questions/4852531/find-files-in-a-folder-using-java
                 }catch (Exception ignored){
@@ -727,7 +727,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                     }
                 });
 
-                groundTruthCreator.writeFileOfPostVersionList();
+                groundTruthCreator.exportBlockLinksToCSV(Paths.get(GroundTruthCreator.path.toString(), "completed_" + groundTruthCreator.blockLifeSpansExtractedFromClicks.getFirst().getFirst().getPostId() + ".csv"));
                 groundTruthCreator.postVersionList = null;
                 comments.clear();
                 groundTruthCreator.displayCurrentTwoVersionsAndNavigator();
