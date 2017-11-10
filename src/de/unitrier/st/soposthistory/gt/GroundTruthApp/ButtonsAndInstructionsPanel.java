@@ -2,8 +2,8 @@ package de.unitrier.st.soposthistory.gt.GroundTruthApp;
 
 import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
-import de.unitrier.st.soposthistory.util.PostBlockLifeSpan;
-import de.unitrier.st.soposthistory.util.PostBlockLifeSpanVersion;
+import de.unitrier.st.soposthistory.gt.PostBlockLifeSpan;
+import de.unitrier.st.soposthistory.gt.PostBlockLifeSpanVersion;
 import de.unitrier.st.soposthistory.gt.util.GTLogger;
 import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
@@ -227,7 +228,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.dispose();
             System.gc();
 
-            groundTruthCreator.postVersionList = PostVersionList.readFromCSV(GroundTruthCreator.path + "/", postId, 2);
+            groundTruthCreator.postVersionList = PostVersionList.readFromCSV(Paths.get(GroundTruthCreator.path), postId, 2);
 
             groundTruthCreator = new GroundTruthCreator(
                     groundTruthCreator.postVersionList,
@@ -619,7 +620,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                                 leftPostVersion.getPostId(),
                                 leftPostVersion.getPostHistoryId(),
                                 postBlockTypeId,
-                                leftVersion,
+                                //leftVersion,
                                 leftLocalId
                         );
 
@@ -627,7 +628,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                                 rightPostVersion.getPostId(),
                                 rightPostVersion.getPostHistoryId(),
                                 postBlockTypeId,
-                                rightVersion,
+                                //rightVersion,
                                 rightLocalId
                         );
 
@@ -663,7 +664,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                                 groundTruthCreator.postVersionList.get(i).getPostId(),
                                 groundTruthCreator.postVersionList.get(i).getPostHistoryId(),
                                 postBlockTypeId,
-                                i+1,
+                                // i+1,
                                 j+1
                         );
 
@@ -671,7 +672,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                         for(int k = 0; k<groundTruthCreator.blockLifeSpansExtractedFromClicks.size(); k++){
                             for(int l = 0; l<groundTruthCreator.blockLifeSpansExtractedFromClicks.get(k).size(); l++) {
 
-                                if (groundTruthCreator.blockLifeSpansExtractedFromClicks.get(k).get(l).getVersion() == tmpBlockLifeSpanSnapshot.getVersion()
+                                if (Objects.equals(groundTruthCreator.postHistoryIdToVersion.get(groundTruthCreator.blockLifeSpansExtractedFromClicks.get(k).get(l).getPostHistoryId()), groundTruthCreator.postHistoryIdToVersion.get(tmpBlockLifeSpanSnapshot.getPostHistoryId()))
                                         && groundTruthCreator.blockLifeSpansExtractedFromClicks.get(k).get(l).getLocalId() == tmpBlockLifeSpanSnapshot.getLocalId()) {
                                     tmpBlockLifeSpanSnapshotHasBeenFound = true;
                                     break;
@@ -715,10 +716,11 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 savedCommentsScrollPane.validate();
                 savedCommentsScrollPane.repaint();
 
+
                 groundTruthCreator.blockLifeSpansExtractedFromClicks.sort((PostBlockLifeSpan b1, PostBlockLifeSpan b2) -> {
-                    if (b1.getFirst().getVersion() < b2.getFirst().getVersion()) {
+                    if (groundTruthCreator.postHistoryIdToVersion.get(b1.getFirst().getPostHistoryId()) < groundTruthCreator.postHistoryIdToVersion.get(b2.getFirst().getPostHistoryId())) {
                         return -1;
-                    } else if (b1.getFirst().getVersion() > b2.getFirst().getVersion()) {
+                    } else if (groundTruthCreator.postHistoryIdToVersion.get(b1.getFirst().getPostHistoryId()) > groundTruthCreator.postHistoryIdToVersion.get(b2.getFirst().getPostHistoryId())) {
                         return 1;
                     } else {
                         return Integer.compare(b1.getFirst().getLocalId(), b2.getFirst().getLocalId());

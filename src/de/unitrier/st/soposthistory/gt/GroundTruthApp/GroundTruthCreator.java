@@ -5,8 +5,8 @@ import de.unitrier.st.soposthistory.blocks.PostBlockVersion;
 import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
 import de.unitrier.st.soposthistory.diffs.LineDiff;
 import de.unitrier.st.soposthistory.diffs.diff_match_patch;
-import de.unitrier.st.soposthistory.util.PostBlockLifeSpan;
-import de.unitrier.st.soposthistory.util.PostBlockLifeSpanVersion;
+import de.unitrier.st.soposthistory.gt.PostBlockLifeSpan;
+import de.unitrier.st.soposthistory.gt.PostBlockLifeSpanVersion;
 import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
 import net.miginfocom.swing.MigLayout;
@@ -22,9 +22,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -76,6 +75,9 @@ public class GroundTruthCreator extends JFrame{
 
     Polygon film = new Polygon();
 
+    List<Integer> postHistoryIDs;
+    Map<Integer, Integer> postHistoryIdToVersion;
+
 
     /***** Constructor arguments *****/
     PostVersionList postVersionList;
@@ -101,6 +103,13 @@ public class GroundTruthCreator extends JFrame{
         }
 
         if(postVersionList != null){
+            //postHistoryIDs = postVersionList.getPostHistoryIds();
+            postHistoryIdToVersion = new HashMap<>();
+            for (int i=0; i<postVersionList.size(); i++){
+                postHistoryIdToVersion.put(postVersionList.get(i).getPostHistoryId(), i+1);
+            }
+
+
             for(int i=0; i<postVersionList.size(); i++){
                 allCreatedBlockPairsByClicks.add(new LinkedList<>());
                 allAutomaticSetBlockPairs.add(new LinkedList<>());
@@ -772,7 +781,7 @@ public class GroundTruthCreator extends JFrame{
 
             for (PostBlockLifeSpan blockLifeSpan : blockLifeSpansExtractedFromClicks) {
                 for (PostBlockLifeSpanVersion blockLifeSpanSnapshot : blockLifeSpan) {
-                    if (blockLifeSpanSnapshot.getVersion() == tmpVersion && blockLifeSpanSnapshot.getLocalId() == tmpPosition) {
+                    if (postHistoryIdToVersion.get(blockLifeSpanSnapshot.getPostHistoryId()) == tmpVersion && blockLifeSpanSnapshot.getLocalId() == tmpPosition) {
                         if(blockLifeSpanSnapshot.getComment().isEmpty())
                             blockLifeSpanSnapshot.setComment(tmpComment);
                         else
