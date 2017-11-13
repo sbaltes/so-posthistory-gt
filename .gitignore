@@ -45,3 +45,4 @@ target/
 ########
 PostId_VersionCount_SO_17-06.csv
 PostId_VersionCount_SO_Java_17-06.csv
+logs/*
