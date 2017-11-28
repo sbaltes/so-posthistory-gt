@@ -5,7 +5,7 @@
     <name>SOPostHistoryGroundTruth</name>
     <groupId>de.unitrier.st.soposthistory</groupId>
     <artifactId>so-posthistory-gt</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
     <url>https://github.com/sotorrent/so-posthistory-gt</url>
 
     <properties>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>de.unitrier.st.soposthistory</groupId>
             <artifactId>so-posthistory-extractor</artifactId>
-            <version>1.7.2</version>
+            <version>1.7.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.atlassian.commonmark/commonmark -->
         <dependency>
