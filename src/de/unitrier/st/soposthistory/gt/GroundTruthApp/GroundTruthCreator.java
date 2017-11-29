@@ -9,6 +9,7 @@ import de.unitrier.st.soposthistory.gt.PostBlockLifeSpan;
 import de.unitrier.st.soposthistory.gt.PostBlockLifeSpanVersion;
 import de.unitrier.st.soposthistory.version.PostVersion;
 import de.unitrier.st.soposthistory.version.PostVersionList;
+import de.unitrier.st.util.Util;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -28,13 +29,20 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static de.unitrier.st.soposthistory.history.PostHistoryIterator.logger;
+class GroundTruthCreator extends JFrame{
+    private static Logger logger;
 
-
-public class GroundTruthCreator extends JFrame{
+    static {
+        try {
+            logger = Util.getClassLogger(GroundTruthCreator.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /***** Swing components *****/
     JPanel mainPanel = new JPanel(new BorderLayout());
