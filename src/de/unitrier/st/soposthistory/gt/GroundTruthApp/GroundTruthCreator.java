@@ -1,15 +1,5 @@
 package de.unitrier.st.soposthistory.gt.GroundTruthApp;
 
-import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
-import de.unitrier.st.soposthistory.blocks.PostBlockVersion;
-import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
-import de.unitrier.st.soposthistory.diffs.LineDiff;
-import de.unitrier.st.soposthistory.diffs.diff_match_patch;
-import de.unitrier.st.soposthistory.gt.PostBlockLifeSpan;
-import de.unitrier.st.soposthistory.gt.PostBlockLifeSpanVersion;
-import de.unitrier.st.soposthistory.version.PostVersion;
-import de.unitrier.st.soposthistory.version.PostVersionList;
-import de.unitrier.st.util.Util;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -17,6 +7,16 @@ import org.apache.commons.csv.QuoteMode;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.sotorrent.posthistoryextractor.blocks.CodeBlockVersion;
+import org.sotorrent.posthistoryextractor.blocks.PostBlockVersion;
+import org.sotorrent.posthistoryextractor.blocks.TextBlockVersion;
+import org.sotorrent.posthistoryextractor.diffs.LineDiff;
+import org.sotorrent.posthistoryextractor.diffs.diff_match_patch;
+import org.sotorrent.posthistoryextractor.gt.PostBlockLifeSpan;
+import org.sotorrent.posthistoryextractor.gt.PostBlockLifeSpanVersion;
+import org.sotorrent.posthistoryextractor.version.PostVersion;
+import org.sotorrent.posthistoryextractor.version.PostVersionList;
+import org.sotorrent.util.LogUtils;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -38,7 +38,7 @@ class GroundTruthCreator extends JFrame{
 
     static {
         try {
-            logger = Util.getClassLogger(GroundTruthCreator.class);
+            logger = LogUtils.getClassLogger(GroundTruthCreator.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

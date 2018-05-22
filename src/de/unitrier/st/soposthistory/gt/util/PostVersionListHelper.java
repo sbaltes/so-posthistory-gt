@@ -1,8 +1,8 @@
 package de.unitrier.st.soposthistory.gt.util;
 
-import de.unitrier.st.soposthistory.blocks.PostBlockVersion;
-import de.unitrier.st.soposthistory.version.PostVersion;
-import de.unitrier.st.soposthistory.version.PostVersionList;
+import org.sotorrent.posthistoryextractor.blocks.PostBlockVersion;
+import org.sotorrent.posthistoryextractor.version.PostVersion;
+import org.sotorrent.posthistoryextractor.version.PostVersionList;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,13 +1,14 @@
 package de.unitrier.st.soposthistory.gt.GroundTruthApp;
 
-import de.unitrier.st.soposthistory.blocks.CodeBlockVersion;
-import de.unitrier.st.soposthistory.blocks.TextBlockVersion;
-import de.unitrier.st.soposthistory.gt.PostBlockLifeSpan;
-import de.unitrier.st.soposthistory.gt.PostBlockLifeSpanVersion;
 import de.unitrier.st.soposthistory.gt.util.GTLogger;
-import de.unitrier.st.soposthistory.version.PostVersion;
-import de.unitrier.st.soposthistory.version.PostVersionList;
 import net.miginfocom.swing.MigLayout;
+import org.sotorrent.posthistoryextractor.blocks.CodeBlockVersion;
+import org.sotorrent.posthistoryextractor.blocks.TextBlockVersion;
+import org.sotorrent.posthistoryextractor.gt.PostBlockLifeSpan;
+import org.sotorrent.posthistoryextractor.gt.PostBlockLifeSpanVersion;
+import org.sotorrent.posthistoryextractor.history.Posts;
+import org.sotorrent.posthistoryextractor.version.PostVersion;
+import org.sotorrent.posthistoryextractor.version.PostVersionList;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -228,7 +229,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
             groundTruthCreator.dispose();
             System.gc();
 
-            groundTruthCreator.postVersionList = PostVersionList.readFromCSV(GroundTruthCreator.path, postId, 2);
+            groundTruthCreator.postVersionList = PostVersionList.readFromCSV(GroundTruthCreator.path, postId, Posts.ANSWER_ID);
 
             groundTruthCreator = new GroundTruthCreator(
                     groundTruthCreator.postVersionList,
@@ -606,7 +607,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 for(int i = 0; i<groundTruthCreator.allCreatedBlockPairsByClicks.size(); i++){
                     for(int j = 0; j<groundTruthCreator.allCreatedBlockPairsByClicks.get(i).size(); j++){
 
-                        int postBlockTypeId = groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).clickedBlockIsInstanceOfTextBlockVersion ? TextBlockVersion.postBlockTypeId : CodeBlockVersion.postBlockTypeId;
+                        byte postBlockTypeId = groundTruthCreator.allCreatedBlockPairsByClicks.get(i).get(j).clickedBlockIsInstanceOfTextBlockVersion ? TextBlockVersion.postBlockTypeId : CodeBlockVersion.postBlockTypeId;
 
                         PostVersion leftPostVersion = groundTruthCreator.postVersionList.get(i);
                         int leftVersion = i+1;
@@ -657,7 +658,7 @@ class ButtonsAndInstructionsPanel extends JPanel {
                 for(int i=0; i<groundTruthCreator.postVersionList.size(); i++){
                     for(int j=0; j<groundTruthCreator.postVersionList.get(i).getPostBlocks().size(); j++){
                         int postId = groundTruthCreator.postVersionList.get(i).getPostBlocks().get(j).getPostId();
-                        int postBlockTypeId = groundTruthCreator.postVersionList.get(i).getPostBlocks().get(j) instanceof TextBlockVersion ? TextBlockVersion.postBlockTypeId : CodeBlockVersion.postBlockTypeId;
+                        byte postBlockTypeId = groundTruthCreator.postVersionList.get(i).getPostBlocks().get(j) instanceof TextBlockVersion ? TextBlockVersion.postBlockTypeId : CodeBlockVersion.postBlockTypeId;
 
                         PostBlockLifeSpanVersion tmpBlockLifeSpanSnapshot
                                 = new PostBlockLifeSpanVersion(

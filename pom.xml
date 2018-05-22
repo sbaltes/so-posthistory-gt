@@ -2,11 +2,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>SOPostHistoryGroundTruth</name>
-    <groupId>de.unitrier.st.soposthistory</groupId>
-    <artifactId>so-posthistory-gt</artifactId>
-    <version>0.3.5</version>
-    <url>https://github.com/sotorrent/so-posthistory-gt</url>
+    <name>PostHistoryGroundTruth</name>
+    <groupId>org.sotorrent</groupId>
+    <artifactId>posthistory-gt</artifactId>
+    <version>0.4.0</version>
+    <url>https://github.com/sotorrent/posthistory-gt</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,23 +16,15 @@
     <distributionManagement>
         <repository>
             <id>releases</id>
-            <url>file://${basedir}/releases/</url>
+            <url>file://${basedir}/../maven/</url>
         </repository>
     </distributionManagement>
 
     <repositories>
         <!-- see also https://stackoverflow.com/a/14013645 -->
         <repository>
-            <id>soposthistoryextractor</id>
-            <url>https://raw.github.com/sotorrent/so-posthistory-extractor/master/releases/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>util</id>
-            <url>https://raw.github.com/sotorrent/util/master/releases/</url>
+            <id>sotorrent</id>
+            <url>https://raw.github.com/sotorrent/maven/master/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
@@ -43,15 +35,15 @@
     <dependencies>
         <!-- https://github.com/sotorrent/so-posthistory-extractor/tree/master/releases/ -->
         <dependency>
-            <groupId>de.unitrier.st.soposthistory</groupId>
-            <artifactId>so-posthistory-extractor</artifactId>
-            <version>1.8.6</version>
+            <groupId>org.sotorrent</groupId>
+            <artifactId>posthistory-extractor</artifactId>
+            <version>3.0.2</version>
         </dependency>
         <!-- https://github.com/sotorrent/util/tree/master/releases/ -->
         <dependency>
-            <groupId>de.unitrier.st</groupId>
+            <groupId>org.sotorrent</groupId>
             <artifactId>util</artifactId>
-            <version>1.0.4</version>
+            <version>3.0.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.atlassian.commonmark/commonmark -->
         <dependency>
