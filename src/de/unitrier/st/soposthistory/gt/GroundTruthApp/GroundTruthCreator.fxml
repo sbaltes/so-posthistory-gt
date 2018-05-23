@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unitrier.st.soposthistory.gt.GroundTruthApp.Controller">
+   <children>
+       <MenuBar>
+          <menus>
+              <Menu mnemonicParsing="false" text="File">
+                 <items>
+                     <MenuItem mnemonicParsing="false" text="Reset all connections" />
+                     <MenuItem fx:id="MenuItem_loadPostViaPostID" mnemonicParsing="false" onAction="#loadPostViaPostID" text="Load post via post ID" />
+                     <MenuItem mnemonicParsing="false" text="Load post via post ID with connections" />
+                     <MenuItem mnemonicParsing="false" text="Load random post (from same directory)" />
+                     <MenuItem mnemonicParsing="false" text="Save and export connections" />
+                     <MenuItem mnemonicParsing="false" text="Close" />
+                 </items>
+              </Menu>
+              <Menu mnemonicParsing="false" text="Edit">
+                 <items>
+                     <MenuItem mnemonicParsing="false" text="Add comment" />
+                     <MenuItem mnemonicParsing="false" text="Remove comment" />
+                 </items>
+              </Menu>
+              <Menu mnemonicParsing="false" text="Help">
+                 <items>
+                     <MenuItem mnemonicParsing="false" text="About" />
+                 </items>
+              </Menu>
+          </menus>
+       </MenuBar>
+       <Pane fx:id="leftPane1" prefHeight="96.0" prefWidth="802.0">
+          <children>
+              <TableView layoutX="223.0" layoutY="-1.0" prefHeight="55.0" prefWidth="578.0">
+                  <columns>
+                      <TableColumn prefWidth="75.0" text="postID" />
+                      <TableColumn prefWidth="95.0" text="versionNumber" />
+                      <TableColumn prefWidth="95.0" text="commentID" />
+                      <TableColumn prefWidth="95.0" text="content" />
+                  </columns>
+              </TableView>
+              <Button layoutX="14.0" layoutY="17.0" mnemonicParsing="false" text="Back" fx:id="buttonBack" onAction="#buttonBackClicked" />
+              <Button layoutX="70.0" layoutY="17.0" mnemonicParsing="false" text="Next" fx:id="buttonNext" onAction="#buttonNextClicked" />
+          </children>
+       </Pane>
+       <ScrollPane prefHeight="516.0" prefWidth="802.0">
+          <content>
+              <HBox prefHeight="469.0" prefWidth="797.0">
+                 <children>
+                     <VBox fx:id="leftVBox" prefHeight="401.0" prefWidth="325.0" />
+                     <Pane fx:id="connectionsPane" prefHeight="200.0" prefWidth="200.0" />
+                     <VBox fx:id="rightVBox" prefHeight="401.0" prefWidth="325.0" spacing="10.0" />
+                 </children>
+              </HBox>
+          </content>
+       </ScrollPane>
+       <Label prefHeight="32.0" prefWidth="798.0" text="Post ID: - ### number of versions: - ### you are now comparing the versions - and -" fx:id="bottomLabel"/>
+   </children>
+</VBox>
