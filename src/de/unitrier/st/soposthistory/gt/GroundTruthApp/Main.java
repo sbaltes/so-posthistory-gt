@@ -14,7 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        String absolutePathOfFXML = String.valueOf(Paths.get("src", "de", "unitrier", "st", "soposthistory", "gt", "groundTruthAppFX", "GroundTruthCreator.fxml").toAbsolutePath());
+        String absolutePathOfFXML = String.valueOf(Paths.get("src", "de", "unitrier", "st", "soposthistory", "gt", "groundTruthApp", "GroundTruthCreator.fxml").toAbsolutePath());
         Parent root = FXMLLoader.load(new URL("file:///" + absolutePathOfFXML));
         primaryStage.setTitle("Ground Truth Creator");
         primaryStage.setScene(new Scene(root));
