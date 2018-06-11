@@ -22,15 +22,22 @@ import org.sotorrent.posthistoryextractor.version.PostVersionList;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Controller {
 
+    // TODO: Tooltips
+    // TODO: button next: pop up if not all connections are set
+    // TODO: button prev: scroll to top if necessary
+    // TODO: Add function: random post
+    // TODO: Add and remove comment
+    // TODO: save: question if sure, remind if not all connections are set; extract block pairs
+    // TODO: connect blocks automatically
+
     public MenuItem MenuItem_selectRootOfPostVersionLists;
     public TextField textFieldPostId;
+
     /* GUI items */
     @FXML
     Button buttonBack,
@@ -51,12 +58,13 @@ public class Controller {
     private PostVersionList postVersionList;
     private int currentLeftVersion = 0;
     private Path pathToSelectedRootOfPostVersionLists;
-    private List<PostVersionList> postVersionLists = new ArrayList<>();
+    private File[] postVersionListsInCSVFiles;
 
     private PostBlockWebView lastClickedBlock1 = null,
                              lastClickedBlock2 = null;
 
     private List<BlockPair> blockPairs = new LinkedList<>();
+
 
     private enum BlockBorderColorStatus {blockConnectionNotSet, blockConnectionSet, blockMarked}
 
@@ -73,23 +81,15 @@ public class Controller {
     @FXML
     public void selectRootOfPostVersionLists() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        if (pathToSelectedRootOfPostVersionLists != null) {
+        try {
             directoryChooser.setInitialDirectory(pathToSelectedRootOfPostVersionLists.toFile());
-        }
+        } catch (Exception ignored){}
         directoryChooser.setTitle("Select directory of your Post Version Lists");
         File selectedDirectory = directoryChooser.showDialog(new Stage());
         pathToSelectedRootOfPostVersionLists = Paths.get(String.valueOf(selectedDirectory));
 
-        File[] files = pathToSelectedRootOfPostVersionLists.toFile().listFiles();
-        if (files == null) {
-            return;
-        }
+        postVersionListsInCSVFiles = pathToSelectedRootOfPostVersionLists.toFile().listFiles((directory, name) -> name.matches("\\d+\\.csv"));
 
-        for (File file: files) {
-            if (file.getName().matches(Pattern.compile("\\d+\\.csv").pattern())) {
-                postVersionLists.add(PostVersionList.readFromCSV(Paths.get(file.getParent()), Integer.valueOf(file.getName().replace(".csv", "")), (byte) 2));
-            }
-        }
     }
 
     @FXML
@@ -109,9 +109,9 @@ public class Controller {
 
     @FXML
     private void loadPostViaPostID(int postId) {
-        for (PostVersionList postVersionList : postVersionLists) {
-            if (postId == postVersionList.getPostId()) {
-                this.postVersionList = postVersionList;
+        for (File file : postVersionListsInCSVFiles) {
+            if (postId == Integer.valueOf(file.getName().replace(".csv", ""))) {
+                this.postVersionList = PostVersionList.readFromCSV(Paths.get(file.getParent()), Integer.valueOf(file.getName().replace(".csv", "")), (byte) 2);
                 loadPostVersionBlocksInGUI();
                 return;
             }
@@ -203,7 +203,7 @@ public class Controller {
                 ||  lastClickedBlock2.isLeftVersion && !lastClickedBlock1.isLeftVersion)) {
 
             // swap to make internal use easier
-            if (lastClickedBlock1.postBlock.getPostHistoryId() < lastClickedBlock2.postBlock.getPostHistoryId()) {
+            if (lastClickedBlock1.postBlock.getPostHistoryId() > lastClickedBlock2.postBlock.getPostHistoryId()) {
                 PostBlockWebView tmp = lastClickedBlock1;
                 lastClickedBlock1 = lastClickedBlock2;
                 lastClickedBlock2 = tmp;
@@ -276,7 +276,7 @@ public class Controller {
         return convertedMarkdownText;
     }
 
-    private String convertMarkdownToHTMLViaCommonmarkMark(String markdownText){   // https://github.com/atlassian/commonmark-java
+    static String convertMarkdownToHTMLViaCommonmarkMark(String markdownText){   // https://github.com/atlassian/commonmark-java
         Parser parser = Parser.builder().build();
         Node document = parser.parse(markdownText);
         HtmlRenderer renderer = HtmlRenderer.builder().build();
@@ -344,8 +344,9 @@ public class Controller {
         for (BlockPair blockPair : blockPairs) {
             if (blockPair.leftVersion == currentLeftVersion) {
                 blockPair.leftBlock.webView.getEngine().loadContent(convertMarkdownToHTML(blockPair.leftBlock.postBlock, BlockBorderColorStatus.blockConnectionSet));
-                blockPair.rightBlock.webView.getEngine().loadContent(convertMarkdownToHTML(blockPair.rightBlock.postBlock, BlockBorderColorStatus.blockConnectionSet));
-                Polygon polygon = paintPolygonOfConnections(blockPair.leftBlock, blockPair.rightBlock);
+                // blockPair.rightBlock.webView.getEngine().loadContent(convertMarkdownToHTML(blockPair.rightBlock.postBlock, BlockBorderColorStatus.blockConnectionSet));
+                blockPair.rightBlock.webView.getEngine().loadContent(wrapPostBlockWithBorderColor(blockPair.computeDiffs(), blockPair.rightBlock.postBlock.getPostBlockTypeId() == 1 ? colorForTextWithSetConnection : blockPair.rightBlock.postBlock.getPostBlockTypeId() == 2 ? colorForCodeWithSetConnection : Color.gray(0)));
+                Polygon polygon = paintPolygonOfConnections(blockPair.rightBlock, blockPair.leftBlock);
                 connectionsPane.getChildren().add(polygon);
             }
         }
