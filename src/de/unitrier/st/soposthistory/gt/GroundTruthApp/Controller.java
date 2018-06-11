@@ -5,12 +5,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.web.WebEngine;
-import javafx.stage.FileChooser;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -21,16 +22,16 @@ import org.sotorrent.posthistoryextractor.version.PostVersionList;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Controller {
 
+    public MenuItem MenuItem_selectRootOfPostVersionLists;
+    public TextField textFieldPostId;
     /* GUI items */
-    @FXML
-    MenuItem MenuItem_loadPostViaPostID;
     @FXML
     Button buttonBack,
             buttonNext;
@@ -49,9 +50,11 @@ public class Controller {
     /* intern variables */
     private PostVersionList postVersionList;
     private int currentLeftVersion = 0;
+    private Path pathToSelectedRootOfPostVersionLists;
+    private List<PostVersionList> postVersionLists = new ArrayList<>();
 
     private PostBlockWebView lastClickedBlock1 = null,
-            lastClickedBlock2 = null;
+                             lastClickedBlock2 = null;
 
     private List<BlockPair> blockPairs = new LinkedList<>();
 
@@ -66,26 +69,55 @@ public class Controller {
 
 
     /* GUI */
+
     @FXML
-    public void loadPostViaPostID() {
-        loadPostVersionListViaFileChooser();
-        loadPostVersionBlocksInGUI();
-    }
+    public void selectRootOfPostVersionLists() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        if (pathToSelectedRootOfPostVersionLists != null) {
+            directoryChooser.setInitialDirectory(pathToSelectedRootOfPostVersionLists.toFile());
+        }
+        directoryChooser.setTitle("Select directory of your Post Version Lists");
+        File selectedDirectory = directoryChooser.showDialog(new Stage());
+        pathToSelectedRootOfPostVersionLists = Paths.get(String.valueOf(selectedDirectory));
 
-    private void loadPostVersionListViaFileChooser() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select post to set connections");
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
-        Path pathToSelectedFile = Paths.get(String.valueOf(selectedFile));
+        File[] files = pathToSelectedRootOfPostVersionLists.toFile().listFiles();
+        if (files == null) {
+            return;
+        }
 
-        Pattern pattern = Pattern.compile("(.*?)(\\d+)(\\.csv)");
-        Matcher matcher = pattern.matcher(selectedFile.toString());
-
-        if (matcher.find()) {
-            Integer postId = Integer.valueOf(matcher.group(2));
-            postVersionList = PostVersionList.readFromCSV(pathToSelectedFile.getParent(), postId, (byte) 2);
+        for (File file: files) {
+            if (file.getName().matches(Pattern.compile("\\d+\\.csv").pattern())) {
+                postVersionLists.add(PostVersionList.readFromCSV(Paths.get(file.getParent()), Integer.valueOf(file.getName().replace(".csv", "")), (byte) 2));
+            }
         }
     }
+
+    @FXML
+    private void loadButtonClicked() {
+        try {
+            blockPairs.clear();
+            lastClickedBlock1 = null;
+            lastClickedBlock2 = null;
+
+            String postId = textFieldPostId.getText();
+            loadPostViaPostID(Integer.valueOf(postId));
+
+        } catch (Exception e) {
+            System.err.println("Post ID is either invalid or does not exist in the selected (sub)folders");
+        }
+    }
+
+    @FXML
+    private void loadPostViaPostID(int postId) {
+        for (PostVersionList postVersionList : postVersionLists) {
+            if (postId == postVersionList.getPostId()) {
+                this.postVersionList = postVersionList;
+                loadPostVersionBlocksInGUI();
+                return;
+            }
+        }
+    }
+
 
     private void loadPostVersionBlocksInGUI() {
         resetGUI();
@@ -115,7 +147,7 @@ public class Controller {
         for (PostBlockVersion postBlock : postBlocks) {
             PostBlockWebView postBlockWebView = new PostBlockWebView(postBlock, isLeftSide, postBlock.getPostHistoryId());
 
-            String convertedMarkdownText = convertMarkdownToHTML (postBlock, getBlockPairOfClickedPostBlock(postBlockWebView) == -1 ? BlockBorderColorStatus.blockConnectionNotSet : BlockBorderColorStatus.blockConnectionSet);
+            String convertedMarkdownText = convertMarkdownToHTML(postBlock, getBlockPairOfClickedPostBlock(postBlockWebView) == -1 ? BlockBorderColorStatus.blockConnectionNotSet : BlockBorderColorStatus.blockConnectionSet);
 
             WebEngine webEngine = postBlockWebView.webView.getEngine();
             webEngine.loadContent(convertedMarkdownText);
@@ -265,6 +297,10 @@ public class Controller {
                                                 (int)(color.getGreen()*255),
                                                 (int)(color.getBlue()*255)) + ";\n" +
                         "}\n" +
+                        "body {\n" +                                                     // no scrollbars for webviews
+                        "    overflow-x: hidden;\n" +
+                        "    overflow-y: hidden;\n" +
+                        "}" +
                     "</style>\n" +
                 "</head>" +
                 "<body>" +
