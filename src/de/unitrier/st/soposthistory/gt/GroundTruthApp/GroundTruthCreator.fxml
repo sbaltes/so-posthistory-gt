@@ -12,9 +12,7 @@
               <Menu mnemonicParsing="false" text="File">
                  <items>
                      <MenuItem mnemonicParsing="false" text="Reset all connections" />
-                     <MenuItem fx:id="MenuItem_loadPostViaPostID" mnemonicParsing="false" onAction="#loadPostViaPostID" text="Load post via post ID" />
-                     <MenuItem mnemonicParsing="false" text="Load post via post ID with connections" />
-                     <MenuItem mnemonicParsing="false" text="Load random post (from same directory)" />
+                     <MenuItem fx:id="MenuItem_selectRootOfPostVersionLists" mnemonicParsing="false" onAction="#selectRootOfPostVersionLists" text="Select root of Post Version Lists" />
                      <MenuItem mnemonicParsing="false" text="Save and export connections" />
                      <MenuItem mnemonicParsing="false" text="Close" />
                  </items>
@@ -32,18 +30,23 @@
               </Menu>
           </menus>
        </MenuBar>
-       <Pane fx:id="leftPane1" prefHeight="96.0" prefWidth="802.0">
+       <Pane fx:id="leftPane1" prefHeight="150.0" prefWidth="802.0">
           <children>
-              <TableView layoutX="223.0" layoutY="-1.0" prefHeight="55.0" prefWidth="578.0">
+              <TableView layoutX="336.0" layoutY="-1.0" prefHeight="82.0" prefWidth="465.0">
                   <columns>
-                      <TableColumn prefWidth="75.0" text="postID" />
-                      <TableColumn prefWidth="95.0" text="versionNumber" />
-                      <TableColumn prefWidth="95.0" text="commentID" />
-                      <TableColumn prefWidth="95.0" text="content" />
+                      <TableColumn prefWidth="52.0" text="postID" />
+                      <TableColumn prefWidth="89.0" text="postHistoryID" />
+                  <TableColumn prefWidth="46.0" text="localID" />
+                      <TableColumn prefWidth="73.0" text="commentID" />
+                      <TableColumn prefWidth="298.0" text="content" />
                   </columns>
               </TableView>
-              <Button layoutX="14.0" layoutY="17.0" mnemonicParsing="false" text="Back" fx:id="buttonBack" onAction="#buttonBackClicked" />
-              <Button layoutX="70.0" layoutY="17.0" mnemonicParsing="false" text="Next" fx:id="buttonNext" onAction="#buttonNextClicked" />
+              <Button fx:id="buttonBack" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" onAction="#buttonBackClicked" text="Back" />
+              <Button fx:id="buttonNext" layoutX="71.0" layoutY="50.0" mnemonicParsing="false" onAction="#buttonNextClicked" text="Next" />
+            <TextField fx:id="textFieldPostId" layoutX="56.0" layoutY="9.0" prefHeight="25.0" prefWidth="70.0" />
+            <Button fx:id="buttonLoad" layoutX="14.0" layoutY="9.0" mnemonicParsing="false" onAction="#loadButtonClicked" text="Load" />
+            <CheckBox layoutX="150.0" layoutY="13.0" mnemonicParsing="false" text="Show connections of metric:" />
+            <ChoiceBox layoutX="150.0" layoutY="38.0" prefWidth="150.0" />
           </children>
        </Pane>
        <ScrollPane prefHeight="516.0" prefWidth="802.0">
@@ -57,6 +60,6 @@
               </HBox>
           </content>
        </ScrollPane>
-       <Label prefHeight="32.0" prefWidth="798.0" text="Post ID: - ### number of versions: - ### you are now comparing the versions - and -" fx:id="bottomLabel"/>
+       <Label fx:id="bottomLabel" prefHeight="32.0" prefWidth="798.0" text="Post ID: - ### number of versions: - ### you are now comparing the versions - and -" />
    </children>
 </VBox>
