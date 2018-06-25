@@ -22,8 +22,10 @@ import org.sotorrent.posthistoryextractor.version.PostVersionList;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Controller {
 
@@ -58,7 +60,7 @@ public class Controller {
     private PostVersionList postVersionList;
     private int currentLeftVersion = 0;
     private Path pathToSelectedRootOfPostVersionLists;
-    private File[] postVersionListsInCSVFiles;
+    private Map<Integer, File> postVersionLists;
 
     private PostBlockWebView lastClickedBlock1 = null,
                              lastClickedBlock2 = null;
@@ -70,8 +72,8 @@ public class Controller {
 
     private final Color colorForTextNotClicked = new Color(128./255, 212./255, 255./255, 1.0);
     private final Color colorForCodeNotClicked = new Color(255./255, 204./255, 128./255, 1.0);
-    private final Color colorForTextWithSetConnection = new Color(196./255, 236./255, 255./255, 1.0);
-    private final Color colorForCodeWithSetConnection = new Color(255./255, 233./255, 199./255, 1.0);
+    private final Color colorForTextWithSetConnection = new Color(196./255, 236./255, 255./255, 0.5);
+    private final Color colorForCodeWithSetConnection = new Color(255./255, 233./255, 199./255, 0.5);
     private final Color colorForClickedBlock = new Color(255./255, 114./255, 252./255, 1.0);
 
 
@@ -88,8 +90,15 @@ public class Controller {
         File selectedDirectory = directoryChooser.showDialog(new Stage());
         pathToSelectedRootOfPostVersionLists = Paths.get(String.valueOf(selectedDirectory));
 
-        postVersionListsInCSVFiles = pathToSelectedRootOfPostVersionLists.toFile().listFiles((directory, name) -> name.matches("\\d+\\.csv"));
+        File[] postVersionListsInCSVFiles = pathToSelectedRootOfPostVersionLists.toFile().listFiles((directory, name) -> name.matches("\\d+\\.csv"));
+        if (postVersionListsInCSVFiles == null) {
+            return;
+        }
 
+        postVersionLists = new HashMap<>();
+        for (File postVersionListsInCSVFile : postVersionListsInCSVFiles) {
+            postVersionLists.put(Integer.valueOf(postVersionListsInCSVFile.getName().replace(".csv", "")), postVersionListsInCSVFile);
+        }
     }
 
     @FXML
@@ -99,22 +108,12 @@ public class Controller {
             lastClickedBlock1 = null;
             lastClickedBlock2 = null;
 
-            String postId = textFieldPostId.getText();
-            loadPostViaPostID(Integer.valueOf(postId));
+            int postId = Integer.valueOf(textFieldPostId.getText());
+            this.postVersionList = PostVersionList.readFromCSV(Paths.get(String.valueOf(postVersionLists.get(postId))).getParent(), postId, (byte) 2);
+            loadPostVersionBlocksInGUI();
 
         } catch (Exception e) {
             System.err.println("Post ID is either invalid or does not exist in the selected (sub)folders");
-        }
-    }
-
-    @FXML
-    private void loadPostViaPostID(int postId) {
-        for (File file : postVersionListsInCSVFiles) {
-            if (postId == Integer.valueOf(file.getName().replace(".csv", ""))) {
-                this.postVersionList = PostVersionList.readFromCSV(Paths.get(file.getParent()), Integer.valueOf(file.getName().replace(".csv", "")), (byte) 2);
-                loadPostVersionBlocksInGUI();
-                return;
-            }
         }
     }
 
@@ -297,10 +296,10 @@ public class Controller {
                                                 (int)(color.getGreen()*255),
                                                 (int)(color.getBlue()*255)) + ";\n" +
                         "}\n" +
-                        "body {\n" +                                                     // no scrollbars for webviews
-                        "    overflow-x: hidden;\n" +
-                        "    overflow-y: hidden;\n" +
-                        "}" +
+                        //"body {\n" +                                                     // no scrollbars for webviews
+                        //"    overflow-x: hidden;\n" +
+                        //"    overflow-y: hidden;\n" +
+                        //"}" +
                     "</style>\n" +
                 "</head>" +
                 "<body>" +
@@ -344,8 +343,10 @@ public class Controller {
         for (BlockPair blockPair : blockPairs) {
             if (blockPair.leftVersion == currentLeftVersion) {
                 blockPair.leftBlock.webView.getEngine().loadContent(convertMarkdownToHTML(blockPair.leftBlock.postBlock, BlockBorderColorStatus.blockConnectionSet));
-                // blockPair.rightBlock.webView.getEngine().loadContent(convertMarkdownToHTML(blockPair.rightBlock.postBlock, BlockBorderColorStatus.blockConnectionSet));
-                blockPair.rightBlock.webView.getEngine().loadContent(wrapPostBlockWithBorderColor(blockPair.computeDiffs(), blockPair.rightBlock.postBlock.getPostBlockTypeId() == 1 ? colorForTextWithSetConnection : blockPair.rightBlock.postBlock.getPostBlockTypeId() == 2 ? colorForCodeWithSetConnection : Color.gray(0)));
+                blockPair.rightBlock.webView.getEngine().loadContent(
+                        wrapPostBlockWithBorderColor(
+                                Util.computeDiffs(blockPair),
+                                blockPair.rightBlock.postBlock.getPostBlockTypeId() == 1 ? colorForTextWithSetConnection : blockPair.rightBlock.postBlock.getPostBlockTypeId() == 2 ? colorForCodeWithSetConnection : Color.gray(0)));
                 Polygon polygon = paintPolygonOfConnections(blockPair.rightBlock, blockPair.leftBlock);
                 connectionsPane.getChildren().add(polygon);
             }
