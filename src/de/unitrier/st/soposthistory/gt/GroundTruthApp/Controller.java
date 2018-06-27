@@ -36,6 +36,8 @@ public class Controller {
     // TODO: Add and remove comment
     // TODO: save: question if sure, remind if not all connections are set; extract block pairs
     // TODO: connect blocks automatically
+    // TODO: show only differences between computed metric and ground truth
+    // TODO: Padding on the left side is always missing at the moment fehlt immer
 
     public MenuItem MenuItem_selectRootOfPostVersionLists;
     public TextField textFieldPostId;
