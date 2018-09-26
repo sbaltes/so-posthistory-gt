@@ -37,13 +37,13 @@
         <dependency>
             <groupId>org.sotorrent</groupId>
             <artifactId>posthistory-extractor</artifactId>
-            <version>3.0.2</version>
+            <version>LATEST</version>
         </dependency>
         <!-- https://github.com/sotorrent/util/tree/master/releases/ -->
         <dependency>
             <groupId>org.sotorrent</groupId>
             <artifactId>util</artifactId>
-            <version>3.0.0</version>
+            <version>LATEST</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.atlassian.commonmark/commonmark -->
         <dependency>
@@ -80,7 +80,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.unitrier.st.soposthistory.gt.GroundTruthApp.MainGroundTruthCreator</mainClass>
+                            <mainClass>de.unitrier.st.soposthistory.gt.GroundTruthMetricComparatorApp.MainGroundTruthCreator</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -92,7 +92,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.unitrier.st.soposthistory.gt.GroundTruthApp.MainGroundTruthCreator</mainClass>
+                            <mainClass>de.unitrier.st.soposthistory.gt.GroundTruthMetricComparatorApp.MainGroundTruthCreator</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
