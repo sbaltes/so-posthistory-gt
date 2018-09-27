@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.unitrier.st.soposthistory.gt.GroundTruthMetricComparatorApp.Controller">
+   <children>
+       <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
+          <menus>
+              <Menu mnemonicParsing="false" text="File">
+                 <items>
+                     <MenuItem fx:id="MenuItem_selectRootOfPostVersionLists" mnemonicParsing="false" onAction="#selectRootOfPostVersionLists" text="Select root of Post Version Lists" />
+                     <MenuItem mnemonicParsing="false" text="Close" />
+                 </items>
+              </Menu>
+              <Menu mnemonicParsing="false" text="Help">
+                 <items>
+                     <MenuItem mnemonicParsing="false" text="About" />
+                 </items>
+              </Menu>
+          </menus>
+       </MenuBar>
+       <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
+          <children>
+              <Button fx:id="buttonBack" layoutX="14.0" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#buttonBackClicked" text="Back" />
+              <Button fx:id="buttonNext" layoutX="70.0" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#buttonNextClicked" text="Next" />
+              <TextField fx:id="textFieldPostId" layoutX="208.0" layoutY="9.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" />
+            <CheckBox fx:id="checkBoxShowConnectionsOfGroundTruth" layoutX="399.0" layoutY="9.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showConnectionsOfGroundTruth" text="Show connections of Ground Truth" />
+            <CheckBox fx:id="checkBoxShowConnectionsOfComputedMetric" layoutX="399.0" layoutY="32.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showConnectionsOfComputedMetric" text="Show connections of Computed Metric" />
+              <Button layoutX="14.0" layoutY="9.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loadButtonClicked" text="Load GT and metric links for post:" />
+          </children>
+       </Pane>
+       <GridPane VBox.vgrow="ALWAYS">
+           <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+           </columnConstraints>
+           <rowConstraints>
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+   
+           <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               <ColumnConstraints />
+               <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+           </columnConstraints>
+           <rowConstraints>
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="10.0" minHeight="0.0" prefHeight="10.0" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="10.0" minHeight="0.0" prefHeight="0.0" />
+               <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+           </rowConstraints>
+          <children>
+              <ScrollPane fitToHeight="true" fitToWidth="true" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                 <content>
+                     <GridPane>
+                         <columnConstraints>
+                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                         </columnConstraints>
+                         <rowConstraints>
+                             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                         </rowConstraints>
+                        <children>
+                            <HBox GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+                               <children>
+                                   <GridPane HBox.hgrow="ALWAYS">
+                                       <columnConstraints>
+                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                      <children>
+                                          <VBox fx:id="leftVBox" maxHeight="1.7976931348623157E308" />
+                                      </children>
+                                   </GridPane>
+                                   <GridPane>
+                                       <columnConstraints>
+                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                      <children>
+                                          <Pane fx:id="connectionsPane" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" HBox.hgrow="ALWAYS" />
+                                      </children>
+                                   </GridPane>
+                                   <GridPane>
+                                       <columnConstraints>
+                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                      <children>
+                                          <VBox fx:id="rightVBox" maxHeight="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" HBox.hgrow="ALWAYS" />
+                                      </children>
+                                   </GridPane>
+                               </children>
+                            </HBox>
+                        </children>
+                     </GridPane>
+                 </content>
+              </ScrollPane>
+          </children>
+       </GridPane>
+       <Label fx:id="bottomLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Post ID: - ### number of versions: - ### you are now comparing the versions - and -" />
+   </children>
+</VBox>
