@@ -336,6 +336,7 @@ public class Controller {
     private void loadButtonClicked() {
         try {
             blockPairs_groundTruth.clear();
+            blockPairs_metric.clear();
             currentLeftVersion = 0;
 
             int postId = Integer.valueOf(textFieldPostId.getText());
