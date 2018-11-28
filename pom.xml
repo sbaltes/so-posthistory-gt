@@ -33,13 +33,13 @@
     </repositories>
 
     <dependencies>
-        <!-- https://github.com/sotorrent/so-posthistory-extractor/tree/master/releases/ -->
+        <!-- https://github.com/sotorrent/so-posthistory-extractor/ -->
         <dependency>
             <groupId>org.sotorrent</groupId>
             <artifactId>posthistory-extractor</artifactId>
             <version>3.0.2</version>
         </dependency>
-        <!-- https://github.com/sotorrent/util/tree/master/releases/ -->
+        <!-- https://github.com/sotorrent/util/ -->
         <dependency>
             <groupId>org.sotorrent</groupId>
             <artifactId>util</artifactId>
